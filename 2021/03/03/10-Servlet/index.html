@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>10-Servlet | Ywrby个人博客网站</title><meta name="keywords" content="JavaWeb"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Servlet概念运行在服务器端的小程序 Servlet就是一个接口，定义了Java类被浏览器访问到（tomcat识别）的规则 基本步骤 创建JavaEE项目 定义一个类，实现Servlet接口 实现接口的抽象方法 配置Servlet（在web.xml下配置）  配置代码：123456789&lt;!--配置Servlet--&gt;&lt;servlet&gt;    &lt;servlet-n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10-Servlet">
+<meta property="og:url" content="http://example.com/2021/03/03/10-Servlet/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="Servlet概念运行在服务器端的小程序 Servlet就是一个接口，定义了Java类被浏览器访问到（tomcat识别）的规则 基本步骤 创建JavaEE项目 定义一个类，实现Servlet接口 实现接口的抽象方法 配置Servlet（在web.xml下配置）  配置代码：123456789&lt;!--配置Servlet--&gt;&lt;servlet&gt;    &lt;servlet-n">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg">
+<meta property="article:published_time" content="2021-03-03T12:34:10.000Z">
+<meta property="article:modified_time" content="2021-03-03T12:35:07.628Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://example.com/2021/03/03/10-Servlet/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-03 20:35:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">56</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">10-Servlet</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-03T12:34:10.000Z" title="Created 2021-03-03 20:34:10">2021-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-03T12:35:07.628Z" title="Updated 2021-03-03 20:35:07">2021-03-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h1><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>运行在服务器端的小程序</p>
+<p>Servlet就是一个接口，定义了Java类被浏览器访问到（tomcat识别）的规则</p>
+<h3 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h3><ol>
+<li>创建JavaEE项目</li>
+<li>定义一个类，实现Servlet接口</li>
+<li>实现接口的抽象方法</li>
+<li>配置Servlet（在web.xml下配置）</li>
+</ol>
+<h4 id="配置代码："><a href="#配置代码：" class="headerlink" title="配置代码："></a>配置代码：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置Servlet--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>demo1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>cn.ywrby.web.servlet.ServletDemo1<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>demo1<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/demo1<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="执行原理"><a href="#执行原理" class="headerlink" title="执行原理"></a>执行原理</h2><ol>
+<li>当服务器接受到客户端浏览器的请求后，会解析请求URL路径,获取访问的Servlet的资源路径</li>
+<li>查找web.xml文件,是否有对应的<url-pattern>标签体内容。</li>
+<li>如果有，则再找到对应的<servlet-class>全类名</li>
+<li>tomcat会将字节码文件加载进内存，并且创建其对象</li>
+<li>调用其方法</li>
+</ol>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/servlet%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg" alt="servlet执行原理"></p>
+<h2 id="声明周期"><a href="#声明周期" class="headerlink" title="声明周期"></a>声明周期</h2><h3 id="1-被创建时"><a href="#1-被创建时" class="headerlink" title="1. 被创建时"></a>1. 被创建时</h3><p>执行init方法，且只执行一次，一般用于加载资源</p>
+<h4 id="Servlet被创建的时机"><a href="#Servlet被创建的时机" class="headerlink" title="Servlet被创建的时机"></a>Servlet被创建的时机</h4><ul>
+<li>默认情况下，在第一次访问时被创建</li>
+<li>可以通过配置Servlet修改创建时机<ul>
+<li>配置<Servlet>标签下的<load-on-startup>标签（值为正数则在启动服务器时就被创建，值为负数，则在第一次访问时创建，默认值为-1）</li>
+</ul>
+</li>
+</ul>
+<p>Servlet的init方法只执行一次，说明一个Servlet在内存中只存在一个对象，即Servlet是单例的。</p>
+<ul>
+<li>多个用户同时访问该对象时，就可能存在安全问题</li>
+<li>解决方式：尽量不再Servlet中定义成员变量，不得已定义成员变量也不要在方法中修改成员变量的值（尽量把变量定义在方法中）</li>
+</ul>
+<h3 id="2-提供服务"><a href="#2-提供服务" class="headerlink" title="2. 提供服务"></a>2. 提供服务</h3><p>执行service方法，service方法可能被调用多次</p>
+<h3 id="3-被销毁时"><a href="#3-被销毁时" class="headerlink" title="3. 被销毁时"></a>3. 被销毁时</h3><p>调用destroy方法，只在被销毁时执行一次，且必须是正常销毁，强制销毁时同样不执行。一般用于释放资源</p>
+<h2 id="注解配置"><a href="#注解配置" class="headerlink" title="注解配置"></a>注解配置</h2><p>自Servlet3.0后，在配置时可以不必配置web.xml文件，而是采用注解配置的方式，大大降低配置注解的繁琐</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>创建JavaEE项目，选择Servlet版本在3.0以上，可以不创建web.xml</li>
+<li>定义一个类，实现Servlet接口</li>
+<li>复写方法</li>
+<li>为该类添加注解，并进行配置<code>@WebServlet(url-pattern=&quot;资源路径&quot;)</code>或者省略url-pattern直接写作<code>@WebServlet(&quot;资源路径&quot;)</code></li>
+</ol>
+<p>一个url-pattern可以配置多个路径，例如<code>@WebServlet(&#123;&quot;/demo2&quot;,&quot;/demo3&quot;&#125;)</code></p>
+<h4 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(&quot;/demo1&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletDemo1</span> <span class="keyword">implements</span> <span class="title">Servlet</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Servlet体系结构"><a href="#Servlet体系结构" class="headerlink" title="Servlet体系结构"></a>Servlet体系结构</h2><ul>
+<li>GenericServlet：一个抽象类，实现了Servlet接口，并对除service以外的方法都做了默认的空实现，支队service方法进行了抽象。所以在定义Servlet类时，可以继承GenericServlet，只需要实现service方法即可</li>
+<li>HttpServlet：继承自GenericServlet。是对Http协议的一种封装，简化操作，其内部实现了service方法的判断逻辑，在继承时只需要复写doGet和doPost方法即可</li>
+</ul>
+<p>一般情况下我们采用继承HttpServlet并复写doGet和doPost方法的方式实现Servlet类</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/03/03/10-Servlet/">http://example.com/2021/03/03/10-Servlet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaWeb/">JavaWeb</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/03/11-Http%E6%A6%82%E8%BF%B0/"><img class="prev-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/64251618_p0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">11-Http概述</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/03/9-web%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E6%A6%82%E8%BF%B0+Tomcat/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/45505837_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">9-web服务器软件概述+Tomcat</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/03/1-Junit单元测试/" title="1-Junit单元测试"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/65872849_p0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">1-Junit单元测试</div></div></a></div><div><a href="/2021/03/03/11-Http概述/" title="11-Http概述"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/64251618_p0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">11-Http概述</div></div></a></div><div><a href="/2021/03/03/13-ServletContext/" title="13-ServletContext"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/61326600_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">13-ServletContext</div></div></a></div><div><a href="/2021/03/03/12-Request对象+Response对象/" title="12-Request对象+Response对象"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/57939893_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">12-Request对象+Response对象</div></div></a></div><div><a href="/2021/03/03/14-下载案例/" title="14-下载案例"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/61326600_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">14-下载案例</div></div></a></div><div><a href="/2021/03/03/15-会话技术与cookie/" title="15-会话技术与Cookie"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/64251618_p0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">15-会话技术与Cookie</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">56</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Servlet"><span class="toc-number">1.</span> <span class="toc-text">Servlet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">1.0.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.0.2.</span> <span class="toc-text">基本步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">配置代码：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">执行原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%91%A8%E6%9C%9F"><span class="toc-number">1.2.</span> <span class="toc-text">声明周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%A2%AB%E5%88%9B%E5%BB%BA%E6%97%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 被创建时</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Servlet%E8%A2%AB%E5%88%9B%E5%BB%BA%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Servlet被创建的时机</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8F%90%E4%BE%9B%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 提供服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%A2%AB%E9%94%80%E6%AF%81%E6%97%B6"><span class="toc-number">1.2.3.</span> <span class="toc-text">3. 被销毁时</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">注解配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.3.1.</span> <span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E5%A6%82"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">例如</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Servlet%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">Servlet体系结构</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/27-%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E9%A1%B5%E9%9D%A2%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/" title="27-登录注册页面基本实现"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/60637125_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="27-登录注册页面基本实现"/></a><div class="content"><a class="title" href="/2021/03/03/27-%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E9%A1%B5%E9%9D%A2%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0/" title="27-登录注册页面基本实现">27-登录注册页面基本实现</a><time datetime="2021-03-03T12:40:18.000Z" title="Created 2021-03-03 20:40:18">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/26-Jedis/" title="26-Jedis"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="26-Jedis"/></a><div class="content"><a class="title" href="/2021/03/03/26-Jedis/" title="26-Jedis">26-Jedis</a><time datetime="2021-03-03T12:40:09.000Z" title="Created 2021-03-03 20:40:09">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/25-Redis/" title="25-Redis"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="25-Redis"/></a><div class="content"><a class="title" href="/2021/03/03/25-Redis/" title="25-Redis">25-Redis</a><time datetime="2021-03-03T12:40:00.000Z" title="Created 2021-03-03 20:40:00">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/24-JSON/" title="24-JSON"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72839713_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="24-JSON"/></a><div class="content"><a class="title" href="/2021/03/03/24-JSON/" title="24-JSON">24-JSON</a><time datetime="2021-03-03T12:39:59.000Z" title="Created 2021-03-03 20:39:59">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/23-Ajax/" title="23-Ajax"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72839713_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="23-Ajax"/></a><div class="content"><a class="title" href="/2021/03/03/23-Ajax/" title="23-Ajax">23-Ajax</a><time datetime="2021-03-03T12:39:58.000Z" title="Created 2021-03-03 20:39:58">2021-03-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/myback.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
