@@ -1,0 +1,249 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>5-线程池 | Ywrby个人博客网站</title><meta name="keywords" content="Java"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线程池的概念本质就是一个能够容纳多个线程的容器，其中的线程可以反复利用，省去了频繁创建线程对象的操作，无需因为反复创建线程对象而消耗过多资源  工作线程（PoolWorker）表示线程池中的线程，在没有任务时处于等待状态，可以循环的执行任务 任务队列（TaskQueue）用于存放没有处理的任务，提供一种缓冲机制 任务接口（Task）每个任务必须实现的接口，一共工作线程调度任务的执行，它主要规定了任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5-线程池">
+<meta property="og:url" content="http://example.com/2021/03/03/5-%E7%BA%BF%E7%A8%8B%E6%B1%A0/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="线程池的概念本质就是一个能够容纳多个线程的容器，其中的线程可以反复利用，省去了频繁创建线程对象的操作，无需因为反复创建线程对象而消耗过多资源  工作线程（PoolWorker）表示线程池中的线程，在没有任务时处于等待状态，可以循环的执行任务 任务队列（TaskQueue）用于存放没有处理的任务，提供一种缓冲机制 任务接口（Task）每个任务必须实现的接口，一共工作线程调度任务的执行，它主要规定了任">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg">
+<meta property="article:published_time" content="2021-03-03T05:59:15.000Z">
+<meta property="article:modified_time" content="2021-03-03T07:31:05.589Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://example.com/2021/03/03/5-%E7%BA%BF%E7%A8%8B%E6%B1%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-03 15:31:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">5-线程池</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-03T05:59:15.000Z" title="Created 2021-03-03 13:59:15">2021-03-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-03T07:31:05.589Z" title="Updated 2021-03-03 15:31:05">2021-03-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="线程池的概念"><a href="#线程池的概念" class="headerlink" title="线程池的概念"></a>线程池的概念</h1><p>本质就是一个能够容纳多个线程的容器，其中的线程可以反复利用，省去了频繁创建线程对象的操作，无需因为反复创建线程对象而消耗过多资源</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E7%BA%BF%E7%A8%8B%E6%B1%A0.jpg" alt="线程池"></p>
+<h3 id="工作线程（PoolWorker）"><a href="#工作线程（PoolWorker）" class="headerlink" title="工作线程（PoolWorker）"></a>工作线程（PoolWorker）</h3><p>表示线程池中的线程，在没有任务时处于等待状态，可以循环的执行任务</p>
+<h3 id="任务队列（TaskQueue）"><a href="#任务队列（TaskQueue）" class="headerlink" title="任务队列（TaskQueue）"></a>任务队列（TaskQueue）</h3><p>用于存放没有处理的任务，提供一种缓冲机制</p>
+<h3 id="任务接口（Task）"><a href="#任务接口（Task）" class="headerlink" title="任务接口（Task）"></a>任务接口（Task）</h3><p>每个任务必须实现的接口，一共工作线程调度任务的执行，它主要规定了任务的入口，任务执行完后的收尾工作，任务的执行状态等等</p>
+<h3 id="线程池管理器（ThreadPool）"><a href="#线程池管理器（ThreadPool）" class="headerlink" title="线程池管理器（ThreadPool）"></a>线程池管理器（ThreadPool）</h3><p>用于创建并管理线程。包括：创建线程池，销毁线程池，添加线程或任务等等</p>
+<p>线程池创建线程来执行，而Worker执行完之后，就去队列中取未分配的task，调用task的run方法。通俗的讲就是任务来后就分配一个线程使用，线程处于占用状态，如果任务执行完毕，线程归还于线程池，并且暂处于空闲状态</p>
+<h2 id="合理利用线程池的好处"><a href="#合理利用线程池的好处" class="headerlink" title="合理利用线程池的好处"></a>合理利用线程池的好处</h2><h3 id="降低资源消耗"><a href="#降低资源消耗" class="headerlink" title="降低资源消耗"></a>降低资源消耗</h3><p>减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可以执行多个任务</p>
+<h3 id="提高响应速度"><a href="#提高响应速度" class="headerlink" title="提高响应速度"></a>提高响应速度</h3><p>不需要频繁的创建线程，如果有线程可以直接用，不会出现系统僵死</p>
+<h3 id="提高线程的可管理性"><a href="#提高线程的可管理性" class="headerlink" title="提高线程的可管理性"></a>提高线程的可管理性</h3><p>线程池可以约束系统最多只能由多少个线程，不会因为线程过多而死机</p>
+<h2 id="线程池的核心思想"><a href="#线程池的核心思想" class="headerlink" title="线程池的核心思想"></a>线程池的核心思想</h2><p>线程复用，同一个线程可以重复多次被使用，来处理多个任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> ThreadPool;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 创建线程池</span></span><br><span class="line"><span class="comment">* 线程池在Java中的代表类：ExcutorService(接口)</span></span><br><span class="line"><span class="comment">* Java在Executors类下提供一个静态方法得到一个线程池的对象</span></span><br><span class="line"><span class="comment">* public static ExecutorService newFixedThreadPool(int nThreads);</span></span><br><span class="line"><span class="comment">* （创建一个可重用固定线程数的线程池并返回，以共享的无界队列方式来运行这些线程）</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadPoolDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建一个线程池，指定线程的固定数量是3</span></span><br><span class="line">        ExecutorService pool= Executors.newFixedThreadPool(<span class="number">3</span>);</span><br><span class="line">        <span class="comment">//添加线程任务给线程池处理</span></span><br><span class="line">        Runnable task=<span class="keyword">new</span> MyRunnable();</span><br><span class="line">        <span class="comment">//可以向线程池提交Runnable接口或Callable接口 ，Callable做线程池的任务可以得到线程执行的结果（返回值类型Future&lt;?&gt;）</span></span><br><span class="line">        pool.submit(task);  <span class="comment">//第一次向线程池提交任务，此时线程池创建新线程，自动触发执行，不需要再start()</span></span><br><span class="line">        pool.submit(task);  <span class="comment">//第二次向线程池提交任务，此时线程池创建新线程</span></span><br><span class="line">        pool.submit(task);  <span class="comment">//第三次向线程池提交任务，此时线程池创建新线程</span></span><br><span class="line">        pool.submit(task);  <span class="comment">//第四次向线程池提交任务，超出线程池固定数量，此时线程池复用之前的线程</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// pool.shutdown();  在等待任务执行完毕之后关闭线程池</span></span><br><span class="line">        <span class="comment">// pool.shutdownNow();  立即关闭线程池代码，无论任务是否执行完毕</span></span><br><span class="line">        <span class="comment">// 线程池开发中一般情况下不关闭</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName()+<span class="string">&quot;==&gt;&quot;</span>+i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2021/03/03/5-%E7%BA%BF%E7%A8%8B%E6%B1%A0/">http://example.com/2021/03/03/5-%E7%BA%BF%E7%A8%8B%E6%B1%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/03/6-%E6%AD%BB%E9%94%81/"><img class="prev-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/53403181_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">6-死锁</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/03/4-%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%EF%BC%8C%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/45505837_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">4-线程通信，线程状态</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/03/1-异常/" title="1-异常"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/70401905_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">1-异常</div></div></a></div><div><a href="/2021/03/03/10-方法引用/" title="10-方法引用"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/57939893_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">10-方法引用</div></div></a></div><div><a href="/2021/03/03/11-Stream流/" title="11-Stream流"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">11-Stream流</div></div></a></div><div><a href="/2021/03/03/12-File类/" title="12-File类"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/70401905_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">12-File类</div></div></a></div><div><a href="/2021/03/03/13-递归/" title="13-递归"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/61326600_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">13-递归</div></div></a></div><div><a href="/2021/03/03/15-初始化和清理/" title="15-初始化和清理"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/45505837_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">15-初始化和清理</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">线程池的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%EF%BC%88PoolWorker%EF%BC%89"><span class="toc-number">1.0.1.</span> <span class="toc-text">工作线程（PoolWorker）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%EF%BC%88TaskQueue%EF%BC%89"><span class="toc-number">1.0.2.</span> <span class="toc-text">任务队列（TaskQueue）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%8E%A5%E5%8F%A3%EF%BC%88Task%EF%BC%89"><span class="toc-number">1.0.3.</span> <span class="toc-text">任务接口（Task）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%88ThreadPool%EF%BC%89"><span class="toc-number">1.0.4.</span> <span class="toc-text">线程池管理器（ThreadPool）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%88%E7%90%86%E5%88%A9%E7%94%A8%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">1.1.</span> <span class="toc-text">合理利用线程池的好处</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%8D%E4%BD%8E%E8%B5%84%E6%BA%90%E6%B6%88%E8%80%97"><span class="toc-number">1.1.1.</span> <span class="toc-text">降低资源消耗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E5%93%8D%E5%BA%94%E9%80%9F%E5%BA%A6"><span class="toc-number">1.1.2.</span> <span class="toc-text">提高响应速度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8F%AF%E7%AE%A1%E7%90%86%E6%80%A7"><span class="toc-number">1.1.3.</span> <span class="toc-text">提高线程的可管理性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-number">1.2.</span> <span class="toc-text">线程池的核心思想</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/15-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/" title="15-初始化和清理"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/45505837_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15-初始化和清理"/></a><div class="content"><a class="title" href="/2021/03/03/15-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/" title="15-初始化和清理">15-初始化和清理</a><time datetime="2021-03-03T05:59:25.000Z" title="Created 2021-03-03 13:59:25">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/14-IO%E6%B5%81/" title="14-IO流"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/70401905_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="14-IO流"/></a><div class="content"><a class="title" href="/2021/03/03/14-IO%E6%B5%81/" title="14-IO流">14-IO流</a><time datetime="2021-03-03T05:59:24.000Z" title="Created 2021-03-03 13:59:24">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/13-%E9%80%92%E5%BD%92/" title="13-递归"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/61326600_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="13-递归"/></a><div class="content"><a class="title" href="/2021/03/03/13-%E9%80%92%E5%BD%92/" title="13-递归">13-递归</a><time datetime="2021-03-03T05:59:23.000Z" title="Created 2021-03-03 13:59:23">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/12-File%E7%B1%BB/" title="12-File类"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/70401905_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="12-File类"/></a><div class="content"><a class="title" href="/2021/03/03/12-File%E7%B1%BB/" title="12-File类">12-File类</a><time datetime="2021-03-03T05:59:22.000Z" title="Created 2021-03-03 13:59:22">2021-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/03/11-Stream%E6%B5%81/" title="11-Stream流"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="11-Stream流"/></a><div class="content"><a class="title" href="/2021/03/03/11-Stream%E6%B5%81/" title="11-Stream流">11-Stream流</a><time datetime="2021-03-03T05:59:21.000Z" title="Created 2021-03-03 13:59:21">2021-03-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66027392_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/myback.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
