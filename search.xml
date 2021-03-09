@@ -245,14 +245,15 @@
 </li>
 </ul>
 <ul>
-<li>星型拓扑<ul>
+<li><p>星型拓扑</p>
+<ul>
 <li>主机都挂接在一个中心节点上</li>
 <li>早期中心节点由集线器充当，现在的中心节点主要由交换机充当</li>
 <li>相较于总线拓扑有单点故障这一缺点（是指系统中一点失效，就会让整个系统无法运作的部件，换句话说，单点故障即会整体故障。）</li>
 </ul>
 </li>
-</ul>
-<ul>
+<li><p>ISP: Internet Service Provider,互联网服务提供商,指的是面向公众提供下列信息服务的经营者：一是接入服务，即帮助用户接入Internet；二是导航服务，即帮助用户在Internet上找到所需要的信息；三是信息服务，即建立数据服务系统，收集、加工、存储信息，定期维护更新，并通过网络向用户提供信息内容服务。</p>
+</li>
 <li><p>协议：一系列规则和约定的规范性描述，控制网络中的设备之间++如何进行信息交换++</p>
 </li>
 <li><p>易混淆的常见单位</p>
@@ -361,6 +362,19 @@
 <h3 id="网络核心的关键功能"><a href="#网络核心的关键功能" class="headerlink" title="网络核心的关键功能"></a>网络核心的关键功能</h3><ul>
 <li>路由：利用路由表决定数据包从源到目的地的路径（通过路由算法）</li>
 <li>转发：将分组从路由器的输入链路转移到输出链</li>
+</ul>
+<h3 id="ISP互联"><a href="#ISP互联" class="headerlink" title="ISP互联"></a>ISP互联</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/ISP%E4%BA%92%E8%81%94%E3%80%81.png"></p>
+<ul>
+<li>POP: 高层ISP面向客户网络的接入点，涉及费用结算<ul>
+<li>如一个低层ISP接入多个高层ISP，多宿（multi home）</li>
+</ul>
+</li>
+<li>对等接入：2个ISP对等互接，不涉及费用结算</li>
+<li>IXP：多个对等ISP互联互通之处，通常不涉及费用结算<ul>
+<li>对等接入</li>
+</ul>
+</li>
+<li>ICP自己部署专用网络，同时和各级ISP连接</li>
 </ul>
 ]]></content>
       <tags>
@@ -1167,6 +1181,45 @@
       </tags>
   </entry>
   <entry>
+    <title>17-Session</title>
+    <url>/2021/03/03/17-Session/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>服务器端会话技术，再一次对话的多次请求间共享数据，数据存储在服务器端的对象中（HttpSession）</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><ol>
+<li>获取HttpSession对象 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HttpSession session=request.getSession();</span><br></pre></td></tr></table></figure></li>
+<li>使用HttpSession对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//存储数据</span></span><br><span class="line">session.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;hello_world&quot;</span>);</span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line">Object msg=session.getAttribute(<span class="string">&quot;msg&quot;</span>);</span><br><span class="line"><span class="comment">//移除数据</span></span><br><span class="line">session.removeAttribute(<span class="string">&quot;msg&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3></li>
+</ol>
+<p><strong>Session的实现依赖于Cookie</strong>，在一次会话中，第一次请求Session的过程中，服务器端会创建一个Cookie对象，用来存储该Session的ID，并写入响应头返回到客户端，在客户端下次访问时，服务器端检测到该Cookie并读取Session的ID，就能够在浏览器端找到该Session并返回客户端</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ol>
+<li>客户端关闭后，服务器端不关闭的情况下，两次获取的Session默认情况下不是同一个，也就不能共享数据（这是因为客户端关闭，代表一次会话结束，同时携带JSESSIONID的cookie也被销毁，所以Session失效）</li>
+<li>通过创建一个同名Cookie并设置Cookie的持久化处理，可以解决上面的问题<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取Session</span></span><br><span class="line">HttpSession session=request.getSession();</span><br><span class="line"><span class="comment">//创建JSESSIONID的Cookie 设置最大存活时间</span></span><br><span class="line">Cookie cookie=<span class="keyword">new</span> Cookie(<span class="string">&quot;JSESSIONID&quot;</span>,session.getId());</span><br><span class="line">cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>);</span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"><span class="comment">//存储数据</span></span><br><span class="line">session.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;hello_world&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>服务器端关闭的情况下，两次获取的Session对象不是同一个，但要保证数据不丢失，所以服务器端会进行Session的钝化与活化<ul>
+<li>Session的钝化：在服务器正常关闭之前，将服务器上的Session对象序列化到硬盘中</li>
+<li>Session的活化：在服务器启动后，将硬盘中的Session文件转化为内存中的Session对象</li>
+</ul>
+</li>
+<li>Session被销毁的情况<ul>
+<li>服务器关闭</li>
+<li>session对象调用invalidate方法</li>
+<li>session默认失效时间30min</li>
+</ul>
+</li>
+</ol>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
+<li>session用于存储一次会话的多次请求的数据，存储在服务器端</li>
+<li>session可以存储任意类型，任意大小的数据</li>
+</ol>
+<h3 id="Session与Cookie的区别"><a href="#Session与Cookie的区别" class="headerlink" title="Session与Cookie的区别"></a>Session与Cookie的区别</h3><ol>
+<li>Session存储数据在服务器端，Cookie在客户端</li>
+<li>Session对存储数据的类型和大小没有限制，Cookie有限制</li>
+<li>Session更安全，Cookie相对而言不安全</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>JavaWeb</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>16-JSP基础</title>
     <url>/2021/03/03/16-JSP%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>Java Server Pages:Java服务器端页面，在该页面中既可以定义Java代码，也可以定义html标签，主要用于简化书写</p>
@@ -1259,45 +1312,6 @@
 <td>异常对象</td>
 </tr>
 </tbody></table>
-]]></content>
-      <tags>
-        <tag>JavaWeb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>17-Session</title>
-    <url>/2021/03/03/17-Session/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>服务器端会话技术，再一次对话的多次请求间共享数据，数据存储在服务器端的对象中（HttpSession）</p>
-<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><ol>
-<li>获取HttpSession对象 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HttpSession session=request.getSession();</span><br></pre></td></tr></table></figure></li>
-<li>使用HttpSession对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//存储数据</span></span><br><span class="line">session.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;hello_world&quot;</span>);</span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line">Object msg=session.getAttribute(<span class="string">&quot;msg&quot;</span>);</span><br><span class="line"><span class="comment">//移除数据</span></span><br><span class="line">session.removeAttribute(<span class="string">&quot;msg&quot;</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3></li>
-</ol>
-<p><strong>Session的实现依赖于Cookie</strong>，在一次会话中，第一次请求Session的过程中，服务器端会创建一个Cookie对象，用来存储该Session的ID，并写入响应头返回到客户端，在客户端下次访问时，服务器端检测到该Cookie并读取Session的ID，就能够在浏览器端找到该Session并返回客户端</p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ol>
-<li>客户端关闭后，服务器端不关闭的情况下，两次获取的Session默认情况下不是同一个，也就不能共享数据（这是因为客户端关闭，代表一次会话结束，同时携带JSESSIONID的cookie也被销毁，所以Session失效）</li>
-<li>通过创建一个同名Cookie并设置Cookie的持久化处理，可以解决上面的问题<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取Session</span></span><br><span class="line">HttpSession session=request.getSession();</span><br><span class="line"><span class="comment">//创建JSESSIONID的Cookie 设置最大存活时间</span></span><br><span class="line">Cookie cookie=<span class="keyword">new</span> Cookie(<span class="string">&quot;JSESSIONID&quot;</span>,session.getId());</span><br><span class="line">cookie.setMaxAge(<span class="number">60</span>*<span class="number">60</span>);</span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"><span class="comment">//存储数据</span></span><br><span class="line">session.setAttribute(<span class="string">&quot;msg&quot;</span>,<span class="string">&quot;hello_world&quot;</span>);</span><br></pre></td></tr></table></figure></li>
-<li>服务器端关闭的情况下，两次获取的Session对象不是同一个，但要保证数据不丢失，所以服务器端会进行Session的钝化与活化<ul>
-<li>Session的钝化：在服务器正常关闭之前，将服务器上的Session对象序列化到硬盘中</li>
-<li>Session的活化：在服务器启动后，将硬盘中的Session文件转化为内存中的Session对象</li>
-</ul>
-</li>
-<li>Session被销毁的情况<ul>
-<li>服务器关闭</li>
-<li>session对象调用invalidate方法</li>
-<li>session默认失效时间30min</li>
-</ul>
-</li>
-</ol>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li>session用于存储一次会话的多次请求的数据，存储在服务器端</li>
-<li>session可以存储任意类型，任意大小的数据</li>
-</ol>
-<h3 id="Session与Cookie的区别"><a href="#Session与Cookie的区别" class="headerlink" title="Session与Cookie的区别"></a>Session与Cookie的区别</h3><ol>
-<li>Session存储数据在服务器端，Cookie在客户端</li>
-<li>Session对存储数据的类型和大小没有限制，Cookie有限制</li>
-<li>Session更安全，Cookie相对而言不安全</li>
-</ol>
 ]]></content>
       <tags>
         <tag>JavaWeb</tag>
@@ -1698,6 +1712,123 @@
       </tags>
   </entry>
   <entry>
+    <title>21-jQuery基础+选择器</title>
+    <url>/2021/03/03/21-jQuery%E5%9F%BA%E7%A1%80-%E9%80%89%E6%8B%A9%E5%99%A8/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="jQuery框架"><a href="#jQuery框架" class="headerlink" title="jQuery框架"></a>jQuery框架</h1><p>jQuery是开源软件，使用MIT许可证授权。 jQuery的语法设计使得许多操作变得容易，如操作文档对象（document）、选择文档对象模型（DOM）元素、创建动画效果、处理事件、以及开发Ajax程序。jQuery也提供了给开发人员在其上创建插件的能力。这使开发人员可以对底层交互与动画、高级效果和高级主题化的组件进行抽象化。模块化的方式使jQuery函数库能够创建功能强大的动态网页以及网络应用程序。</p>
+<h4 id="简单演示"><a href="#简单演示" class="headerlink" title="简单演示"></a>简单演示</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>div1...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div2&quot;</span>&gt;</span>div2...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过JS的方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> divs=<span class="built_in">document</span>.getElementsByTagName(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//遍历标签集合，修改标签内容</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;divs.length;i++)&#123;</span></span><br><span class="line"><span class="javascript">        divs[i].innerHTML=<span class="string">&quot;hello div!&quot;</span>;</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $divs=$(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式遍历标签集合并修改内容</span></span></span><br><span class="line"><span class="javascript">    $divs.html(<span class="string">&quot;hi div!&quot;</span>);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="JS与Jquery对象之间的转化"><a href="#JS与Jquery对象之间的转化" class="headerlink" title="JS与Jquery对象之间的转化"></a>JS与Jquery对象之间的转化</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>div1...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div2&quot;</span>&gt;</span>div2...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过JS的方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> divs=<span class="built_in">document</span>.getElementsByTagName(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $divs=$(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="comment">//JS对象转化为Jquery对象,直接在变量名前加$()即可</span></span></span><br><span class="line"><span class="javascript">    $(divs)</span></span><br><span class="line"><span class="javascript">    <span class="comment">//Jquery对象转化为JS对象，可以利用索引值，也可以利用get方法</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> div1=$divs.get(<span class="number">0</span>);</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> div2=$divs[<span class="number">1</span>];</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Jquery选择器"><a href="#Jquery选择器" class="headerlink" title="Jquery选择器"></a>Jquery选择器</h2><p>用于筛选具有相似特征的元素</p>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><h4 id="1-事件绑定"><a href="#1-事件绑定" class="headerlink" title="1. 事件绑定"></a>1. 事件绑定</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;click&quot;</span> <span class="attr">id</span>=<span class="string">&quot;b1&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//获取按钮</span></span></span><br><span class="line"><span class="javascript">    $(<span class="string">&quot;#b1&quot;</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        alert(<span class="string">&quot;hello&quot;</span>);</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-入口函数"><a href="#2-入口函数" class="headerlink" title="2. 入口函数"></a>2. 入口函数</h4><p>入口函数即指首先加载的内容</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//入口函数，始终先于其他内容执行</span></span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        alert(<span class="string">&quot;执行页面加载前的准备工作&quot;</span>)</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;click&quot;</span> <span class="attr">id</span>=<span class="string">&quot;b1&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-CSS样式控制"><a href="#3-CSS样式控制" class="headerlink" title="3. CSS样式控制"></a>3. CSS样式控制</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//进行CSS样式控制</span></span></span><br><span class="line"><span class="javascript">        $(<span class="string">&quot;#div1&quot;</span>).css(<span class="string">&quot;background-color&quot;</span>,<span class="string">&quot;red&quot;</span>);</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>hello world<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基本选择器"><a href="#基本选择器" class="headerlink" title="基本选择器"></a>基本选择器</h3><ul>
+<li>标签选择器（元素选择器）：获得所有匹配标签名称的选择器<ul>
+<li>$(“HTML标签名”)</li>
+</ul>
+</li>
+<li>ID选择器：获得所有与指定ID值匹配的元素<ul>
+<li>$(“#ID的属性值”)</li>
+</ul>
+</li>
+<li>类选择器：获得所有与指定类(class)相同的元素<ul>
+<li>$(“.class”)  </li>
+</ul>
+</li>
+<li>并集选择器：获得多个选择器所选中的元素<ul>
+<li>$(“选择器1,选择器2,…”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="层级选择器"><a href="#层级选择器" class="headerlink" title="层级选择器"></a>层级选择器</h3><ul>
+<li>后代选择器：会选择A标签下所有与B标签相一致的元素（包括子辈与孙辈等等）<ul>
+<li>$(“A B”)</li>
+</ul>
+</li>
+<li>子选择器：会选择A标签下所有与B标签相一致的子辈元素（不包括子辈以外的元素）<ul>
+<li>$(“A &gt; B”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h3><ul>
+<li>属性名称选择器：只要包含指定属性名称都会被选择(A是标签名称)<ul>
+<li>$(“A[属性名]”)  </li>
+</ul>
+</li>
+<li>属性选择器：选择所有包含对应属性，且属性值与规定相同的元素<ul>
+<li>$(“A[属性名=’属性值’]”)</li>
+</ul>
+</li>
+<li>复合属性选择器：包含多个属性选择器<ul>
+<li>$(“A[属性名1=’属性值1’][属性名2=’属性值2’]…”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="过滤选择器"><a href="#过滤选择器" class="headerlink" title="过滤选择器"></a>过滤选择器</h3><ul>
+<li>首元素选择器：获得选择元素中的第一个元素<ul>
+<li>$(“选择器:first”)</li>
+<li>例如：$(“div:first”) $(“#id:first”)</li>
+</ul>
+</li>
+<li>尾元素选择器：获得选择元素中的最后一个元素<ul>
+<li>$(“选择器:last”)</li>
+<li>例如：$(“div:last”) $(“#id:last”)</li>
+</ul>
+</li>
+<li>非元素选择器：不包括指定内容的元素<ul>
+<li>$(“选择器:not(selector)”)</li>
+</ul>
+</li>
+<li>偶数选择器，奇数选择器（从0开始计数）<ul>
+<li>$(“选择器:even”)  $(“选择器:odd”)</li>
+</ul>
+</li>
+<li>等于索引选择器：指定索引元素<ul>
+<li>$(“选择器:eq(index)”)</li>
+</ul>
+</li>
+<li>大于索引选择器：所有大于指定索引的元素<ul>
+<li>$(“选择器:gt(index)”)</li>
+</ul>
+</li>
+<li>小于索引选择器：所有小于指定索引的元素<ul>
+<li>$(“选择器:lt(index)”)</li>
+</ul>
+</li>
+<li>标题选择器：获得标题元素，固定写法<ul>
+<li>$(“选择器:header”)</li>
+</ul>
+</li>
+</ul>
+<h3 id="表单过滤选择器"><a href="#表单过滤选择器" class="headerlink" title="表单过滤选择器"></a>表单过滤选择器</h3><ul>
+<li>可用元素选择器：获得所有可用元素<ul>
+<li>$(“选择器:enabled”)</li>
+</ul>
+</li>
+<li>不可用元素选择器：获得所有不可用元素<ul>
+<li>$(“选择器:disabled”)</li>
+</ul>
+</li>
+<li>选中选择器：获得单选/复选框所有选中的元素<ul>
+<li>$(“选择器:checked”)</li>
+</ul>
+</li>
+<li>选中选择器：获得下拉列表框中选中元素<ul>
+<li>$(“选择器:selected”)</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>JavaWeb</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>22-jQuery深入</title>
     <url>/2021/03/03/22-jQuery%E6%B7%B1%E5%85%A5/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="jQuery中的DOM操作"><a href="#jQuery中的DOM操作" class="headerlink" title="jQuery中的DOM操作"></a>jQuery中的DOM操作</h1><h2 id="内容操作"><a href="#内容操作" class="headerlink" title="内容操作"></a>内容操作</h2><ul>
@@ -1896,123 +2027,6 @@
 <p>使用AOF进行持久化操作的方式是编辑配置文件redis.windows.conf，将appendonly no 修改为appendonly yes（表示开启AOF持久化）</p>
 <p>AOF持久化有三种可以选择的持久化方案</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">appendfsync always  &#x2F;&#x2F;每次命令操作都进行持久化</span><br><span class="line">appendfsync everysec  &#x2F;&#x2F;每隔一秒进行一次持久化操作</span><br><span class="line">appendfsync no   &#x2F;&#x2F;不进行持久化操作</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>JavaWeb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>21-jQuery基础+选择器</title>
-    <url>/2021/03/03/21-jQuery%E5%9F%BA%E7%A1%80-%E9%80%89%E6%8B%A9%E5%99%A8/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="jQuery框架"><a href="#jQuery框架" class="headerlink" title="jQuery框架"></a>jQuery框架</h1><p>jQuery是开源软件，使用MIT许可证授权。 jQuery的语法设计使得许多操作变得容易，如操作文档对象（document）、选择文档对象模型（DOM）元素、创建动画效果、处理事件、以及开发Ajax程序。jQuery也提供了给开发人员在其上创建插件的能力。这使开发人员可以对底层交互与动画、高级效果和高级主题化的组件进行抽象化。模块化的方式使jQuery函数库能够创建功能强大的动态网页以及网络应用程序。</p>
-<h4 id="简单演示"><a href="#简单演示" class="headerlink" title="简单演示"></a>简单演示</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>div1...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div2&quot;</span>&gt;</span>div2...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过JS的方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> divs=<span class="built_in">document</span>.getElementsByTagName(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//遍历标签集合，修改标签内容</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;divs.length;i++)&#123;</span></span><br><span class="line"><span class="javascript">        divs[i].innerHTML=<span class="string">&quot;hello div!&quot;</span>;</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $divs=$(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式遍历标签集合并修改内容</span></span></span><br><span class="line"><span class="javascript">    $divs.html(<span class="string">&quot;hi div!&quot;</span>);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="JS与Jquery对象之间的转化"><a href="#JS与Jquery对象之间的转化" class="headerlink" title="JS与Jquery对象之间的转化"></a>JS与Jquery对象之间的转化</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>div1...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div2&quot;</span>&gt;</span>div2...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过JS的方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> divs=<span class="built_in">document</span>.getElementsByTagName(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"><span class="javascript">    <span class="comment">//通过Jquery方式获取所有div标签</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> $divs=$(<span class="string">&quot;div&quot;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="comment">//JS对象转化为Jquery对象,直接在变量名前加$()即可</span></span></span><br><span class="line"><span class="javascript">    $(divs)</span></span><br><span class="line"><span class="javascript">    <span class="comment">//Jquery对象转化为JS对象，可以利用索引值，也可以利用get方法</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> div1=$divs.get(<span class="number">0</span>);</span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> div2=$divs[<span class="number">1</span>];</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Jquery选择器"><a href="#Jquery选择器" class="headerlink" title="Jquery选择器"></a>Jquery选择器</h2><p>用于筛选具有相似特征的元素</p>
-<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><h4 id="1-事件绑定"><a href="#1-事件绑定" class="headerlink" title="1. 事件绑定"></a>1. 事件绑定</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;click&quot;</span> <span class="attr">id</span>=<span class="string">&quot;b1&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//获取按钮</span></span></span><br><span class="line"><span class="javascript">    $(<span class="string">&quot;#b1&quot;</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        alert(<span class="string">&quot;hello&quot;</span>);</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-入口函数"><a href="#2-入口函数" class="headerlink" title="2. 入口函数"></a>2. 入口函数</h4><p>入口函数即指首先加载的内容</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">//入口函数，始终先于其他内容执行</span></span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        alert(<span class="string">&quot;执行页面加载前的准备工作&quot;</span>)</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;click&quot;</span> <span class="attr">id</span>=<span class="string">&quot;b1&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="3-CSS样式控制"><a href="#3-CSS样式控制" class="headerlink" title="3. CSS样式控制"></a>3. CSS样式控制</h4><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>事件绑定<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;js/jquery-3.5.1.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="comment">//进行CSS样式控制</span></span></span><br><span class="line"><span class="javascript">        $(<span class="string">&quot;#div1&quot;</span>).css(<span class="string">&quot;background-color&quot;</span>,<span class="string">&quot;red&quot;</span>);</span></span><br><span class="line">    &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;div1&quot;</span>&gt;</span>hello world<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="基本选择器"><a href="#基本选择器" class="headerlink" title="基本选择器"></a>基本选择器</h3><ul>
-<li>标签选择器（元素选择器）：获得所有匹配标签名称的选择器<ul>
-<li>$(“HTML标签名”)</li>
-</ul>
-</li>
-<li>ID选择器：获得所有与指定ID值匹配的元素<ul>
-<li>$(“#ID的属性值”)</li>
-</ul>
-</li>
-<li>类选择器：获得所有与指定类(class)相同的元素<ul>
-<li>$(“.class”)  </li>
-</ul>
-</li>
-<li>并集选择器：获得多个选择器所选中的元素<ul>
-<li>$(“选择器1,选择器2,…”)</li>
-</ul>
-</li>
-</ul>
-<h3 id="层级选择器"><a href="#层级选择器" class="headerlink" title="层级选择器"></a>层级选择器</h3><ul>
-<li>后代选择器：会选择A标签下所有与B标签相一致的元素（包括子辈与孙辈等等）<ul>
-<li>$(“A B”)</li>
-</ul>
-</li>
-<li>子选择器：会选择A标签下所有与B标签相一致的子辈元素（不包括子辈以外的元素）<ul>
-<li>$(“A &gt; B”)</li>
-</ul>
-</li>
-</ul>
-<h3 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h3><ul>
-<li>属性名称选择器：只要包含指定属性名称都会被选择(A是标签名称)<ul>
-<li>$(“A[属性名]”)  </li>
-</ul>
-</li>
-<li>属性选择器：选择所有包含对应属性，且属性值与规定相同的元素<ul>
-<li>$(“A[属性名=’属性值’]”)</li>
-</ul>
-</li>
-<li>复合属性选择器：包含多个属性选择器<ul>
-<li>$(“A[属性名1=’属性值1’][属性名2=’属性值2’]…”)</li>
-</ul>
-</li>
-</ul>
-<h3 id="过滤选择器"><a href="#过滤选择器" class="headerlink" title="过滤选择器"></a>过滤选择器</h3><ul>
-<li>首元素选择器：获得选择元素中的第一个元素<ul>
-<li>$(“选择器:first”)</li>
-<li>例如：$(“div:first”) $(“#id:first”)</li>
-</ul>
-</li>
-<li>尾元素选择器：获得选择元素中的最后一个元素<ul>
-<li>$(“选择器:last”)</li>
-<li>例如：$(“div:last”) $(“#id:last”)</li>
-</ul>
-</li>
-<li>非元素选择器：不包括指定内容的元素<ul>
-<li>$(“选择器:not(selector)”)</li>
-</ul>
-</li>
-<li>偶数选择器，奇数选择器（从0开始计数）<ul>
-<li>$(“选择器:even”)  $(“选择器:odd”)</li>
-</ul>
-</li>
-<li>等于索引选择器：指定索引元素<ul>
-<li>$(“选择器:eq(index)”)</li>
-</ul>
-</li>
-<li>大于索引选择器：所有大于指定索引的元素<ul>
-<li>$(“选择器:gt(index)”)</li>
-</ul>
-</li>
-<li>小于索引选择器：所有小于指定索引的元素<ul>
-<li>$(“选择器:lt(index)”)</li>
-</ul>
-</li>
-<li>标题选择器：获得标题元素，固定写法<ul>
-<li>$(“选择器:header”)</li>
-</ul>
-</li>
-</ul>
-<h3 id="表单过滤选择器"><a href="#表单过滤选择器" class="headerlink" title="表单过滤选择器"></a>表单过滤选择器</h3><ul>
-<li>可用元素选择器：获得所有可用元素<ul>
-<li>$(“选择器:enabled”)</li>
-</ul>
-</li>
-<li>不可用元素选择器：获得所有不可用元素<ul>
-<li>$(“选择器:disabled”)</li>
-</ul>
-</li>
-<li>选中选择器：获得单选/复选框所有选中的元素<ul>
-<li>$(“选择器:checked”)</li>
-</ul>
-</li>
-<li>选中选择器：获得下拉列表框中选中元素<ul>
-<li>$(“选择器:selected”)</li>
-</ul>
-</li>
-</ul>
 ]]></content>
       <tags>
         <tag>JavaWeb</tag>
