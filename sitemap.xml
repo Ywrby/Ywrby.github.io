@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://ywrby.cn/2021/03/12/2-%E7%BD%91%E7%BB%9C%E5%B1%82/</loc>
+    
+    <lastmod>2021-03-12</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://ywrby.cn/2021/03/12/13-SpringMVC%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</loc>
     
     <lastmod>2021-03-12</lastmod>
@@ -452,7 +459,14 @@
 
   
   <url>
-    <loc>http://ywrby.cn/tags/Spring/</loc>
+    <loc>http://ywrby.cn/tags/JavaWeb/</loc>
+    <lastmod>2021-03-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ywrby.cn/tags/JavaScript/</loc>
     <lastmod>2021-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -466,14 +480,7 @@
   </url>
   
   <url>
-    <loc>http://ywrby.cn/tags/JavaWeb/</loc>
-    <lastmod>2021-03-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/tags/JavaScript/</loc>
+    <loc>http://ywrby.cn/tags/Spring/</loc>
     <lastmod>2021-03-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
