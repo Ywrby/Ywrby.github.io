@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>16-MyBatis概述 | Ywrby个人博客网站</title><meta name="keywords" content="Spring,MyBatis"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MyBatis概述原始JDBC开发存在的问题 数据库的连接创建，释放频繁造成系统资源浪费从而影响系统性能 sql 语句在代码中硬编码，造成代码不易维护，实际应用 sql 变化的可能较大，sql 变动需要改变java代码。（sql语句与Java代码耦合死） 查询操作时，需要手动将结果集中的数据手动封装到实体中。插入操作时，需要手动将实体的数据设置到sql语句的占位符位置  解决方案 池化思想：使用数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16-MyBatis概述">
+<meta property="og:url" content="http://ywrby.cn/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="MyBatis概述原始JDBC开发存在的问题 数据库的连接创建，释放频繁造成系统资源浪费从而影响系统性能 sql 语句在代码中硬编码，造成代码不易维护，实际应用 sql 变化的可能较大，sql 变动需要改变java代码。（sql语句与Java代码耦合死） 查询操作时，需要手动将结果集中的数据手动封装到实体中。插入操作时，需要手动将实体的数据设置到sql语句的占位符位置  解决方案 池化思想：使用数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg">
+<meta property="article:published_time" content="2021-03-17T17:36:46.000Z">
+<meta property="article:modified_time" content="2021-03-20T05:27:33.758Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-20 13:27:33'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">68</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">16-MyBatis概述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-17T17:36:46.000Z" title="Created 2021-03-18 01:36:46">2021-03-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-20T05:27:33.758Z" title="Updated 2021-03-20 13:27:33">2021-03-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="MyBatis概述"><a href="#MyBatis概述" class="headerlink" title="MyBatis概述"></a>MyBatis概述</h1><h3 id="原始JDBC开发存在的问题"><a href="#原始JDBC开发存在的问题" class="headerlink" title="原始JDBC开发存在的问题"></a>原始JDBC开发存在的问题</h3><ul>
+<li>数据库的连接创建，释放频繁造成系统资源浪费从而影响系统性能</li>
+<li>sql 语句在代码中硬编码，造成代码不易维护，实际应用 sql 变化的可能较大，sql 变动需要改变java代码。（sql语句与Java代码耦合死）</li>
+<li>查询操作时，需要手动将结果集中的数据手动封装到实体中。插入操作时，需要手动将实体的数据设置到sql语句的占位符位置</li>
+</ul>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
+<li>池化思想：使用数据库连接池初始化连接资源</li>
+<li>配置文件：将sql语句抽取到xml配置文件中</li>
+<li>使用反射、内省等底层技术，自动将实体与表进行属性与字段的自动映射</li>
+</ul>
+<h2 id="MyBatis简介"><a href="#MyBatis简介" class="headerlink" title="MyBatis简介"></a>MyBatis简介</h2><blockquote>
+<p>MyBatis 是一款优秀的<strong>持久层</strong>框架，它内部封装了JDBC，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJO映射成数据库中的记录。</p>
+</blockquote>
+<p>mybatis通过xml或注解的方式将要执行的各种 statement配置起来，并通过java对象和statement中sql的动态参数进行映射生成最终执行的sql语句。</p>
+<p>最后mybatis框架执行sql并将结果映射为java对象并返回。采用ORM思想（Object Relational Mapping：对象关系映射）解决了实体和数据库映射的问题，对jdbc 进行了封装，屏蔽了jdbc api 底层访问细节，使我们不用与jdbc api 打交道，就可以完成对数据库的持久化操作。</p>
+<h2 id="MyBatis快速开发步骤"><a href="#MyBatis快速开发步骤" class="headerlink" title="MyBatis快速开发步骤"></a>MyBatis快速开发步骤</h2><h3 id="添加MyBatis坐标"><a href="#添加MyBatis坐标" class="headerlink" title="添加MyBatis坐标"></a>添加MyBatis坐标</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建User数据表"><a href="#创建User数据表" class="headerlink" title="创建User数据表"></a>创建User数据表</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/databasehjkh.png"></p>
+<h3 id="创建User实体类"><a href="#创建User实体类" class="headerlink" title="创建User实体类"></a>创建User实体类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;User&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">                <span class="string">&quot;, username=&#x27;&quot;</span> + username + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, password=&#x27;&quot;</span> + password + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="编写映射文件UserMapper-xml"><a href="#编写映射文件UserMapper-xml" class="headerlink" title="编写映射文件UserMapper.xml"></a>编写映射文件UserMapper.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="comment">&lt;!--映射文件DTD约束头--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">mapper</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--映射文件，namespace是为了方便调用映射文件中的映射方法，与下面语句的ID一起作为查询标识--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--标签类型有select update delete等 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--resultType表示将返回的查询结果封装到的结果集，即查询结果对应的实体类型--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;cn.ywrby.domain.User&quot;</span>&gt;</span></span><br><span class="line">        select * from user</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="编写核心文件SqlMapConfig-xml"><a href="#编写核心文件SqlMapConfig-xml" class="headerlink" title="编写核心文件SqlMapConfig.xml"></a>编写核心文件SqlMapConfig.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span> <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--配置数据源环境--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">transactionManager</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--配置连接池基本数据--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:hj/jdbcTest&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;rlm214&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--加载映射文件--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;cn\ywrby\mapper\UserMapper.xml&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="编写测试类并执行测试"><a href="#编写测试类并执行测试" class="headerlink" title="编写测试类并执行测试"></a>编写测试类并执行测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//加载核心配置文件</span></span><br><span class="line">    InputStream resourceAsStream = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    <span class="comment">//获得sqlSession工厂对象</span></span><br><span class="line">    SqlSessionFactory factory=<span class="keyword">new</span> SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">    <span class="comment">//获得sqlSession对象用于执行sql语句</span></span><br><span class="line">    SqlSession sqlSession = factory.openSession();</span><br><span class="line">    <span class="comment">//执行sql语句 参数：namespance.id</span></span><br><span class="line">    List&lt;User&gt; userList=sqlSession.selectList(<span class="string">&quot;userMapper.findAll&quot;</span>);</span><br><span class="line">    <span class="comment">//打印结果</span></span><br><span class="line">    System.out.println(userList);</span><br><span class="line">    <span class="comment">//释放资源</span></span><br><span class="line">    sqlSession.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MyBatis的数据库操作（增删改查）"><a href="#MyBatis的数据库操作（增删改查）" class="headerlink" title="MyBatis的数据库操作（增删改查）"></a>MyBatis的数据库操作（增删改查）</h2><p>配置映射文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置插入操作 parameterType表示参数对象，</span></span><br><span class="line"><span class="comment">即执行插入操作时，传入该参数，并将该类属性值传入数据库</span></span><br><span class="line"><span class="comment">mybatis映射文件中的占位符是#&#123;&#125; 其内部传入的是类的属性值而不是数据库的列名--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;save&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;cn.ywrby.domain.User&quot;</span>&gt;</span></span><br><span class="line">    insert into user values (#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;cn.ywrby.domain.User&quot;</span>&gt;</span></span><br><span class="line">    update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span>&gt;</span></span><br><span class="line">    delete from user where id=#&#123;id&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试用例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 测试插入语句执行</span></span><br><span class="line"><span class="comment"> * 要注意的是在执行插入删除语句等需要对数据库进行修改的sql语句时</span></span><br><span class="line"><span class="comment"> * 必须进行事务的提交，mybatis默认不提交事务</span></span><br><span class="line"><span class="comment"> * 而查询语句由于不修改数据库内容，所以不需要进行事务的提交</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//实例化要插入的对象并传参</span></span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId((<span class="keyword">long</span>) <span class="number">3</span>);</span><br><span class="line">    user.setUsername(<span class="string">&quot;Lily&quot;</span>);</span><br><span class="line">    user.setPassword(<span class="string">&quot;5667&quot;</span>);</span><br><span class="line">    <span class="comment">//加载核心配置文件</span></span><br><span class="line">    InputStream resourceAsStream = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    <span class="comment">//获得sqlSession工厂对象</span></span><br><span class="line">    SqlSessionFactory factory=<span class="keyword">new</span> SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">    <span class="comment">//获得sqlSession对象用于执行sql语句</span></span><br><span class="line">    SqlSession sqlSession = factory.openSession();</span><br><span class="line">    <span class="comment">//执行插入语句，并传入要插入的对象</span></span><br><span class="line">    sqlSession.selectList(<span class="string">&quot;userMapper.save&quot;</span>,user);</span><br><span class="line">    <span class="comment">//提交事务</span></span><br><span class="line">    sqlSession.commit();</span><br><span class="line">    <span class="comment">//释放资源</span></span><br><span class="line">    sqlSession.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MyBatis核心配置文件概述"><a href="#MyBatis核心配置文件概述" class="headerlink" title="MyBatis核心配置文件概述"></a>MyBatis核心配置文件概述</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">configuration</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span> <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--配置数据源环境,default指定默认的环境名称--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--environment进行环境配置，id指定当前环境的名称--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;development&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--type属性表示指定事务管理类型是JDBC--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">transactionManager</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--配置数据源，type=&quot;POOLED&quot;表示指定当前数据源类型是连接池--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--配置连接池基本数据--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://cdb-cd3ybvc6.cd.tencentcdb.com:10056/jdbcTest&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;renboyu010214&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--加载映射文件--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">&quot;cn\ywrby\mapper\UserMapper.xml&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="事务管理器（transactionManager）类型有两种："><a href="#事务管理器（transactionManager）类型有两种：" class="headerlink" title="事务管理器（transactionManager）类型有两种："></a>事务管理器（transactionManager）类型有两种：</h3><ul>
+<li>JDBC：直接使用JDBC的提交与回滚，依赖于从数据源处得来的连接来管理事务作用域</li>
+<li>MANAGED：这个配置几乎不进行操作，不提交或回滚任何一个连接，而是让容器来管理整个事务的生命周期</li>
+</ul>
+<h3 id="数据源（datasource）类型有三种："><a href="#数据源（datasource）类型有三种：" class="headerlink" title="数据源（datasource）类型有三种："></a>数据源（datasource）类型有三种：</h3><ul>
+<li>UNPOOLED：每次被请求时打开或关闭连接</li>
+<li>POOLED：该数据源利用池的概念将JDBC连接对象组织起来</li>
+<li>JNDI</li>
+</ul>
+<h3 id="mapper标签"><a href="#mapper标签" class="headerlink" title="mapper标签"></a>mapper标签</h3><p>mapper标签的作用是加载映射文件，其加载文件的方式有多种：</p>
+<ul>
+<li>使用相对于类的路径的资源引用的方式（一般情况下均使用该方式）：<code>&lt;mapper resource=&quot;cn\ywrby\mapper\UserMapper.xml&quot;/&gt;</code></li>
+<li>使用完全限定资源定位符URL：<code>&lt;mapper url=&quot;file:///var/mappers/xxx.xml&quot;/&gt;</code></li>
+<li>使用映射器接口实现类的完全限定名(结合注解方式使用)：<code>&lt;mapper class=&quot;cn.ywrby.builder.AuthorMapper&quot;/&gt;</code></li>
+<li>将包内的映射器接口实现全部注册为映射器(类似于对该包进行扫描，将所有映射器接口实现类注册为映射器)：<code>&lt;package name=&quot;cn.ywrby.mapper&quot;/&gt;</code></li>
+</ul>
+<h3 id="properties标签"><a href="#properties标签" class="headerlink" title="properties标签"></a>properties标签</h3><p>properties标签用于加载外部properties文件，可以使各文件分工更加明确（如加载jdbc.properties）</p>
+<h3 id="typeAliases标签"><a href="#typeAliases标签" class="headerlink" title="typeAliases标签"></a>typeAliases标签</h3><p>typeAliases标签用于自定义别名，定义别名可以简化我们代码输入,type属性用于表示定义别名的实体类名，alias是自定义的别名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置别名--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">typeAlias</span> <span class="attr">type</span>=<span class="string">&quot;cn.ywrby.domain.User&quot;</span> <span class="attr">alias</span>=<span class="string">&quot;user&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在UserMapper.xml中使用,parameterType和resultType都可以使用别名替换，另外MyBatis也为一些基本类提前定义了别名</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;userMapper&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">        select * from user</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;save&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">        insert into user values (#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;int&quot;</span>&gt;</span></span><br><span class="line">        delete from user where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="默认的别名"><a href="#默认的别名" class="headerlink" title="默认的别名"></a>默认的别名</h4><table>
+<thead>
+<tr>
+<th>别名</th>
+<th>数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>java.lang.String</td>
+</tr>
+<tr>
+<td>long</td>
+<td>java.lang.Long</td>
+</tr>
+<tr>
+<td>int</td>
+<td>java.lang.Integer</td>
+</tr>
+<tr>
+<td>double</td>
+<td>java.lang.Double</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>java.lang.Boolean</td>
+</tr>
+</tbody></table>
+<h2 id="MyBatis的DAO层实现"><a href="#MyBatis的DAO层实现" class="headerlink" title="MyBatis的DAO层实现"></a>MyBatis的DAO层实现</h2><p>MyBatis的传统实现方式就是通过上文测试类中的一般方法，在每次的使用过程中，都需要加载核心配置文件，初始化会话工程，执行事务提交等繁琐操作，<br>所以一般情况下，在开发过程中不会采用传统的实现方式</p>
+<h3 id="接口代理方式实现"><a href="#接口代理方式实现" class="headerlink" title="接口代理方式实现"></a>接口代理方式实现</h3><p>接口代理开发方式只需要我们实现Mapper接口（就是之前编写的DAO层接口），然后由MyBatis根据接口的定义（根据方法名，返回值，参数值等）创建接口的动态代理对象</p>
+<p>Mapper接口的开发需要遵循以下的规范</p>
+<ul>
+<li>Mapper.xml文件中的namespace是接口的全限定名</li>
+<li>Mapper接口的方法名和Mapper.xml中定义的statement的ID值相同</li>
+<li>Mapper接口方法的输入参数和Mapper.xml中定义的sql语句的parameterType的类型相同</li>
+<li>Mapper接口方法的输出参数和Mapper.xml中定义的sql语句的resultType的类型相同</li>
+</ul>
+<p>修改后的UserMapper.xml配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--命名空间的值和接口类全限定名一致--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;cn.ywrby.mapper.UserMapper&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--id值和方法名一致，resultType和返回值类型一致（这里了别名）--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">        select * from user</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--parameterType的值也需要和传入参数一致--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">&quot;save&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">        insert into user values (#&#123;id&#125;,#&#123;username&#125;,#&#123;password&#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">&quot;update&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">        update user set username=#&#123;username&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">&quot;delete&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Long&quot;</span>&gt;</span></span><br><span class="line">        delete from user where id=#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接口实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">    <span class="comment">//这里返回值虽然是List类型，但其中存储的是User类型，所以也可以成功实现</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(User user)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(User user)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Long id)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试用例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    User user=<span class="keyword">new</span> User();</span><br><span class="line">    user.setId((<span class="keyword">long</span>) <span class="number">4</span>);</span><br><span class="line">    user.setUsername(<span class="string">&quot;lily&quot;</span>);</span><br><span class="line">    user.setPassword(<span class="string">&quot;1234&quot;</span>);</span><br><span class="line">    InputStream resourceAsStream = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    SqlSessionFactory factory=<span class="keyword">new</span> SqlSessionFactoryBuilder().build(resourceAsStream);</span><br><span class="line">    SqlSession sqlSession = factory.openSession();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过getMapper方法传入接口类，获得MyBatis返回的实现类</span></span><br><span class="line">    UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">    <span class="comment">//执行接口方法</span></span><br><span class="line">    mapper.update(user);</span><br><span class="line">    <span class="comment">//mapper.delete((long) 4);</span></span><br><span class="line">    <span class="comment">//mapper.findAll();</span></span><br><span class="line">    <span class="comment">//mapper.save(user);</span></span><br><span class="line"></span><br><span class="line">    sqlSession.commit();</span><br><span class="line">    sqlSession.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/">http://ywrby.cn/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Spring/">Spring</a><a class="post-meta__tags" href="/tags/MyBatis/">MyBatis</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/20/17-MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%B1%E5%85%A5/"><img class="prev-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">17-MyBatis映射文件与核心配置文件深入</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/17/15-SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">15-SpringMVC异常处理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/20/17-MyBatis映射文件与核心配置文件深入/" title="17-MyBatis映射文件与核心配置文件深入"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-20</div><div class="title">17-MyBatis映射文件与核心配置文件深入</div></div></a></div><div><a href="/2021/03/21/18-MyBatis多表操作/" title="18-MyBatis多表操作"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-21</div><div class="title">18-MyBatis多表操作</div></div></a></div><div><a href="/2021/03/21/19-MyBatis注解开发/" title="19-MyBatis注解开发"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72124553_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-21</div><div class="title">19-MyBatis注解开发</div></div></a></div><div><a href="/2021/03/02/1-Spring基础/" title="1-Spring基础"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/80857290_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-02</div><div class="title">1-Spring基础</div></div></a></div><div><a href="/2021/03/03/10-SpringMVC简介/" title="10-SpringMVC简介及组件解析"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-03</div><div class="title">10-SpringMVC简介及组件解析</div></div></a></div><div><a href="/2021/03/05/11-SpringMVC的数据响应/" title="11-SpringMVC的数据响应"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/illust_3518827_20191113_165540.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-05</div><div class="title">11-SpringMVC的数据响应</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">68</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MyBatis%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">MyBatis概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8BJDBC%E5%BC%80%E5%8F%91%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.0.1.</span> <span class="toc-text">原始JDBC开发存在的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">MyBatis简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.2.</span> <span class="toc-text">MyBatis快速开发步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0MyBatis%E5%9D%90%E6%A0%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">添加MyBatis坐标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAUser%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">创建User数据表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAUser%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">1.2.3.</span> <span class="toc-text">创建User实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6UserMapper-xml"><span class="toc-number">1.2.4.</span> <span class="toc-text">编写映射文件UserMapper.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%A0%B8%E5%BF%83%E6%96%87%E4%BB%B6SqlMapConfig-xml"><span class="toc-number">1.2.5.</span> <span class="toc-text">编写核心文件SqlMapConfig.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%B9%B6%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="toc-number">1.2.6.</span> <span class="toc-text">编写测试类并执行测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%EF%BC%88%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">MyBatis的数据库操作（增删改查）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.</span> <span class="toc-text">MyBatis核心配置文件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%88transactionManager%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%9C%89%E4%B8%A4%E7%A7%8D%EF%BC%9A"><span class="toc-number">1.4.1.</span> <span class="toc-text">事务管理器（transactionManager）类型有两种：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90%EF%BC%88datasource%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%9C%89%E4%B8%89%E7%A7%8D%EF%BC%9A"><span class="toc-number">1.4.2.</span> <span class="toc-text">数据源（datasource）类型有三种：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapper%E6%A0%87%E7%AD%BE"><span class="toc-number">1.4.3.</span> <span class="toc-text">mapper标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#properties%E6%A0%87%E7%AD%BE"><span class="toc-number">1.4.4.</span> <span class="toc-text">properties标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#typeAliases%E6%A0%87%E7%AD%BE"><span class="toc-number">1.4.5.</span> <span class="toc-text">typeAliases标签</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E5%88%AB%E5%90%8D"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">默认的别名</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis%E7%9A%84DAO%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.5.</span> <span class="toc-text">MyBatis的DAO层实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%BB%A3%E7%90%86%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.5.1.</span> <span class="toc-text">接口代理方式实现</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" title="19-MyBatis注解开发"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72124553_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="19-MyBatis注解开发"/></a><div class="content"><a class="title" href="/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" title="19-MyBatis注解开发">19-MyBatis注解开发</a><time datetime="2021-03-21T08:43:50.000Z" title="Created 2021-03-21 16:43:50">2021-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/21/18-MyBatis%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/" title="18-MyBatis多表操作"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="18-MyBatis多表操作"/></a><div class="content"><a class="title" href="/2021/03/21/18-MyBatis%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/" title="18-MyBatis多表操作">18-MyBatis多表操作</a><time datetime="2021-03-21T03:52:14.000Z" title="Created 2021-03-21 11:52:14">2021-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/20/17-MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%B1%E5%85%A5/" title="17-MyBatis映射文件与核心配置文件深入"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="17-MyBatis映射文件与核心配置文件深入"/></a><div class="content"><a class="title" href="/2021/03/20/17-MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%B1%E5%85%A5/" title="17-MyBatis映射文件与核心配置文件深入">17-MyBatis映射文件与核心配置文件深入</a><time datetime="2021-03-20T05:53:36.000Z" title="Created 2021-03-20 13:53:36">2021-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/" title="16-MyBatis概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="16-MyBatis概述"/></a><div class="content"><a class="title" href="/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/" title="16-MyBatis概述">16-MyBatis概述</a><time datetime="2021-03-17T17:36:46.000Z" title="Created 2021-03-18 01:36:46">2021-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/17/15-SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/" title="15-SpringMVC异常处理"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="15-SpringMVC异常处理"/></a><div class="content"><a class="title" href="/2021/03/17/15-SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/" title="15-SpringMVC异常处理">15-SpringMVC异常处理</a><time datetime="2021-03-16T16:23:29.000Z" title="Created 2021-03-17 00:23:29">2021-03-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72581222_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
