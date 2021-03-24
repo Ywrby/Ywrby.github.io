@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ywrby.cn/2021/03/12/2-%E5%BA%94%E7%94%A8%E5%B1%82/</loc>
+    <lastmod>2021-03-24</lastmod>
+  </url>
+  <url>
+    <loc>http://ywrby.cn/2021/03/22/20-SSM%E6%A1%86%E6%9E%B6%E6%95%B4%E5%90%88/</loc>
+    <lastmod>2021-03-22</lastmod>
+  </url>
+  <url>
     <loc>http://ywrby.cn/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</loc>
     <lastmod>2021-03-21</lastmod>
   </url>
@@ -15,10 +23,6 @@
   <url>
     <loc>http://ywrby.cn/2021/03/18/16-MyBatis%E6%A6%82%E8%BF%B0/</loc>
     <lastmod>2021-03-20</lastmod>
-  </url>
-  <url>
-    <loc>http://ywrby.cn/2021/03/12/2-%E5%BA%94%E7%94%A8%E5%B1%82/</loc>
-    <lastmod>2021-03-18</lastmod>
   </url>
   <url>
     <loc>http://ywrby.cn/2021/03/17/15-SpringMVC%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/</loc>
