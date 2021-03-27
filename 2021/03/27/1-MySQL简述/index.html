@@ -1,0 +1,394 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>1-MySQL简述 | Ywrby个人博客网站</title><meta name="keywords" content="MySQL"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MySQL简述 数据库是“按照数据结构来组织、存储和管理数据的仓库”。是一个长期存储在计算机内的、有组织的、可共享的、统一管理的大量数据的集合。  保存数据的容器常用的保存数据的容器有数组，集合，文件以及数据库。数组，集合将数据存储在内存中，但内存中的数据具有易失性，很容易丢失。文件可以实现永久存储，但文件不适用于大量文件的存储，难于检索查询。 数据库优点 实现数据持久化 使用完整的管理系统统一管">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-MySQL简述">
+<meta property="og:url" content="http://ywrby.cn/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="MySQL简述 数据库是“按照数据结构来组织、存储和管理数据的仓库”。是一个长期存储在计算机内的、有组织的、可共享的、统一管理的大量数据的集合。  保存数据的容器常用的保存数据的容器有数组，集合，文件以及数据库。数组，集合将数据存储在内存中，但内存中的数据具有易失性，很容易丢失。文件可以实现永久存储，但文件不适用于大量文件的存储，难于检索查询。 数据库优点 实现数据持久化 使用完整的管理系统统一管">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg">
+<meta property="article:published_time" content="2021-03-27T13:04:29.000Z">
+<meta property="article:modified_time" content="2021-03-27T13:26:56.890Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-27 21:26:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">70</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">1-MySQL简述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-27T13:04:29.000Z" title="Created 2021-03-27 21:04:29">2021-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-27T13:26:56.890Z" title="Updated 2021-03-27 21:26:56">2021-03-27</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="MySQL简述"><a href="#MySQL简述" class="headerlink" title="MySQL简述"></a>MySQL简述</h1><blockquote>
+<p>数据库是“按照数据结构来组织、存储和管理数据的仓库”。是一个长期存储在计算机内的、有组织的、可共享的、统一管理的大量数据的集合。</p>
+</blockquote>
+<h4 id="保存数据的容器"><a href="#保存数据的容器" class="headerlink" title="保存数据的容器"></a>保存数据的容器</h4><p>常用的保存数据的容器有数组，集合，文件以及数据库。<strong>数组，集合</strong>将数据存储在内存中，但内存中的数据具有易失性，很容易丢失。<strong>文件</strong>可以实现永久存储，但文件不适用于大量文件的存储，难于检索查询。</p>
+<h3 id="数据库优点"><a href="#数据库优点" class="headerlink" title="数据库优点"></a>数据库优点</h3><ul>
+<li>实现数据持久化</li>
+<li>使用完整的管理系统统一管理，易于查询</li>
+</ul>
+<h2 id="数据库相关概念"><a href="#数据库相关概念" class="headerlink" title="数据库相关概念"></a>数据库相关概念</h2><h4 id="DB（database）"><a href="#DB（database）" class="headerlink" title="DB（database）"></a>DB（database）</h4><p>数据库，存储数据的“仓库”。保存了一系列有组织的数据</p>
+<h4 id="DBMS（Database-Management-System）"><a href="#DBMS（Database-Management-System）" class="headerlink" title="DBMS（Database Management System）"></a>DBMS（Database Management System）</h4><p>数据库管理系统，数据库通过数据库管理系统创建和操作容器（常见的DBMS有：MySQL，Oracle，DB2，Sql Server）</p>
+<h4 id="SQL（Structure-Query-Language）"><a href="#SQL（Structure-Query-Language）" class="headerlink" title="SQL（Structure Query Language）"></a>SQL（Structure Query Language）</h4><p><strong>结构化查询语言</strong>，专门用来与数据库通信的语言。SQL具有诸多优点：它<strong>不是</strong>某个特定数据库供应商<strong>专有的语言</strong>，几乎所有主流DBMS都支持SQL。SQL语言<strong>简单易学</strong>，虽然简单，但是一种强有力的语言，可以灵活运用其他语言进行诸多<strong>复杂和高级的数据库操作</strong></p>
+<h2 id="数据库的特点"><a href="#数据库的特点" class="headerlink" title="数据库的特点"></a>数据库的特点</h2><ul>
+<li>将数据放到表中，再将表放入数据库中</li>
+<li>一个数据库中可以有多张表，每张表都有自己的名字用于标识自己，表名具有唯一性，即不可以重复</li>
+<li>表具有一些特性，定义了数据在表中如何存储，类似于Java中类的设计</li>
+<li>表由列组成，或者称为“字段”，所有表都是由一个或多个列组成的，每一列类似Java中的“属性”</li>
+<li>表中数据按行存储，每行类似Java中的一个对象</li>
+</ul>
+<h3 id="DBMS分类"><a href="#DBMS分类" class="headerlink" title="DBMS分类"></a>DBMS分类</h3><ul>
+<li>基于共享文件系统的DBMS（Access）</li>
+<li>基于客户机–服务器的DBMS（MySQL,Oracle,Sql Server）</li>
+</ul>
+<h2 id="MySQL优点："><a href="#MySQL优点：" class="headerlink" title="MySQL优点："></a>MySQL优点：</h2><p><strong>成本低</strong>：开放源代码，一般可以免费试用。<strong>性能高</strong>：执行很快。<strong>简单</strong>：易安装和使用</p>
+<hr>
+<h2 id="基本操作语法"><a href="#基本操作语法" class="headerlink" title="基本操作语法"></a>基本操作语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 开启MySQL服务</span><br><span class="line">net start mysql0214</span><br><span class="line">&#x2F;&#x2F;关闭MySQL服务</span><br><span class="line">net stop mysql0214</span><br></pre></td></tr></table></figure>
+
+<h4 id="root用户登录可以直接利用MySQL自带的Command-Line-Client登录，其他用户可以利用命令行如下操作进入"><a href="#root用户登录可以直接利用MySQL自带的Command-Line-Client登录，其他用户可以利用命令行如下操作进入" class="headerlink" title="root用户登录可以直接利用MySQL自带的Command Line Client登录，其他用户可以利用命令行如下操作进入"></a>root用户登录可以直接利用MySQL自带的Command Line Client登录，其他用户可以利用命令行如下操作进入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql -h localhost -P 3306 -u root -p</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;之后输入对应用户密码即可登录</span><br><span class="line">&#x2F;&#x2F;第一个mysql不再是容器名称，而是mysql命令的意思</span><br><span class="line">&#x2F;&#x2F;-h表示主机</span><br><span class="line">&#x2F;&#x2F;-P表示端口</span><br><span class="line">&#x2F;&#x2F;-u表示用户</span><br><span class="line">&#x2F;&#x2F;-p表示密码</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;本机用户可以直接简写成如下格式：</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;密码可以直接显示在该语句中，而不是换行输入</span><br><span class="line">mysql -u root -prenboyu010214</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;注意，-p和密码之间不允许有空格存在</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><h4 id="展示当前数据库-show-databases"><a href="#展示当前数据库-show-databases" class="headerlink" title="展示当前数据库  show databases;"></a>展示当前数据库  show databases;</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| test               |</span><br><span class="line">+--------------------+</span><br><span class="line">4 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看某数据库内容的两种方式"><a href="#查看某数据库内容的两种方式" class="headerlink" title="查看某数据库内容的两种方式"></a>查看某数据库内容的两种方式</h4><ul>
+<li> 方式一</li>
+</ul>
+<p>利用  <strong>use 库名;</strong>  先进入对应库中<br/><br>利用  <strong>show tables;</strong>  语句展示库中内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use information_schema;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+---------------------------------------+</span><br><span class="line">| Tables_in_information_schema          |</span><br><span class="line">+---------------------------------------+</span><br><span class="line">| CHARACTER_SETS                        |</span><br><span class="line">| COLLATIONS                            |</span><br><span class="line">| COLLATION_CHARACTER_SET_APPLICABILITY |</span><br><span class="line">| COLUMNS                               |</span><br><span class="line">| COLUMN_PRIVILEGES                     |</span><br><span class="line">| ENGINES                               |</span><br><span class="line">| EVENTS                                |</span><br><span class="line">| FILES                                 |</span><br><span class="line">| GLOBAL_STATUS                         |</span><br><span class="line">| GLOBAL_VARIABLES                      |</span><br><span class="line">| KEY_COLUMN_USAGE                      |</span><br><span class="line">| PARAMETERS                            |</span><br><span class="line">| PARTITIONS                            |</span><br><span class="line">| PLUGINS                               |</span><br><span class="line">| PROCESSLIST                           |</span><br><span class="line">| PROFILING                             |</span><br><span class="line">| REFERENTIAL_CONSTRAINTS               |</span><br><span class="line">| ROUTINES                              |</span><br><span class="line">| SCHEMATA                              |</span><br><span class="line">| SCHEMA_PRIVILEGES                     |</span><br><span class="line">| SESSION_STATUS                        |</span><br><span class="line">| SESSION_VARIABLES                     |</span><br><span class="line">| STATISTICS                            |</span><br><span class="line">| TABLES                                |</span><br><span class="line">| TABLESPACES                           |</span><br><span class="line">| TABLE_CONSTRAINTS                     |</span><br><span class="line">| TABLE_PRIVILEGES                      |</span><br><span class="line">| TRIGGERS                              |</span><br><span class="line">| USER_PRIVILEGES                       |</span><br><span class="line">| VIEWS                                 |</span><br><span class="line">| INNODB_CMP_RESET                      |</span><br><span class="line">| INNODB_TRX                            |</span><br><span class="line">| INNODB_CMPMEM_RESET                   |</span><br><span class="line">| INNODB_LOCK_WAITS                     |</span><br><span class="line">| INNODB_CMPMEM                         |</span><br><span class="line">| INNODB_CMP                            |</span><br><span class="line">| INNODB_LOCKS                          |</span><br><span class="line">+---------------------------------------+</span><br><span class="line">37 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式二</li>
+</ul>
+<p>利用 <strong>show tables from 库名;</strong>  直接查看库中数据内容，不需要进入（也就是说没有走出原来的库）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables from mysql;</span><br><span class="line">+---------------------------+</span><br><span class="line">| Tables_in_mysql           |</span><br><span class="line">+---------------------------+</span><br><span class="line">| columns_priv              |</span><br><span class="line">| db                        |</span><br><span class="line">| event                     |</span><br><span class="line">| func                      |</span><br><span class="line">| general_log               |</span><br><span class="line">| help_category             |</span><br><span class="line">| help_keyword              |</span><br><span class="line">| help_relation             |</span><br><span class="line">| help_topic                |</span><br><span class="line">| host                      |</span><br><span class="line">| ndb_binlog_index          |</span><br><span class="line">| plugin                    |</span><br><span class="line">| proc                      |</span><br><span class="line">| procs_priv                |</span><br><span class="line">| proxies_priv              |</span><br><span class="line">| servers                   |</span><br><span class="line">| slow_log                  |</span><br><span class="line">| tables_priv               |</span><br><span class="line">| time_zone                 |</span><br><span class="line">| time_zone_leap_second     |</span><br><span class="line">| time_zone_name            |</span><br><span class="line">| time_zone_transition      |</span><br><span class="line">| time_zone_transition_type |</span><br><span class="line">| user                      |</span><br><span class="line">+---------------------------+</span><br><span class="line">24 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="查看当前所在的库-select-database"><a href="#查看当前所在的库-select-database" class="headerlink" title="查看当前所在的库 select database();"></a>查看当前所在的库 select database();</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select database();</span><br><span class="line">+--------------------+</span><br><span class="line">| database()         |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">+--------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="在库中创建表格-create-table-表名"><a href="#在库中创建表格-create-table-表名" class="headerlink" title="在库中创建表格 create table 表名();"></a>在库中创建表格 create table 表名();</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table stuinfo(</span><br><span class="line">    -&gt; id int,</span><br><span class="line">    -&gt; name varchar(20));</span><br><span class="line">Query OK, 0 rows affected (0.35 sec)</span><br></pre></td></tr></table></figure>
+<h4 id="查看表的结构-desc-表名"><a href="#查看表的结构-desc-表名" class="headerlink" title="查看表的结构  desc 表名;"></a>查看表的结构  desc 表名;</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc stuinfo;</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type        | Null | Key | Default | Extra |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11)     | YES  |     | NULL    |       |</span><br><span class="line">| name  | varchar(20) | YES  |     | NULL    |       |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.04 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="向表中插入数据-insert-into-表名-id-name-values-1-’Leslie’"><a href="#向表中插入数据-insert-into-表名-id-name-values-1-’Leslie’" class="headerlink" title="向表中插入数据   insert into 表名 (id,name) values(1,’Leslie’);"></a>向表中插入数据   insert into 表名 (id,name) values(1,’Leslie’);</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into stuinfo (id,name) values(1,&#39;Leslie&#39;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;  insert into stuinfo (id,name) values(2,&#39;John&#39;);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="查看表中数据-select-from-表名"><a href="#查看表中数据-select-from-表名" class="headerlink" title="查看表中数据  select * from 表名;"></a>查看表中数据  select * from 表名;</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from stuinfo;</span><br><span class="line">+------+--------+</span><br><span class="line">| id   | name   |</span><br><span class="line">+------+--------+</span><br><span class="line">|    1 | Leslie |</span><br><span class="line">|    2 | John   |</span><br><span class="line">+------+--------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="删除表中数据-delete-from-表名-where-id-1"><a href="#删除表中数据-delete-from-表名-where-id-1" class="headerlink" title="删除表中数据   delete from 表名 where id=1;"></a>删除表中数据   delete from 表名 where id=1;</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; delete from stuinfo where id&#x3D;1;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="查看当前MySQL版本"><a href="#查看当前MySQL版本" class="headerlink" title="查看当前MySQL版本"></a>查看当前MySQL版本</h4><p>在MySQL窗口中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;  select version();</span><br><span class="line">+-----------+</span><br><span class="line">| version() |</span><br><span class="line">+-----------+</span><br><span class="line">| 5.5.27    |</span><br><span class="line">+-----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>在DOS窗口中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\system32&gt;mysql --V</span><br><span class="line">mysql  Ver 14.14 Distrib 5.5.27, for Win64 (x86)</span><br></pre></td></tr></table></figure>
+
+<h3 id="MySQL语法规范"><a href="#MySQL语法规范" class="headerlink" title="MySQL语法规范"></a>MySQL语法规范</h3><ol>
+<li>不区分大小写，但建议关键字大写，表名，列名小写</li>
+<li>每条命令以分号结尾</li>
+<li>每条命令根据需要，可以缩进或换行</li>
+<li>注释<ul>
+<li>单行注释：#注释文字</li>
+<li>单行注释：– 注释文字(注意中间必须有空格)</li>
+<li>多行注释：/* 注释文字 */</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="结构化查询语言SQL"><a href="#结构化查询语言SQL" class="headerlink" title="结构化查询语言SQL"></a>结构化查询语言SQL</h2><p>(Structured Query Language)简称SQL，是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统。</p>
+<h3 id="SQL语言分类"><a href="#SQL语言分类" class="headerlink" title="SQL语言分类"></a>SQL语言分类</h3><h4 id="DQL语言"><a href="#DQL语言" class="headerlink" title="DQL语言"></a>DQL语言</h4><p>（Data Query Language）数据查询语言，主要用于查询功能</p>
+<h4 id="DML语言"><a href="#DML语言" class="headerlink" title="DML语言"></a>DML语言</h4><p>（Data Manipulation Language）数据操作语言，主要用于增加，删除与修改</p>
+<h4 id="DDL语言"><a href="#DDL语言" class="headerlink" title="DDL语言"></a>DDL语言</h4><p>（Data Define Language）数据定义语言，有关库和表的定义</p>
+<h4 id="TCL语言"><a href="#TCL语言" class="headerlink" title="TCL语言"></a>TCL语言</h4><p>（Transaction Control Language）事务控制语言，事务和事务处理</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/">http://ywrby.cn/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/03/25/3-%E4%BC%A0%E8%BE%93%E5%B1%82/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">3-传输层</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">70</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">MySQL简述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">保存数据的容器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BC%98%E7%82%B9"><span class="toc-number">1.0.1.</span> <span class="toc-text">数据库优点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">数据库相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DB%EF%BC%88database%EF%BC%89"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">DB（database）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DBMS%EF%BC%88Database-Management-System%EF%BC%89"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">DBMS（Database Management System）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL%EF%BC%88Structure-Query-Language%EF%BC%89"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">SQL（Structure Query Language）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">数据库的特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DBMS%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.1.</span> <span class="toc-text">DBMS分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">MySQL优点：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E8%AF%AD%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">基本操作语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E5%88%A9%E7%94%A8MySQL%E8%87%AA%E5%B8%A6%E7%9A%84Command-Line-Client%E7%99%BB%E5%BD%95%EF%BC%8C%E5%85%B6%E4%BB%96%E7%94%A8%E6%88%B7%E5%8F%AF%E4%BB%A5%E5%88%A9%E7%94%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%A6%82%E4%B8%8B%E6%93%8D%E4%BD%9C%E8%BF%9B%E5%85%A5"><span class="toc-number">1.4.0.1.</span> <span class="toc-text">root用户登录可以直接利用MySQL自带的Command Line Client登录，其他用户可以利用命令行如下操作进入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.1.</span> <span class="toc-text">常见命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%95%E7%A4%BA%E5%BD%93%E5%89%8D%E6%95%B0%E6%8D%AE%E5%BA%93-show-databases"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">展示当前数据库  show databases;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">查看某数据库内容的两种方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%89%80%E5%9C%A8%E7%9A%84%E5%BA%93-select-database"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">查看当前所在的库 select database();</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%BA%93%E4%B8%AD%E5%88%9B%E5%BB%BA%E8%A1%A8%E6%A0%BC-create-table-%E8%A1%A8%E5%90%8D"><span class="toc-number">1.4.1.4.</span> <span class="toc-text">在库中创建表格 create table 表名();</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E7%BB%93%E6%9E%84-desc-%E8%A1%A8%E5%90%8D"><span class="toc-number">1.4.1.5.</span> <span class="toc-text">查看表的结构  desc 表名;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%91%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE-insert-into-%E8%A1%A8%E5%90%8D-id-name-values-1-%E2%80%99Leslie%E2%80%99"><span class="toc-number">1.4.1.6.</span> <span class="toc-text">向表中插入数据   insert into 表名 (id,name) values(1,’Leslie’);</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE-select-from-%E8%A1%A8%E5%90%8D"><span class="toc-number">1.4.1.7.</span> <span class="toc-text">查看表中数据  select * from 表名;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE-delete-from-%E8%A1%A8%E5%90%8D-where-id-1"><span class="toc-number">1.4.1.8.</span> <span class="toc-text">删除表中数据   delete from 表名 where id&#x3D;1;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8DMySQL%E7%89%88%E6%9C%AC"><span class="toc-number">1.4.1.9.</span> <span class="toc-text">查看当前MySQL版本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E8%AF%AD%E6%B3%95%E8%A7%84%E8%8C%83"><span class="toc-number">1.4.2.</span> <span class="toc-text">MySQL语法规范</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80SQL"><span class="toc-number">1.5.</span> <span class="toc-text">结构化查询语言SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL%E8%AF%AD%E8%A8%80%E5%88%86%E7%B1%BB"><span class="toc-number">1.5.1.</span> <span class="toc-text">SQL语言分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DQL%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">DQL语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DML%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">DML语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DDL%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">DDL语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCL%E8%AF%AD%E8%A8%80"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">TCL语言</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/" title="1-MySQL简述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-MySQL简述"/></a><div class="content"><a class="title" href="/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/" title="1-MySQL简述">1-MySQL简述</a><time datetime="2021-03-27T13:04:29.000Z" title="Created 2021-03-27 21:04:29">2021-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/25/3-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="3-传输层"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3-传输层"/></a><div class="content"><a class="title" href="/2021/03/25/3-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="3-传输层">3-传输层</a><time datetime="2021-03-25T09:18:41.000Z" title="Created 2021-03-25 17:18:41">2021-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" title="19-MyBatis注解开发"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="19-MyBatis注解开发"/></a><div class="content"><a class="title" href="/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" title="19-MyBatis注解开发">19-MyBatis注解开发</a><time datetime="2021-03-21T08:43:50.000Z" title="Created 2021-03-21 16:43:50">2021-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/21/18-MyBatis%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/" title="18-MyBatis多表操作"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72124553_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="18-MyBatis多表操作"/></a><div class="content"><a class="title" href="/2021/03/21/18-MyBatis%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/" title="18-MyBatis多表操作">18-MyBatis多表操作</a><time datetime="2021-03-21T03:52:14.000Z" title="Created 2021-03-21 11:52:14">2021-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/20/17-MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%B1%E5%85%A5/" title="17-MyBatis映射文件与核心配置文件深入"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/81934649_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="17-MyBatis映射文件与核心配置文件深入"/></a><div class="content"><a class="title" href="/2021/03/20/17-MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%B7%B1%E5%85%A5/" title="17-MyBatis映射文件与核心配置文件深入">17-MyBatis映射文件与核心配置文件深入</a><time datetime="2021-03-20T05:53:36.000Z" title="Created 2021-03-20 13:53:36">2021-03-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

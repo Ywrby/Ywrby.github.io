@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://ywrby.cn/2021/03/27/1-MySQL%E7%AE%80%E8%BF%B0/</loc>
+    
+    <lastmod>2021-03-27</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://ywrby.cn/2021/03/25/3-%E4%BC%A0%E8%BE%93%E5%B1%82/</loc>
     
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
     
   </url>
   
@@ -12,13 +19,6 @@
     <loc>http://ywrby.cn/2021/03/12/2-%E5%BA%94%E7%94%A8%E5%B1%82/</loc>
     
     <lastmod>2021-03-24</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/2021/03/22/20-SSM%E6%A1%86%E6%9E%B6%E6%95%B4%E5%90%88/</loc>
-    
-    <lastmod>2021-03-22</lastmod>
     
   </url>
   
@@ -508,64 +508,64 @@
 
   <url>
     <loc>http://ywrby.cn/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>http://ywrby.cn/tags/JavaScript/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <loc>http://ywrby.cn/tags/MySQL/</loc>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://ywrby.cn/tags/Spring/</loc>
-    <lastmod>2021-03-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/tags/Java/</loc>
-    <lastmod>2021-03-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/tags/SpringMVC/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://ywrby.cn/tags/JavaWeb/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ywrby.cn/tags/Java/</loc>
+    <lastmod>2021-03-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ywrby.cn/tags/JavaScript/</loc>
+    <lastmod>2021-03-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ywrby.cn/tags/SpringMVC/</loc>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://ywrby.cn/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://ywrby.cn/tags/MyBatis/</loc>
-    <lastmod>2021-03-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/tags/SSM/</loc>
-    <lastmod>2021-03-25</lastmod>
+    <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
