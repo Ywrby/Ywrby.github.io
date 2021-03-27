@@ -30,6 +30,13 @@
   </url>
   
   <url>
+    <loc>http://ywrby.cn/README.html</loc>
+    
+    <lastmod>2021-03-21</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://ywrby.cn/2021/03/21/19-MyBatis%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</loc>
     
     <lastmod>2021-03-21</lastmod>
@@ -515,6 +522,20 @@
 
   
   <url>
+    <loc>http://ywrby.cn/tags/JavaScript/</loc>
+    <lastmod>2021-03-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://ywrby.cn/tags/JavaWeb/</loc>
+    <lastmod>2021-03-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://ywrby.cn/tags/MySQL/</loc>
     <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
@@ -529,13 +550,6 @@
   </url>
   
   <url>
-    <loc>http://ywrby.cn/tags/JavaWeb/</loc>
-    <lastmod>2021-03-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://ywrby.cn/tags/Java/</loc>
     <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
@@ -543,7 +557,7 @@
   </url>
   
   <url>
-    <loc>http://ywrby.cn/tags/JavaScript/</loc>
+    <loc>http://ywrby.cn/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -551,13 +565,6 @@
   
   <url>
     <loc>http://ywrby.cn/tags/SpringMVC/</loc>
-    <lastmod>2021-03-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://ywrby.cn/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2021-03-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
