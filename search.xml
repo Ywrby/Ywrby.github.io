@@ -4257,24 +4257,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/03/01/hello-world/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>14-IO流</title>
     <url>/2021/03/03/14-IO%E6%B5%81/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h3><p><strong>各个国家为自己国家的字符取的一套编号规则</strong>，计算机底层只能存储二进制，二进制可以转成十进制，十进制可以进行整数编号，所以计算机底层可以存储编号规则</p>
@@ -4459,40 +4441,6 @@
 <h4 id="面向连接（TCP）的多路解复用"><a href="#面向连接（TCP）的多路解复用" class="headerlink" title="面向连接（TCP）的多路解复用"></a>面向连接（TCP）的多路解复用</h4><p>TCP套接字:四元组本地标识：源IP地址，源端口号，目的IP地址，目的端口号</p>
 <p>TCP套接字由四元组唯一标识，也就是说四元组中哪怕只有一个参数不相同，都会指向不同的套接字。</p>
 <p>这使得刚才在UDP多路解复用中出现的不同源端由于目的相同使用同一个套接字的情况不会出现，Web服务器对每个连接客户端有不同的套接字</p>
-<hr>
-<h2 id="用户数据报协议-UDP"><a href="#用户数据报协议-UDP" class="headerlink" title="用户数据报协议 UDP"></a>用户数据报协议 UDP</h2><p><strong>（User Dataprogram Protocol）</strong></p>
-<p>UDP是一个无连接的传输层协议,UDP传输的是数据段，无需建立连接，不提供数据的可靠传输。很多网络应用，例如DNS都采用了UDP。UDP传输的是UDP数据段</p>
-<h3 id="UDP数据段"><a href="#UDP数据段" class="headerlink" title="UDP数据段"></a>UDP数据段</h3><p>数据段包括<strong>总长为64bits，共4部分，每部分16bits的数据段头</strong>和数据两个部分。</p>
-<h4 id="数据段头结构"><a href="#数据段头结构" class="headerlink" title="数据段头结构"></a>数据段头结构</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/hdaushdaushd.jpg"></p>
-<p>第三个字段数据段长度表示包括段头和数据的总长度，UDP中校验和可能存在也可能不存在，不存在时校验和长度设为0.</p>
-<p>UDP数据段头最重要的内容就是前两个字段源端口和目的端口，二者长度均为16bits，能表示的最大长度是65536，也就是能表示的端口数量是65536个，范围从0~65535。</p>
-<h4 id="端口定义"><a href="#端口定义" class="headerlink" title="端口定义"></a>端口定义</h4><table>
-<thead>
-<tr>
-<th>端口号</th>
-<th>-</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>小于等于1023（知名端口）</td>
-<td>用于公共应用（保留，全局分配，用于标准服务器），只能用于特权用户，比如UNIX的root用户启动标准80服务。由IANA分配，目前已经使用700多个</td>
-</tr>
-<tr>
-<td>1024~49151</td>
-<td>用户端口/非特权用户端口，可以通过IANA注册（例如BT使用了6881-6887的端口）</td>
-</tr>
-<tr>
-<td>大于等于49152</td>
-<td>动态端口，私人端口（其中包括自由端口：free port,由本地分配，并且动态随机生成的端口号，访问网站时操作系统会随机产生一个自由端口用于访问）</td>
-</tr>
-</tbody></table>
-<h4 id="UDP校验和"><a href="#UDP校验和" class="headerlink" title="UDP校验和"></a>UDP校验和</h4><p>UDP校验和计算方式是将IP伪头部，UDP头部和数据按照二进制每行16位的格式排列，然后对这些排列好的数据进行补码相加求和，再对得到的结果进行求反码，最终得到的结果就是校验和</p>
-<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/UDP%E6%A0%A1%E9%AA%8C%E5%92%8C.jpg" alt="UDP校验和"></p>
-<h4 id="TCP-UDP伪头部（pseudo-header）"><a href="#TCP-UDP伪头部（pseudo-header）" class="headerlink" title="TCP/UDP伪头部（pseudo header）"></a>TCP/UDP伪头部（pseudo header）</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/TCP_UDP%E4%BC%AA%E5%A4%B4%E9%83%A8.jpg" alt="TCP_UDP伪头部"></p>
-<p>接收方在接收到数据段后利用其中的校验和以及其他部分数据经过计算最终得到的结果每个位应该全部为1，如果出现0，证明传输过程中发生错误。</p>
-<p>在计算校验和的过程中使用了属于网络层的IP地址，这破坏了分层原则</p>
-<p>UDP提供端点标识，端到端的数据传输，不提供差错检测和可靠传输，但简洁高效</p>
-<hr>
 <h2 id="通信模型"><a href="#通信模型" class="headerlink" title="通信模型"></a>通信模型</h2><h3 id="端点"><a href="#端点" class="headerlink" title="端点"></a>端点</h3><p>端点就是所说的套接字（Socket），一个套接字包括；两个内容：IP地址和端口号。可以写成(IP,Port)。</p>
 <h3 id="通信模型-通信五元组"><a href="#通信模型-通信五元组" class="headerlink" title="通信模型-通信五元组"></a>通信模型-通信五元组</h3><p>通信五元组由源端点，目的端点和协议组成，其中源端点和目的端点包含IP地址和端口，协议可以是TCP或UDP</p>
 <p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E9%80%9A%E4%BF%A1%E4%BA%94%E5%85%83%E7%BB%84.jpg" alt="通信五元组"></p>
@@ -4545,8 +4493,54 @@
 <td>USENET news</td>
 </tr>
 </tbody></table>
-<p>不同于交换机上的端口(Interface接口)，此端口非彼端口.</p>
-<hr>
+<h2 id="用户数据报协议-UDP"><a href="#用户数据报协议-UDP" class="headerlink" title="用户数据报协议 UDP"></a>用户数据报协议 UDP</h2><p><strong>（User Dataprogram Protocol）</strong></p>
+<p>UDP是一个无连接的传输层协议,UDP传输的是数据段(报文段)，无需建立连接（UDP发送端和接收端之间不进行握手，每个UDP报文都被单独的处理），不提供数据的可靠传输。很多网络应用，例如DNS都采用了UDP。UDP传输的是UDP数据段</p>
+<p>UDP提供的是尽力而为的服务：</p>
+<ul>
+<li>可能出现数据段的丢失</li>
+<li>可能由于网络原因导致应用进程的报文段乱序</li>
+</ul>
+<p>使用UDP的原因：</p>
+<ul>
+<li>不建立连接（降低延时）</li>
+<li>简单，在发送端和接收端都没有连接状态</li>
+<li>报文段头部小（TCP20字节，UDP8字节）减小开销，存放更多数据</li>
+<li>没有拥塞控制和流量控制，UDP可以尽可能快的发送报文段</li>
+</ul>
+<p>因为以上的原因，UDP常被应用于实时流媒体播放，DNS或SNMP</p>
+<p>如果想要在UDP上进行可靠的数据传输，只能从应用层入手，在应用层增加相应的检测机制以及差错恢复</p>
+<h3 id="UDP数据段"><a href="#UDP数据段" class="headerlink" title="UDP数据段"></a>UDP数据段</h3><p>数据段包括<strong>总长为64bits，共4部分，每部分16bits的数据段头</strong>和数据两个部分。</p>
+<h4 id="数据段头结构"><a href="#数据段头结构" class="headerlink" title="数据段头结构"></a>数据段头结构</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/hdaushdaushd.jpg"></p>
+<p>第三个字段数据段长度表示包括段头和数据的总长度，UDP中校验和可能存在也可能不存在，不存在时校验和长度设为0.</p>
+<p>UDP数据段头最重要的内容就是前两个字段源端口和目的端口，二者长度均为16bits，能表示的最大长度是65536，也就是能表示的端口数量是65536个，范围从0~65535。</p>
+<h4 id="端口定义"><a href="#端口定义" class="headerlink" title="端口定义"></a>端口定义</h4><table>
+<thead>
+<tr>
+<th>端口号</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>小于等于1023（知名端口）</td>
+<td>用于公共应用（保留，全局分配，用于标准服务器），只能用于特权用户，比如UNIX的root用户启动标准80服务。由IANA分配，目前已经使用700多个</td>
+</tr>
+<tr>
+<td>1024~49151</td>
+<td>用户端口/非特权用户端口，可以通过IANA注册（例如BT使用了6881-6887的端口）</td>
+</tr>
+<tr>
+<td>大于等于49152</td>
+<td>动态端口，私人端口（其中包括自由端口：free port,由本地分配，并且动态随机生成的端口号，访问网站时操作系统会随机产生一个自由端口用于访问）</td>
+</tr>
+</tbody></table>
+<h4 id="UDP校验和"><a href="#UDP校验和" class="headerlink" title="UDP校验和"></a>UDP校验和</h4><p>UDP校验和计算方式是将IP伪头部，UDP头部和数据按照二进制每行16位的格式排列，然后对这些排列好的数据进行补码相加求和(注意：当数字相加时，在最高位的进位要回卷，再加到结果上)，再对得到的结果进行求反码，最终得到的结果就是校验和</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/UDP%E6%A0%A1%E9%AA%8C%E5%92%8C.jpg" alt="UDP校验和"></p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/huijuan.png"></p>
+<h4 id="TCP-UDP伪头部（pseudo-header）"><a href="#TCP-UDP伪头部（pseudo-header）" class="headerlink" title="TCP/UDP伪头部（pseudo header）"></a>TCP/UDP伪头部（pseudo header）</h4><p>这里需要注意UDP伪头部是在计算校验和时临时与UDP数据报拼接到一起，二者临时相连只是为了计算校验和</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/TCP_UDP%E4%BC%AA%E5%A4%B4%E9%83%A8.jpg" alt="TCP_UDP伪头部"></p>
+<p>接收方在接收到数据段后利用其中的校验和以及其他部分数据经过计算最终得到的结果每个位应该全部为1，如果出现0，证明传输过程中发生错误。(这里应该注意即便正确，也有可能是多次比特翻转导致最终结果错等于校验和，不代表一定不出错)</p>
+<p>在计算校验和的过程中使用了属于网络层的IP地址，这破坏了分层原则</p>
+<p>UDP提供端点标识，端到端的数据传输，不提供差错检测和可靠传输，但简洁高效</p>
 <h2 id="TCP数据段"><a href="#TCP数据段" class="headerlink" title="TCP数据段"></a>TCP数据段</h2><h3 id="TCP-传输控制协议"><a href="#TCP-传输控制协议" class="headerlink" title="TCP-传输控制协议"></a>TCP-传输控制协议</h3><p><strong>（Transmission Control Protocol）</strong></p>
 <p>是专门为了<strong>在不可靠的网络上提供可靠的端到端的字节流</strong>而设计的。TCP必须动态地适应不同的拓扑、带宽、延迟、分组大小和其它的参数，并且当有错误的时候，能够足够健壮</p>
 <p>支持TCP的机器都有一个TCP实体，或者是用户进程，或者是操作系统内核。都可以管理TCP流跟IP层接口</p>
@@ -4592,7 +4586,6 @@
 <h4 id="校验和"><a href="#校验和" class="headerlink" title="校验和"></a>校验和</h4><p>与UDP中的校验和是一样的，唯一区别在于协议位置的编号不一样</p>
 <h4 id="紧急指针"><a href="#紧急指针" class="headerlink" title="紧急指针"></a>紧急指针</h4><p>和URG数据段配合使用，指明了紧急数据</p>
 <h4 id="选项域-可选"><a href="#选项域-可选" class="headerlink" title="选项域(可选)"></a>选项域(可选)</h4><p>提供了一种增加基本头没有包含内容的方法</p>
-<hr>
 <h2 id="TCP三次握手建立连接"><a href="#TCP三次握手建立连接" class="headerlink" title="TCP三次握手建立连接"></a>TCP三次握手建立连接</h2><p>TCP提供的是面向连接的服务，TCP数据段的传输是在TCP链接上进行的。而TCP连接是三次握手建立的</p>
 <h3 id="TCP连接的建立"><a href="#TCP连接的建立" class="headerlink" title="TCP连接的建立"></a>TCP连接的建立</h3><ul>
 <li>一方（server）被动地等待一个进来的连接请求</li>
@@ -4607,7 +4600,6 @@
 <h3 id="DoS攻击"><a href="#DoS攻击" class="headerlink" title="DoS攻击"></a>DoS攻击</h3><p>三次握手连接可能导致一些安全问题，例如著名的：SYN泛洪导致DoS攻击</p>
 <p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/DoS.jpg" alt="DoS"></p>
 <p>服务器通过大量的代理服务器，向被攻击的机器不断发送大量（泛洪）的第一次握手信息SYN，被攻击机器在收到第一次握手信息后会回发第二次握手信息，并且等待接收第三次握手信息，但是由于发送的第一次握手信息使用了伪造的IP地址，所以被攻击的机器永远无法收到第三次握手信息，这让被攻击者挂起很多进程在等待，最终因为资源耗尽而瘫痪</p>
-<hr>
 <h2 id="TCP连接释放"><a href="#TCP连接释放" class="headerlink" title="TCP连接释放"></a>TCP连接释放</h2><p>经过三次握手建立TCP连接之后，就可以开始进行数据的传输，在数据传输完后，就需要释放掉这条TCP连接</p>
 <ul>
 <li>任何一方在没有数据要传送的时候，都可以发送一个FIN置位了的 TCP 数据段</li>
@@ -4636,10 +4628,8 @@
 <h3 id="三次握手正常释放连接"><a href="#三次握手正常释放连接" class="headerlink" title="三次握手正常释放连接"></a>三次握手正常释放连接</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%AD%A3%E5%B8%B8%E9%87%8A%E6%94%BE.jpg" alt="正常释放"></p>
 <h3 id="TCP四次挥手终止会话"><a href="#TCP四次挥手终止会话" class="headerlink" title="TCP四次挥手终止会话"></a>TCP四次挥手终止会话</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg" alt="四次挥手"></p>
 <h3 id="最后的确认TPDU丢失"><a href="#最后的确认TPDU丢失" class="headerlink" title="最后的确认TPDU丢失"></a>最后的确认TPDU丢失</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E4%B8%A2%E5%A4%B1%E9%87%8A%E6%94%BE.jpg" alt="丢失释放"></p>
-<hr>
 <h2 id="TCP传输策略"><a href="#TCP传输策略" class="headerlink" title="TCP传输策略"></a>TCP传输策略</h2><p>TCP传输采用了基本的肯定确认重传技术，TCP以数据段形式传输数据，一个数据段包含很多字节，相当于批量传输。为避免大量数据淹没接收方，采用流控技术。利用到了数据段当中的一个字段窗口尺寸（Window Size）。</p>
 <p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E4%BC%A0%E8%BE%93%E7%AD%96%E7%95%A5.jpg" alt="传输策略"></p>
-<hr>
 <p>可以看到整个流程中发送方首先向接收方传输了一个数据段，这个数据段大小2K，SEQ为0，表示从0开始填充字节</p>
 <p>接收方大小为4K，此时接收方为空，接收方在成功接收数据段后剩余2K空余位置，然后向发送方回发确认，确认中包括了ACK=2048表示成功接收到了2048以前的字段，期望接受从2048往后的字段，以及WIN=2048表示接收方还剩余2K位空余位置，下次传输数据的大小不能超过2K</p>
 <p>发送方在接收到确认后会继续发送剩余数据，可以看到，发送方在下次发送时，会根据确认调整传输数据大小以及初始序列号（SEQ）</p>
@@ -4680,7 +4670,6 @@
 </ul>
 </li>
 </ul>
-<hr>
 <h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>虽然网络层也试图管理拥塞，但是，大多数繁重的任务是由<br>TCP来完成的，因为针对拥塞的真正解决方案是<strong>减慢数据率</strong>，所以TCP遵循<strong>分组守恒</strong>即当有一个老的分组离开之后才允许新的分组注入网络。 TCP希望通过动态维护窗口大小来实现这个目标</p>
 <h3 id="TCP拥塞检测（Congestion-detection）"><a href="#TCP拥塞检测（Congestion-detection）" class="headerlink" title="TCP拥塞检测（Congestion detection）"></a>TCP拥塞检测（Congestion detection）</h3><p>所有的互联网TCP算法都假定<strong>超时是由拥塞引起</strong>的，并且通过<strong>监视超时</strong>的情况来判断是否出现问题</p>
 <h4 id="拥塞控制-（Congestion-prevention）"><a href="#拥塞控制-（Congestion-prevention）" class="headerlink" title="拥塞控制 （Congestion prevention）"></a>拥塞控制 （Congestion prevention）</h4><ul>
@@ -4717,7 +4706,6 @@
 <li>重新慢启动的时候，拥塞窗口值不用重置为一个数据段大小，而是可以设置为阈值大小，从这里直接开始线性增长，这就是所谓的快速恢复</li>
 <li>如果收到一个ICMP抑制分组（ ICMP source quench）并被送给TCP传输实体 ，则这个事件被当作超时对待</li>
 </ul>
-<hr>
 <h2 id="TCP定时器"><a href="#TCP定时器" class="headerlink" title="TCP定时器"></a>TCP定时器</h2><h3 id="重传定时器"><a href="#重传定时器" class="headerlink" title="重传定时器"></a>重传定时器</h3><p>TCP采用了肯定确认重传技术来保证每一个字节的可靠传输，为解决数据段丢失问题，每发一个数据段都会启动一个<strong>重传定时器</strong>，它是最重要的定时器之一</p>
 <p>它的时间设置需要非常多的考量，如果时间设置过长，就会导致等待时间过长，如果设置过短，可能引发频繁的超时和重传</p>
 <h3 id="持续定时器"><a href="#持续定时器" class="headerlink" title="持续定时器"></a>持续定时器</h3><p>用来避免如下的死锁（ deadlock ）发生</p>
@@ -4731,7 +4719,6 @@
 <p>假设持续计时器时间为0新的确认还没有到达，此时发送方就会发送一个探测数据段，里边没有任何数据内容，单纯引发接收方重新发送一个确认，以解决死锁问题</p>
 <h3 id="保活定时器"><a href="#保活定时器" class="headerlink" title="保活定时器"></a>保活定时器</h3><p>用来检查连接是否存活，当一个连接空闲的时间超过保活定时器的时间，该连接将被杀掉。</p>
 <p>还有在关闭时刻处于TIMED WAIT状态中使用的定时器：运行两倍的最大分组生存时间，以确保连接关闭之后，该连接上的所有分组都完全消失。</p>
-<hr>
 <table>
 <thead>
 <tr>
@@ -5753,7 +5740,7 @@
   <entry>
     <title>6-数据类型与常见约束</title>
     <url>/2021/03/28/6-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%B8%B8%E8%A7%81%E7%BA%A6%E6%9D%9F/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 常见数据类型</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">数值型：</span></span><br><span class="line"><span class="comment">		整型</span></span><br><span class="line"><span class="comment">		小数：</span></span><br><span class="line"><span class="comment">				定点数</span></span><br><span class="line"><span class="comment">				浮点数</span></span><br><span class="line"><span class="comment">字符型：</span></span><br><span class="line"><span class="comment">		较短文本：CHAR,VARCHAR</span></span><br><span class="line"><span class="comment">		较长文本：TEXT,BLOB(较长的二进制数据)</span></span><br><span class="line"><span class="comment">日期型：</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"># 一，整型</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">分类：</span></span><br><span class="line"><span class="comment">TINYINT,SMALLINT,MEDIUMINT,INT/INTEGER,BIGINT</span></span><br><span class="line"><span class="comment">字节数从左至右以此增大，分别是1，2，3，4，8字节 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">1. 不设置无符号类型，默认采用有符号类型。如果想设置无符号类型，需要添加UNSIGNED关键字</span></span><br><span class="line"><span class="comment">2. 如果插入数值超出范围会报out of range 异常，并且插入临界值</span></span><br><span class="line"><span class="comment">3. 如果不设置长度，会添加默认长度</span></span><br><span class="line"><span class="comment">4. 注意，这里设置的长度只是显示的长度，文本实际占用字节数并没有改变</span></span><br><span class="line"><span class="comment">仍然是按照规定大小创建，设置了长度后，如果输入内容超出长度限制，内容没有变化</span></span><br><span class="line"><span class="comment">，如果长度不足，剩余位数会用0填充</span></span><br><span class="line"><span class="comment">5. 即使用0填充后，输出内容我们直接也是看不到0的，想要看到0作为填充位，需要使用</span></span><br><span class="line"><span class="comment">ZEROFILL关键字，并且这个关键字会默认设置整型为无符号整型</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">1.</span> 如何设置无符号和有符号</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_int;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_int(</span><br><span class="line">	t1 <span class="type">INT</span>,</span><br><span class="line">	t2 <span class="type">INT</span> UNSIGNED,</span><br><span class="line">	t3 <span class="type">INT</span>(<span class="number">8</span>),</span><br><span class="line">	t4 <span class="type">INT</span>(<span class="number">5</span>) ZEROFILL</span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_int <span class="keyword">VALUES</span>(<span class="number">-15498</span>,<span class="number">45454</span>,<span class="number">-445</span>,<span class="number">123</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">DESC</span> tab_int;</span><br><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span> <span class="keyword">FROM</span> tab_int;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 二，小数</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">类型：</span></span><br><span class="line"><span class="comment">		浮点数类型：</span></span><br><span class="line"><span class="comment">			FLOAT(M,D) 4byte</span></span><br><span class="line"><span class="comment">			DOUBLE(M,D) 8byte </span></span><br><span class="line"><span class="comment">		定点数类型：</span></span><br><span class="line"><span class="comment">			DEC(M,D)/DECIMAL(M,D)   （M+2）byte</span></span><br><span class="line"><span class="comment">			（最大取值范围和DOUBLE相同，给定decimal的有效值范围</span></span><br><span class="line"><span class="comment">			由M和D决定，精确度较高与DOUBLE）</span></span><br><span class="line"><span class="comment">	</span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">1. M表示的是小数点和整数位数的和，小数为是2，所以整数位最多只能是3，所以超过后用最大值999.99代替</span></span><br><span class="line"><span class="comment">2. D表示的含义就是小数点保留位数，不足会自动补全，超出会四舍五入</span></span><br><span class="line"><span class="comment">3. M和D都可以省略</span></span><br><span class="line"><span class="comment">省略M和D后，DECIMAL默认填充(10,0)</span></span><br><span class="line"><span class="comment">FLOAT和DOUBLE会根据插入数据自动调整</span></span><br><span class="line"><span class="comment">4. 定点型精确度较高，如果插入数据要求较高精确度例如:货币运算可以采用</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_float;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_float(</span><br><span class="line">		f1 <span class="type">FLOAT</span>(<span class="number">5</span>,<span class="number">2</span>),</span><br><span class="line">		f2 <span class="keyword">DOUBLE</span>(<span class="number">5</span>,<span class="number">2</span>),</span><br><span class="line">		f3 <span class="type">DECIMAL</span>(<span class="number">5</span>,<span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.45</span>,<span class="number">123.45</span>,<span class="number">123.45</span>);   # 能够正常插入</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.4</span>,<span class="number">123.4</span>,<span class="number">123.4</span>);  # D表示的含义就是小数点保留位数，不足会自动补全，超出会四舍五入</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.456</span>,<span class="number">123.456</span>,<span class="number">123.456</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">1234.45</span>,<span class="number">1234.45</span>,<span class="number">1234.45</span>);  </span><br><span class="line"># M表示的是小数点和整数位数的和，小数为是<span class="number">2</span>，所以整数位最多只能是<span class="number">3</span>，所以超过后用最大值<span class="number">999.99</span>代替</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 选择类型的原则</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">所选择的类型越简单越好</span></span><br><span class="line"><span class="comment">所选择的类型越小越好</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 常见数据类型</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">数值型：</span></span><br><span class="line"><span class="comment">	整型</span></span><br><span class="line"><span class="comment">	小数：</span></span><br><span class="line"><span class="comment">		定点数</span></span><br><span class="line"><span class="comment">		浮点数</span></span><br><span class="line"><span class="comment">字符型：</span></span><br><span class="line"><span class="comment">	较短文本：CHAR,VARCHAR</span></span><br><span class="line"><span class="comment">	较长文本：TEXT,BLOB(较长的二进制数据)</span></span><br><span class="line"><span class="comment">日期型：</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"># 一，整型</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">分类：</span></span><br><span class="line"><span class="comment">TINYINT,SMALLINT,MEDIUMINT,INT/INTEGER,BIGINT</span></span><br><span class="line"><span class="comment">字节数从左至右以此增大，分别是1，2，3，4，8字节 </span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">1. 不设置无符号类型，默认采用有符号类型。如果想设置无符号类型，需要添加UNSIGNED关键字</span></span><br><span class="line"><span class="comment">2. 如果插入数值超出范围会报out of range 异常，并且插入临界值</span></span><br><span class="line"><span class="comment">3. 如果不设置长度，会添加默认长度</span></span><br><span class="line"><span class="comment">4. 注意，这里设置的长度只是显示的长度，文本实际占用字节数并没有改变</span></span><br><span class="line"><span class="comment">仍然是按照规定大小创建，设置了长度后，如果输入内容超出长度限制，内容没有变化</span></span><br><span class="line"><span class="comment">，如果长度不足，剩余位数会用0填充</span></span><br><span class="line"><span class="comment">5. 即使用0填充后，输出内容我们直接也是看不到0的，想要看到0作为填充位，需要使用</span></span><br><span class="line"><span class="comment">ZEROFILL关键字，并且这个关键字会默认设置整型为无符号整型</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">1.</span> 如何设置无符号和有符号</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_int;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_int(</span><br><span class="line">	t1 <span class="type">INT</span>,</span><br><span class="line">	t2 <span class="type">INT</span> UNSIGNED,</span><br><span class="line">	t3 <span class="type">INT</span>(<span class="number">8</span>),</span><br><span class="line">	t4 <span class="type">INT</span>(<span class="number">5</span>) ZEROFILL</span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_int <span class="keyword">VALUES</span>(<span class="number">-15498</span>,<span class="number">45454</span>,<span class="number">-445</span>,<span class="number">123</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">DESC</span> tab_int;</span><br><span class="line"><span class="keyword">SELECT</span><span class="operator">*</span> <span class="keyword">FROM</span> tab_int;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 二，小数</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">类型：</span></span><br><span class="line"><span class="comment">    浮点数类型：</span></span><br><span class="line"><span class="comment">        FLOAT(M,D) 4byte</span></span><br><span class="line"><span class="comment">        DOUBLE(M,D) 8byte </span></span><br><span class="line"><span class="comment">    定点数类型：</span></span><br><span class="line"><span class="comment">        DEC(M,D)/DECIMAL(M,D)   （M+2）byte</span></span><br><span class="line"><span class="comment">        （最大取值范围和DOUBLE相同，给定decimal的有效值范围</span></span><br><span class="line"><span class="comment">        由M和D决定，精确度较高与DOUBLE）</span></span><br><span class="line"><span class="comment">	</span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">1. M表示的是小数点和整数位数的和，小数为是2，所以整数位最多只能是3，所以超过后用最大值999.99代替</span></span><br><span class="line"><span class="comment">2. D表示的含义就是小数点保留位数，不足会自动补全，超出会四舍五入</span></span><br><span class="line"><span class="comment">3. M和D都可以省略</span></span><br><span class="line"><span class="comment">省略M和D后，DECIMAL默认填充(10,0)</span></span><br><span class="line"><span class="comment">FLOAT和DOUBLE会根据插入数据自动调整</span></span><br><span class="line"><span class="comment">4. 定点型精确度较高，如果插入数据要求较高精确度例如:货币运算可以采用</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_float;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_float(</span><br><span class="line">		f1 <span class="type">FLOAT</span>(<span class="number">5</span>,<span class="number">2</span>),</span><br><span class="line">		f2 <span class="keyword">DOUBLE</span>(<span class="number">5</span>,<span class="number">2</span>),</span><br><span class="line">		f3 <span class="type">DECIMAL</span>(<span class="number">5</span>,<span class="number">2</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.45</span>,<span class="number">123.45</span>,<span class="number">123.45</span>);   # 能够正常插入</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.4</span>,<span class="number">123.4</span>,<span class="number">123.4</span>);  # D表示的含义就是小数点保留位数，不足会自动补全，超出会四舍五入</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">123.456</span>,<span class="number">123.456</span>,<span class="number">123.456</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_float <span class="keyword">VALUES</span>(<span class="number">1234.45</span>,<span class="number">1234.45</span>,<span class="number">1234.45</span>);  </span><br><span class="line"># M表示的是小数点和整数位数的和，小数为是<span class="number">2</span>，所以整数位最多只能是<span class="number">3</span>，所以超过后用最大值<span class="number">999.99</span>代替</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 选择类型的原则</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">所选择的类型越简单越好</span></span><br><span class="line"><span class="comment">所选择的类型越小越好</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 
 <h2 id="字符型"><a href="#字符型" class="headerlink" title="字符型"></a>字符型</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 串数据（文本类型<span class="operator">+</span>二进制数据）</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">较短的文本：</span></span><br><span class="line"><span class="comment">CHAR(M)  表示固定长度字符</span></span><br><span class="line"><span class="comment">VARCHAR(M)  表示可变长度的字符</span></span><br><span class="line"><span class="comment">M 表示最长的字符数,CHAR可以省略，默认为1.VARCHAR不可以省略</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">较长的文本：</span></span><br><span class="line"><span class="comment">TEXT</span></span><br><span class="line"><span class="comment">BLOB(较大的二进制)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">还有binary和varbinary用于保存较短的二进制</span></span><br><span class="line"><span class="comment">enum用于保存枚举</span></span><br><span class="line"><span class="comment">set用于保存集合</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">特点</span></span><br><span class="line"><span class="comment">CHAR比较耗费空间，但是效率较高</span></span><br><span class="line"><span class="comment">VARCHAR更节省空间，效率略低于CHAR</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_char;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_char(</span><br><span class="line">		c1 ENUM(<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>)  # 枚举类型，同样是字符型，只能插入枚举的内容</span><br><span class="line">		# 不区分大小写</span><br><span class="line">		</span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_char <span class="keyword">VALUES</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="keyword">SET</span>类型类似枚举类型，但是能一次向一个单元插入多个值</span><br><span class="line"># 同样不区分大小写</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_set;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_set(</span><br><span class="line">		s1 <span class="keyword">SET</span>(<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>,<span class="string">&#x27;d&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_set <span class="keyword">VALUES</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_set <span class="keyword">VALUES</span>(<span class="string">&#x27;b&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_set <span class="keyword">VALUES</span>(<span class="string">&#x27;a,b,c&#x27;</span>);</span><br></pre></td></tr></table></figure>
@@ -5896,6 +5883,14 @@
 <h3 id="应用场景：-1"><a href="#应用场景：-1" class="headerlink" title="应用场景："></a>应用场景：</h3><p>要查询结果来自多个表，且多个表没有直接的连接关系，单查询的信息一致</p>
 <h3 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a>特点：</h3><p>要求多条查询语句的查询列数是一致的<br>要求多条查询语句每一列的类型和顺序最好是一致的<br>UNION关键字会自动去重，如果不想去重可以使用UNION ALL关键字</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 联合查询</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">union查询：将多条查询语句的结果合并成一个结果</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">语法：</span></span><br><span class="line"><span class="comment">查询语句</span></span><br><span class="line"><span class="comment">union</span></span><br><span class="line"><span class="comment">查询语句</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">应用场景：要查询结果来自多个表，且多个表没有直接的连接关系，单查询的信息一致</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">要求多条查询语句的查询列数是一致的</span></span><br><span class="line"><span class="comment">要求多条查询语句每一列的类型和顺序最好是一致的</span></span><br><span class="line"><span class="comment">UNION关键字会自动去重，如果不想去重可以使用UNION ALL关键字</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"># 查询部门编号<span class="operator">&gt;</span><span class="number">90</span>或邮箱中包含a的员工信息</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> email <span class="keyword">LIKE</span> <span class="string">&#x27;%a%&#x27;</span> <span class="keyword">OR</span> department_id<span class="operator">&gt;</span><span class="number">90</span>;</span><br><span class="line"># 用联合查询来完成</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> email <span class="keyword">LIKE</span> <span class="string">&#x27;%a%&#x27;</span> </span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> department_id<span class="operator">&gt;</span><span class="number">90</span>;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>7-标识列或自增长列</title>
+    <url>/2021/03/28/7-%E6%A0%87%E8%AF%86%E5%88%97%E6%88%96%E8%87%AA%E5%A2%9E%E9%95%BF%E5%88%97/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 标识列</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">又称为自增长列</span></span><br><span class="line"><span class="comment">含义：可以不用手动插入值，系统提供默认的序列值</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">特点：</span></span><br><span class="line"><span class="comment">1. 标识列必须和键搭配（主键，唯一，外键等）</span></span><br><span class="line"><span class="comment">2. 一个表中只能有一个标识列</span></span><br><span class="line"><span class="comment">3. 标识列的类型只能是数值型（整型+浮点型）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"># 创建表时，设置某列为标识列</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> tab_identify;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_identify(</span><br><span class="line">		id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">		NAME <span class="type">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> tab_identify;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_identify <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;Leslie&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tab_identify <span class="keyword">VALUES</span>(<span class="keyword">NULL</span>,<span class="string">&#x27;Jesie&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tab_identify;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> auto_increment_increment<span class="operator">=</span><span class="number">3</span>;  # 设置步长，修改为每次增加<span class="number">3</span>个</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;%auto_increment%&#x27;</span>;  # 查看当前系统步长和起始值</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 修改表时设置标识列,起始本质还是修改表的类型</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tab_identify MODIFY <span class="keyword">COLUMN</span> id <span class="type">INT</span> <span class="keyword">UNIQUE</span> AUTO_INCREMENT;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>MySQL</tag>
       </tags>
