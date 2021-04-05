@@ -6133,8 +6133,10 @@
 </ul>
 </li>
 </ul>
-<h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>虽然网络层也试图管理拥塞，但是，大多数繁重的任务是由<br>TCP来完成的，因为针对拥塞的真正解决方案是<strong>减慢数据率</strong>，所以TCP遵循<strong>分组守恒</strong>即当有一个老的分组离开之后才允许新的分组注入网络。 TCP希望通过动态维护窗口大小来实现这个目标</p>
+<h2 id="TCP拥塞控制"><a href="#TCP拥塞控制" class="headerlink" title="TCP拥塞控制"></a>TCP拥塞控制</h2><p>TCP进行拥塞控制的机制是端到端的拥塞控制机制，即路由器并不向主机反馈有关拥塞的信息，这样可以减轻路由器的压力，并且符合TCP/IP架构所遵循的网络核心简单的原则。端系统根据自身得到的信息，判断网络拥塞情况，进而采取动作</p>
+<p>虽然网络层也试图管理拥塞，但是，大多数繁重的任务是由<br>TCP来完成的，因为针对拥塞的真正解决方案是<strong>减慢数据率</strong>，所以TCP遵循<strong>分组守恒</strong>即当有一个老的分组离开之后才允许新的分组注入网络。 TCP希望通过动态维护窗口大小来实现这个目标</p>
 <h3 id="TCP拥塞检测（Congestion-detection）"><a href="#TCP拥塞检测（Congestion-detection）" class="headerlink" title="TCP拥塞检测（Congestion detection）"></a>TCP拥塞检测（Congestion detection）</h3><p>所有的互联网TCP算法都假定<strong>超时是由拥塞引起</strong>的，并且通过<strong>监视超时</strong>的情况来判断是否出现问题</p>
+<p>另外，网络中还存在轻微拥塞的概念，端系统在收到三个冗余的ACK（一个正常ACK后收到三个冗余ACK）的情况下，会判定网络处于轻微拥塞的状态</p>
 <h4 id="拥塞控制-（Congestion-prevention）"><a href="#拥塞控制-（Congestion-prevention）" class="headerlink" title="拥塞控制 （Congestion prevention）"></a>拥塞控制 （Congestion prevention）</h4><ul>
 <li>当一个连接建立的时候，双方选择一个合适的<strong>窗口大小</strong>，接收方根据自己的<strong>缓冲区大小</strong>来指定窗口的大小。</li>
 <li>如果发送者遵守此窗口大小的限制，则接收端不会出现缓冲区溢出的问题，但可能由于<strong>网络内部的拥塞</strong>而发生问题（网络内部的瓶颈）</li>
@@ -6142,32 +6144,71 @@
 <p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/TCP%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6.jpg" alt="TCP拥塞控制"></p>
 <p>如图中（a）快速的网络向小容量的接收方传输数据（接收者容量问题），（b）慢速的网络向大容量的接受方传输数据（网络容量问题）</p>
 <p>互联网解决方案应该是认识到两个潜在的问题的：网络容量，接收者容量，然后单独地处理这两个问题</p>
-<p>为此，每个发送者维护两个窗口：</p>
 <ul>
-<li><strong>接收者窗口</strong> 大小反映了目前窗口的容量 （<strong>容易控制</strong>）</li>
+<li><strong>接收窗口</strong> 大小反映了目前窗口的容量 （<strong>容易控制</strong>）</li>
 <li><strong>拥塞窗口</strong> 大小反映了网络目前的容量（<strong>难于控制</strong>）</li>
 </ul>
-<p>为此要保证发送者发送的数据字节数是两个窗口中小的那个窗口数，这样就既不会因为接收者窗口大小导致拥塞，也不会因为网络容量大小导致拥塞</p>
-<h3 id="慢启动算法Slow-Start"><a href="#慢启动算法Slow-Start" class="headerlink" title="慢启动算法Slow Start"></a>慢启动算法Slow Start</h3><p>（决定拥塞窗口的大小）</p>
+<p>为此要保证发送者发送的数据字节数是两个窗口中小的那个窗口数，这样就既不会因为接收者窗口大小导致拥塞，也不会因为网络容量大小导致拥塞，实际上，接收窗口反映了网络中的流量控制问题，拥塞窗口反映了网络中的拥塞控制问题。所以在实际控制中需要采取联合控制的方法，发送端控制发送但是未确认的量同时也不能够超过接收窗口，满足流量控制要求</p>
+<p>$$SendWin(发送窗口)=min{CongWin(拥塞窗口), RecvWin(接收窗口)}$$</p>
+<h3 id="TCP拥塞控制策略"><a href="#TCP拥塞控制策略" class="headerlink" title="TCP拥塞控制策略"></a>TCP拥塞控制策略</h3><h4 id="1-慢启动算法Slow-Start"><a href="#1-慢启动算法Slow-Start" class="headerlink" title="1. 慢启动算法Slow Start"></a>1. 慢启动算法Slow Start</h4><p>（决定拥塞窗口的大小）</p>
 <ul>
-<li>当连接建立的时候，发送者用当前使用的最大数据段长度初始化拥塞窗口，然后发送一个最大的数据段</li>
+<li>当连接建立的时候，发送者用当前使用的最大数据段长度（MSS）初始化拥塞窗口（设置CongWin=1MSS），然后发送一个最大的数据段<ul>
+<li>速率：$rate≈\frac{CongWin}{RTT}bytes/sec$</li>
+<li>例如：MSS = 1460bytes 并且 RTT = 200 msec 则初始速率= 58.4kbps</li>
+</ul>
+</li>
 <li>如果在定时器超期之前收到确认，则将拥塞窗口翻倍，然后发送两个数据段……直至超时（或达到接收方窗口的大小）</li>
-<li>确定出拥塞窗口的大小<ul>
-<li>如：如果试图发送 4096字节没有问题，但是发送8192字节的时候，超时没有收到应答，则拥塞窗口设为4096个字节</li>
+<li>确定出拥塞窗口的大小</li>
+</ul>
+<p>因此在达到接收窗口大小或超时前，慢启动算法下的拥塞窗口大小都是以指数形式增长的，特点是启动初值很低，但是增长速度很快</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%85%A2%E5%90%AF%E5%8A%A8%E7%AE%97%E6%B3%95.jpg" alt="慢启动算法"></p>
+<h4 id="2-AIMD-加性增，乘性减"><a href="#2-AIMD-加性增，乘性减" class="headerlink" title="2. AIMD 加性增，乘性减"></a>2. AIMD 加性增，乘性减</h4><ul>
+<li>乘性减<ul>
+<li>丢失事件后将CongWin降为1，将CongWin/2作为阈值，进入慢启动阶段（倍增直到CongWin/2）</li>
+</ul>
+</li>
+<li>加性增<ul>
+<li>当CongWin&gt;阈值时，一个RTT内如没有发生丢失事件,将CongWin加1MSS进行探测，逐渐逼近当前网络容量</li>
 </ul>
 </li>
 </ul>
-<p>因此在达到接收窗口大小或超时前，慢启动算法下的拥塞窗口大小都是以指数形式增长的</p>
-<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%85%A2%E5%90%AF%E5%8A%A8%E7%AE%97%E6%B3%95.jpg" alt="慢启动算法"></p>
-<h3 id="阈值"><a href="#阈值" class="headerlink" title="阈值"></a>阈值</h3><p>除了使用接收者窗口和拥塞窗口，TCP拥塞控制还是用了第三<br>个参数，阈值（threshold），初始化为64K</p>
-<p>当一个超时发生的时候，阈值降为当前拥塞窗口的一半，同<br>时将拥塞窗口设为一个最大数据段的长度</p>
-<p>使用慢启动算法来决定网络的容量，拥塞窗口增长到阈值时<br>停止指数增长</p>
-<p>从这个点开始，每次成功的传输都会让拥塞窗口线性增长<br>（即每次仅增长一个最大的数据段长度）</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/sdhuduiah.jpg"></p>
+<ul>
+<li>收到三个冗余ACK的情况下，表示网络进入轻微拥塞，但还具有一定的段传输能力<ul>
+<li>CongWin减半</li>
+<li>窗口（缓冲区大小）之后线性增长</li>
+</ul>
+</li>
+<li>超时时间发生后，表示网络进入拥塞状态<ul>
+<li>CongWin被设置成1 MSS，进入SS（慢启动）阶段，之后窗口指数增长</li>
+<li>增长到一个阈值（上次发生拥塞的窗口的一半）时，再线性增加</li>
+</ul>
+</li>
+</ul>
 <h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><ul>
 <li>线性增长，可以将越来越粗放的窗口尝试力度变小，以获得更准确的拥塞窗口值</li>
 <li>TCP慢启动算法就是这样不断超时，不断重启，尝试出的拥塞控制窗口值也随着网络状况的变化而变化，达到拥塞控制的目的</li>
-<li>重新慢启动的时候，拥塞窗口值不用重置为一个数据段大小，而是可以设置为阈值大小，从这里直接开始线性增长，这就是所谓的快速恢复</li>
 <li>如果收到一个ICMP抑制分组（ ICMP source quench）并被送给TCP传输实体 ，则这个事件被当作超时对待</li>
+</ul>
+<h3 id="TCP拥塞控制状态"><a href="#TCP拥塞控制状态" class="headerlink" title="TCP拥塞控制状态"></a>TCP拥塞控制状态</h3><ul>
+<li>当CongWin &lt; Threshold(阈值), 发送端处于慢启动阶段（slow-start）, 窗口指数性增长</li>
+<li>当CongWin &gt; Threshold, 发送端处于拥塞避免阶段（congestion-avoidance）, 窗口线性增长</li>
+<li>当收到三个重复的ACKs (triple duplicate ACK),Threshold设置成CongWin/2，CongWin=Threshold+3</li>
+<li>当超时事件发生时timeout, Threshold=CongWin/2,CongWin=1 MSS，进入SS阶段</li>
+</ul>
+<h3 id="TCP平均吞吐量"><a href="#TCP平均吞吐量" class="headerlink" title="TCP平均吞吐量"></a>TCP平均吞吐量</h3><p>使用窗口window尺寸W和RTT来描述</p>
+<ul>
+<li>忽略慢启动阶段，假设发送端总有数据传输</li>
+<li>W：发生丢失事件时的窗口尺寸（单位：字节）</li>
+<li>平均窗口尺寸：3/4W</li>
+<li>平均吞吐量：1RTT时间内吞吐3/4W $avg TCP thruput=\frac{\frac{3}{4}W}{RTT}bytes/sec=\frac{3}{4}*\frac{W}{RTT}bytes/sec$ </li>
+</ul>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dahsufji.png"></p>
+<h3 id="TCP的公平性"><a href="#TCP的公平性" class="headerlink" title="TCP的公平性"></a>TCP的公平性</h3><h4 id="公平性目标"><a href="#公平性目标" class="headerlink" title="公平性目标"></a>公平性目标</h4><p>如果K个TCP会话分享一个链路带宽为R的瓶颈，每一个会话的有效带宽为R/K<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/gongpingxing.png"></p>
+<h4 id="TCP是公平的原因"><a href="#TCP是公平的原因" class="headerlink" title="TCP是公平的原因"></a>TCP是公平的原因</h4><p>2个竞争的TCP会话:始终遵循加性增加，斜率为1, 吞吐量增加。乘性减，吞吐量比例减少<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/gongpingxingshid.png"></p>
+<ul>
+<li>UDP不是公平性的，其尽其所能向网络中传输数据，所以其对TCP具有侵略性</li>
+<li>TCP的公平性针对的是连接间的，而不是端口间或应用间的，例如两个应用，其中一个建立九条TCP连接，一个建立一条TCP连接，最后占据九条的分走网络带宽的9/10，占据一条的只能分走1/10</li>
 </ul>
 <h2 id="TCP定时器"><a href="#TCP定时器" class="headerlink" title="TCP定时器"></a>TCP定时器</h2><h3 id="重传定时器"><a href="#重传定时器" class="headerlink" title="重传定时器"></a>重传定时器</h3><p>TCP采用了肯定确认重传技术来保证每一个字节的可靠传输，为解决数据段丢失问题，每发一个数据段都会启动一个<strong>重传定时器</strong>，它是最重要的定时器之一</p>
 <p>它的时间设置需要非常多的考量，如果时间设置过长，就会导致等待时间过长，如果设置过短，可能引发频繁的超时和重传</p>
