@@ -6266,4 +6266,96 @@
         <tag>计算机网络</tag>
       </tags>
   </entry>
+  <entry>
+    <title>2-Docker容器数据卷</title>
+    <url>/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Docker容器数据卷"><a href="#Docker容器数据卷" class="headerlink" title="Docker容器数据卷"></a>Docker容器数据卷</h1><h2 id="数据卷概述"><a href="#数据卷概述" class="headerlink" title="数据卷概述"></a>数据卷概述</h2><p>实际开发中，数据的持久化以及数据交互都是十分重要的功能，所以Docker需要处理以下问题</p>
+<ul>
+<li>Docker容器删除后，容器中的应用数据是否被删除</li>
+<li>Docker容器与外部机器（宿主机与网络机器）间如何进行文件交互</li>
+<li>Docker容器之间如何进行文件的交换</li>
+</ul>
+<p>面对以上问题，Docker提供了数据卷的概念，数据卷是宿主机中的一个目录或文件，当容器与数据卷目录绑定（挂载）后，双方对数据卷的修改会立即同步，数据卷与容器不是一一对应的关系，一个数据卷可以挂载多个容器，一个容器也可以被挂载多个数据卷</p>
+<h3 id="数据卷的作用"><a href="#数据卷的作用" class="headerlink" title="数据卷的作用"></a>数据卷的作用</h3><ul>
+<li>保证容器数据的持久化</li>
+<li>实现容器与宿主机之间的文件交换</li>
+<li>实现Docker容器之间的文件交换</li>
+</ul>
+<h2 id="配置数据卷"><a href="#配置数据卷" class="headerlink" title="配置数据卷"></a>配置数据卷</h2><p>配置数据卷只需要在创建容器时利用-v参数指定宿主机路径与容器路径的挂载关系</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建容器时，使用-v参数设置数据卷</span></span><br><span class="line">docker run -it --name test1 -v 宿主机目录(或文件):容器内目录(或文件) ...</span><br><span class="line"><span class="comment"># 例如：</span></span><br><span class="line">docker run -it --name centosTest1 -v /root/data:/root/data_container centos:latest</span><br></pre></td></tr></table></figure>
+<ul>
+<li>目录必须是绝对路径(root可用~代替)</li>
+<li>如果指定目录不存在，会自动创建</li>
+<li>一个容器可以挂载多个数据卷，只需要指定多个-v参数即可</li>
+</ul>
+<p>两个容器需要交换文件时，可以挂载到同一个数据卷下</p>
+<h2 id="数据卷容器"><a href="#数据卷容器" class="headerlink" title="数据卷容器"></a>数据卷容器</h2><p>多个容器之间进行文件共享有多种方法，其中一种是将所有容器都挂载到一个数据卷上，但这样比较繁琐，并且不便于管理，除了这种方式还可以通过数据卷容器的方式进行多个文件之间的共享</p>
+<p>方法就是创建一个容器，挂载到一个数据卷上，随后让其他容器继承自该容器，这个容器被称为数据卷容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建容器，挂载到一个数据卷上(这里只给了数据卷的路径，则容器路径会自动分配)</span></span><br><span class="line">docker run -it --name c1 -v /volume centos:latest </span><br><span class="line"><span class="comment"># 其他容器创建时挂载到该容器上，通过--volumes-from指定数据卷容器</span></span><br><span class="line">docker run -it --name c2 --volumes-from c1 centos:latest</span><br><span class="line">docker run -it --name c3 --volumes-from c1 centos:latest</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1-Docker概述</title>
+    <url>/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Docker概述"><a href="#Docker概述" class="headerlink" title="Docker概述"></a>Docker概述</h1><blockquote>
+<p>Docker 是一个开放源代码软件，是一个开放平台，用于开发应用、交付（shipping）应用、运行应用。 Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度。</p>
+</blockquote>
+<blockquote>
+<p>Docker容器与虚拟机类似，但二者在原理上不同。容器是将操作系统层虚拟化，虚拟机则是虚拟化硬件，因此容器更具有便携性、高效地利用服务器。 容器更多的用于表示 软件的一个标准化单元。由于容器的标准化，因此它可以无视基础设施（Infrastructure）的差异，部署到任何一个地方。另外，Docker也为容器提供更强的业界的隔离兼容。</p>
+</blockquote>
+<h2 id="Docker安装步骤"><a href="#Docker安装步骤" class="headerlink" title="Docker安装步骤"></a>Docker安装步骤</h2><p>（centos）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 更新所有yum包到最新</span></span><br><span class="line">yum update</span><br><span class="line"><span class="comment"># 2. 安装所需软件包，yum-utils提供yum-config-manager功能另两个是devicemapper驱动所依赖的</span></span><br><span class="line">yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br><span class="line"><span class="comment"># 3. 设置yum源（这里使用的国内的阿里云）</span></span><br><span class="line">yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="comment"># 4. 安装docker， -y表示出现询问确认的界面都输入y</span></span><br><span class="line">yum install -y docker-ce</span><br><span class="line"><span class="comment"># 5. 查看docker版本，验证是否安装成功</span></span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker架构"><a href="#Docker架构" class="headerlink" title="Docker架构"></a>Docker架构</h2><p><img src="https://www.runoob.com/wp-content/uploads/2016/04/576507-docker1.png"><br>上图中的daemon表示守护进程</p>
+<h3 id="Docker中的三个基本概念"><a href="#Docker中的三个基本概念" class="headerlink" title="Docker中的三个基本概念"></a>Docker中的三个基本概念</h3><ul>
+<li>镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。</li>
+<li>容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</li>
+<li>仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像</li>
+</ul>
+<p>Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。</p>
+<p>Docker 容器通过 Docker 镜像来创建。</p>
+<h2 id="Docker服务相关命令-与守护进程相关的"><a href="#Docker服务相关命令-与守护进程相关的" class="headerlink" title="Docker服务相关命令(与守护进程相关的)"></a>Docker服务相关命令(与守护进程相关的)</h2><p>Docker Daemon是Docker的守护进程，Docker Client通过命令行与Docker Damon通信，完成Docker相关操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 启动Docker服务</span></span><br><span class="line">systemctl start docker</span><br><span class="line"><span class="comment"># 2. 查看Docker启动状态</span></span><br><span class="line">systemctl status docker</span><br><span class="line"><span class="comment"># 3. 停止Docker服务</span></span><br><span class="line">systemctl stop docker</span><br><span class="line"><span class="comment"># 4. 重启Docker服务</span></span><br><span class="line">systemctl restart docker</span><br><span class="line"><span class="comment"># 5. 开机启动Docker服务</span></span><br><span class="line">systemctl <span class="built_in">enable</span> docker</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Docker镜像相关命令"><a href="#Docker镜像相关命令" class="headerlink" title="Docker镜像相关命令"></a>Docker镜像相关命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 查看镜像：查看本地所有镜像</span></span><br><span class="line">docker images</span><br><span class="line"><span class="comment"># 查看所有镜像的ID</span></span><br><span class="line">docker images -q</span><br><span class="line"><span class="comment"># 2. 搜索镜像，从网络中查找所需要的镜像</span></span><br><span class="line">docker search 镜像名称</span><br><span class="line"><span class="comment"># 例如：</span></span><br><span class="line">docker search mysql</span><br><span class="line"><span class="comment"># 3. 拉取镜像：从Docker仓库拉取镜像到本地，镜像名称的格式为 镜像:版本号，如果不指定版本号，则默认安装最新版本</span></span><br><span class="line">docker pull 镜像名称</span><br><span class="line"><span class="comment"># 例如：</span></span><br><span class="line">docker pull mysql</span><br><span class="line">docker pull mysql:5.0.0</span><br><span class="line"><span class="comment"># 4. 删除镜像</span></span><br><span class="line">docker rmi 镜像ID或镜像名与版本号</span><br><span class="line"><span class="comment"># 例如：</span></span><br><span class="line">docker rmi mysql:5.0.0</span><br><span class="line">docker rmi e646c6533b0b</span><br><span class="line">docker rmi `docker images -q` <span class="comment"># 删除所有镜像</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker容器相关命令"><a href="#Docker容器相关命令" class="headerlink" title="Docker容器相关命令"></a>Docker容器相关命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看容器</span></span><br><span class="line">docker ps <span class="comment"># 查看所有运行中的容器</span></span><br><span class="line">docker ps -a <span class="comment"># 查看所有历史容器</span></span><br><span class="line"><span class="comment"># 创建并启动容器</span></span><br><span class="line">docker run 参数</span><br><span class="line"><span class="comment"># 参数；</span></span><br><span class="line">-i <span class="comment"># 保持容器运行，常与-t一起使用（一起使用可省略为-it），使用-it后容器创建后自动进入容器，推出容器后自动销毁</span></span><br><span class="line">-t <span class="comment"># 为容器分配一个伪输入终端</span></span><br><span class="line">-d <span class="comment"># 以守护（后台）模式运行容器，创建一个容器后容器在后台运行，需要使用docker exec命令进入，推出后容器不会销毁</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -it创建的容器一般称为交互式容器，-id创建的容器一般称为守护式容器 </span></span><br><span class="line">--name <span class="comment"># 为创建的容器取名</span></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">docker run -it --name test1 mysql:latest /bin/bash</span><br><span class="line">docker run -id --name test2 mysql:latest /bin/bash</span><br><span class="line"><span class="comment"># 进入容器</span></span><br><span class="line"><span class="comment"># -it会自动进入，-id进入容器示例：(这里的-it是为了分配一个伪终端)</span></span><br><span class="line">docker <span class="built_in">exec</span> -it test2 /bin/bash</span><br><span class="line"><span class="comment"># 退出容器</span></span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker start 容器名</span><br><span class="line"><span class="comment"># 停止容器</span></span><br><span class="line">docker stop 容器名</span><br><span class="line"><span class="comment"># 删除容器</span></span><br><span class="line">docker rm 容器名</span><br><span class="line"><span class="comment"># 查看容器信息</span></span><br><span class="line">docker inspect 容器名</span><br></pre></td></tr></table></figure>
+
+
+<pre><code class="shell">
+</code></pre>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-Docker应用部署</title>
+    <url>/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="Docker应用部署"><a href="#Docker应用部署" class="headerlink" title="Docker应用部署"></a>Docker应用部署</h1><h2 id="一般部署步骤"><a href="#一般部署步骤" class="headerlink" title="一般部署步骤"></a>一般部署步骤</h2><ol>
+<li>搜索镜像</li>
+<li>拉取镜像</li>
+<li>创建容器</li>
+<li>操作容器</li>
+</ol>
+<h2 id="部署MySQL"><a href="#部署MySQL" class="headerlink" title="部署MySQL"></a>部署MySQL</h2><p>前文说到，Docker容器本身不能直接与外部机器通信，其只能与宿主机直接通信，而宿主机又可以直接与外部机器通信，所以想要访问Docker容器，就可以将Docker容器的端口映射到宿主机的端口上（一般都对应到相同端口），这样就可以利用宿主机的端口间接访问Docker容器，即<strong>端口映射</strong></p>
+<p><img src=""></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 搜索镜像</span></span><br><span class="line">docker search mysql</span><br><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull mysql</span><br><span class="line"><span class="comment"># 创建容器,注意创建容器前，在根目录下创建mysql文件夹并进入该目录下，后续数据卷的安装在/root/mysql下进行</span></span><br><span class="line">docker run -id \</span><br><span class="line">-p 3306:3306 \ <span class="comment"># 配置端口映射</span></span><br><span class="line">--name c_mysql \</span><br><span class="line">-v <span class="variable">$PWD</span>/conf:/etc/mysql/conf.d \ <span class="comment"># 配置配置文件数据卷，$PWD表示当前所在文件夹路径</span></span><br><span class="line">-v <span class="variable">$PWD</span>/logs:/logs \ <span class="comment"># 配置日志数据卷</span></span><br><span class="line">-v <span class="variable">$PWD</span>/data:/var/lib/mysql \ <span class="comment"># 配置存放数据的数据卷</span></span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \ <span class="comment"># 配置ROOT用户密码（此处等号不可省）</span></span><br><span class="line">mysql:latest <span class="comment"># 指定容器镜像</span></span><br></pre></td></tr></table></figure>
+
+
+<p>创建完成后，Docker容器的3306端口已经映射到宿主机的3306端口，可以通过外网访问3306端口对mysql进行操作</p>
+<p><img src=""></p>
+<h2 id="部署Tomcat"><a href="#部署Tomcat" class="headerlink" title="部署Tomcat"></a>部署Tomcat</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 根目录下创建tomcat文件夹存储数据卷</span></span><br><span class="line">mkdir ~/tomcat</span><br><span class="line"><span class="comment"># 切换到指定目录下创建容器</span></span><br><span class="line"><span class="built_in">cd</span> tomcat</span><br><span class="line"><span class="comment"># 创建镜像</span></span><br><span class="line">docker run -id --name c_tomcat \</span><br><span class="line">-v <span class="variable">$PWD</span>:/usr/<span class="built_in">local</span>/tomcat/webapps \  <span class="comment"># 配置数据卷</span></span><br><span class="line">-p 8080:8080 \  <span class="comment"># 配置映射端口</span></span><br><span class="line">tomcat:latest</span><br><span class="line"><span class="comment"># Tomcat部署并启动后默认会启动服务器</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建测试文件并在外网利用8080端口访问</span></span><br><span class="line">mkdir <span class="built_in">test</span></span><br><span class="line"><span class="built_in">cd</span> <span class="built_in">test</span></span><br><span class="line">vim index.html  <span class="comment"># 创建并编辑网页文件</span></span><br></pre></td></tr></table></figure>
+
+<p>外网访问<br><img src=""></p>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
 </search>
