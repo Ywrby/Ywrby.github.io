@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://ywrby.cn/2021/04/15/test-for-new-computer/</loc>
+    <lastmod>2021-04-15</lastmod>
+  </url>
+  <url>
+    <loc>http://ywrby.cn/2021/04/07/4-Dockerfile/</loc>
+    <lastmod>2021-04-08</lastmod>
+  </url>
+  <url>
     <loc>http://ywrby.cn/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2021-04-08</lastmod>
+  </url>
+  <url>
+    <loc>http://ywrby.cn/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/</loc>
     <lastmod>2021-04-06</lastmod>
   </url>
   <url>
     <loc>http://ywrby.cn/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/</loc>
-    <lastmod>2021-04-06</lastmod>
-  </url>
-  <url>
-    <loc>http://ywrby.cn/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/</loc>
     <lastmod>2021-04-06</lastmod>
   </url>
   <url>

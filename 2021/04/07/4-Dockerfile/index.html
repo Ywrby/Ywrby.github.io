@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>4-Dockerfile And Docker Compose | Ywrby个人博客网站</title><meta name="keywords" content="Docker"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DockerfileDocker镜像原理Linux文件系统由bootfs与rootfs两部分构成   bootfs：包含bootloader（引导加载程序）和kernel（内核） rootfs：root文件系统，包含的就是典型的Linux系统中的&#x2F;dev,&#x2F;proc,&#x2F;bin,&#x2F;etc等标准文件与目录 不同的Linux发行版bootfs基本相同，主要区别在于rootfs  而Docker镜像是由特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4-Dockerfile And Docker Compose">
+<meta property="og:url" content="http://ywrby.cn/2021/04/07/4-Dockerfile/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="DockerfileDocker镜像原理Linux文件系统由bootfs与rootfs两部分构成   bootfs：包含bootloader（引导加载程序）和kernel（内核） rootfs：root文件系统，包含的就是典型的Linux系统中的&#x2F;dev,&#x2F;proc,&#x2F;bin,&#x2F;etc等标准文件与目录 不同的Linux发行版bootfs基本相同，主要区别在于rootfs  而Docker镜像是由特">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg">
+<meta property="article:published_time" content="2021-04-07T00:39:56.000Z">
+<meta property="article:modified_time" content="2021-04-08T04:40:08.000Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/04/07/4-Dockerfile/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-08 12:40:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">86</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">4-Dockerfile And Docker Compose</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-07T00:39:56.000Z" title="Created 2021-04-07 08:39:56">2021-04-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-08T04:40:08.000Z" title="Updated 2021-04-08 12:40:08">2021-04-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><h2 id="Docker镜像原理"><a href="#Docker镜像原理" class="headerlink" title="Docker镜像原理"></a>Docker镜像原理</h2><p>Linux文件系统由bootfs与rootfs两部分构成</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/Linuxfilesystem.png"></p>
+<ul>
+<li>bootfs：包含bootloader（引导加载程序）和kernel（内核）</li>
+<li>rootfs：root文件系统，包含的就是典型的Linux系统中的/dev,/proc,/bin,/etc等标准文件与目录</li>
+<li>不同的Linux发行版bootfs基本相同，主要区别在于rootfs</li>
+</ul>
+<p>而Docker镜像是由特殊的文件系统叠加而成，其最底端同样依赖bootfs，但是其不需要自己独立拥有bootfs，其可以直接使用宿主机的bootfs。<br>第二层是root文件系统rootfs，被称为base image即基础镜像。</p>
+<p>在其上可以继续叠加其他镜像，而各个镜像之间的文件目录资源等可以相互共享，进一步提高了镜像利用率</p>
+<ul>
+<li>统一文件系统（UFS：Union File System）：该技术能够将不同层镜像整合为一个文件系统，为这些层提供一个统一的对外视角，这样就隐藏了多层存在，从用户角度来看，只暴露了最外层文件系统</li>
+<li>一个镜像可以位于另一个镜像下层，位于下层的镜像被称为父镜像，最底部的镜像称为基础镜像</li>
+<li>当从一个镜像启动容器时，Docker会在最顶层加载一个读写文件系统作为容器，开发人员可以利用这个容器对镜像进行个性化修改，这些修改可以更适应生产环境，并且避免了对原镜像的影响，使得原镜像功能不受影响</li>
+</ul>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/docker%E9%95%9C%E5%83%8F%E5%8E%9F%E7%90%86.png"></p>
+<h2 id="容器转换为镜像"><a href="#容器转换为镜像" class="headerlink" title="容器转换为镜像"></a>容器转换为镜像</h2><p>镜像的制作有两种方式，一种是直接利用容器转换为镜像，另一种是通过Dockerfile构建镜像，直接利用容器转换的步骤如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将容器转换为镜像</span></span><br><span class="line">docker commit 容器ID 镜像名称:版本号</span><br><span class="line"><span class="comment"># 将镜像作为压缩文件输出</span></span><br><span class="line">docker save -o 压缩文件名称 镜像名称:版本号</span><br><span class="line"><span class="comment"># 将压缩文件读取为镜像</span></span><br><span class="line">docker load -i 压缩文件名称</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：</span></span><br><span class="line">docker commit bcd554d24cc5 ywrby_tomcat:1.0</span><br><span class="line">docker save -o ywrby_tomcat.tar ywrby_tomcat:1.0</span><br><span class="line">docker load -i ywrby_tomcat.tar</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，这种形式的镜像制作只能保存容器根目录下的内容，通过数据卷挂载到容器的数据不能被保存到镜像中</p>
+<h2 id="Dockerfile概述"><a href="#Dockerfile概述" class="headerlink" title="Dockerfile概述"></a>Dockerfile概述</h2><p>Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。</p>
+<p>其可以为开发团队提供完全一致的开发环境，方便测试与运维人员</p>
+<h3 id="Dockerfile关键字"><a href="#Dockerfile关键字" class="headerlink" title="Dockerfile关键字"></a>Dockerfile关键字</h3><table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FROM</td>
+<td>指定父镜像</td>
+<td>指定dockerfile基于那个image构建</td>
+</tr>
+<tr>
+<td>MAINTAINER</td>
+<td>作者信息</td>
+<td>用来标明这个dockerfile谁写的</td>
+</tr>
+<tr>
+<td>LABEL</td>
+<td>标签</td>
+<td>用来标明dockerfile的标签 可以使用Label代替Maintainer 最终都是在docker image基本信息中可以查看</td>
+</tr>
+<tr>
+<td>RUN</td>
+<td>执行命令</td>
+<td>执行一段命令 默认是/bin/sh 格式: RUN command 或者 RUN [“command” , “param1”,“param2”]</td>
+</tr>
+<tr>
+<td>CMD</td>
+<td>容器启动命令</td>
+<td>提供启动容器时候的默认命令 和ENTRYPOINT配合使用.格式 CMD command param1 param2 或者 CMD [“command” , “param1”,“param2”]</td>
+</tr>
+<tr>
+<td>ENTRYPOINT</td>
+<td>入口</td>
+<td>一般在制作一些执行就关闭的容器中会使用</td>
+</tr>
+<tr>
+<td>COPY</td>
+<td>复制文件</td>
+<td>build的时候复制文件到image中</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>添加文件</td>
+<td>build的时候添加文件到image中 不仅仅局限于当前build上下文 可以来源于远程服务</td>
+</tr>
+<tr>
+<td>ENV</td>
+<td>环境变量</td>
+<td>指定build时候的环境变量 可以在启动的容器的时候 通过-e覆盖 格式ENV name=value</td>
+</tr>
+<tr>
+<td>ARG</td>
+<td>构建参数</td>
+<td>构建参数 只在构建的时候使用的参数 如果有ENV 那么ENV的相同名字的值始终覆盖arg的参数</td>
+</tr>
+<tr>
+<td>VOLUME</td>
+<td>定义外部可以挂载的数据卷</td>
+<td>指定build的image那些目录可以启动的时候挂载到文件系统中 启动容器的时候使用 -v 绑定 格式 VOLUME [“目录”]</td>
+</tr>
+<tr>
+<td>EXPOSE</td>
+<td>暴露端口</td>
+<td>定义容器运行的时候监听的端口 启动容器的使用-p来绑定暴露端口 格式: EXPOSE 8080 或者 EXPOSE 8080/udp</td>
+</tr>
+<tr>
+<td>WORKDIR</td>
+<td>工作目录</td>
+<td>指定容器内部的工作目录 如果没有创建则自动创建 如果指定/ 使用的是绝对地址 如果不是/开头那么是在上一条workdir的路径的相对路径</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>指定执行用户</td>
+<td>指定build或者启动的时候 用户 在RUN CMD ENTRYPONT执行的时候的用户</td>
+</tr>
+<tr>
+<td>HEALTHCHECK</td>
+<td>健康检查</td>
+<td>指定监测当前容器的健康监测的命令 基本上没用 因为很多时候 应用本身有健康监测机制</td>
+</tr>
+<tr>
+<td>ONBUILD</td>
+<td>触发器</td>
+<td>当存在ONBUILD关键字的镜像作为基础镜像的时候 当执行FROM完成之后 会执行 ONBUILD的命令 但是不影响当前镜像 用处也不怎么大</td>
+</tr>
+<tr>
+<td>STOPSIGNAL</td>
+<td>发送信号量到宿主机</td>
+<td>该STOPSIGNAL指令设置将发送到容器的系统调用信号以退出。</td>
+</tr>
+<tr>
+<td>SHELL</td>
+<td>指定执行脚本的shell</td>
+<td>指定RUN CMD ENTRYPOINT 执行命令的时候 使用的shell</td>
+</tr>
+</tbody></table>
+<h2 id="Dockerfile使用案例"><a href="#Dockerfile使用案例" class="headerlink" title="Dockerfile使用案例"></a>Dockerfile使用案例</h2><h3 id="案例一：自定义centos7镜像"><a href="#案例一：自定义centos7镜像" class="headerlink" title="案例一：自定义centos7镜像"></a>案例一：自定义centos7镜像</h3><p>官方所提供的centos7镜像，默认在创建启动容器后进入根目录下，并且没有vim编辑器，现在通过Dockerfile实现一个镜像，使利用该镜像创建centos7容器时自动进入/usr路径下，并且默认安装vim编辑器</p>
+<h4 id="1-编辑Dockerfile文件（centos-dockerfile）"><a href="#1-编辑Dockerfile文件（centos-dockerfile）" class="headerlink" title="1. 编辑Dockerfile文件（centos_dockerfile）"></a>1. 编辑Dockerfile文件（centos_dockerfile）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义父镜像</span></span><br><span class="line">FROM centos:7 </span><br><span class="line"><span class="comment"># 定义镜像作者信息</span></span><br><span class="line">MAINTAINER ywrby&lt;ywrby0214@gmail.com&gt;</span><br><span class="line"><span class="comment"># 执行安装vim命令</span></span><br><span class="line">RUN yum install -y vim </span><br><span class="line"><span class="comment"># 定义默认的工作目录</span></span><br><span class="line">WORKDIR /usr </span><br><span class="line"><span class="comment"># 定义容器的启动方式</span></span><br><span class="line">CMD /bin/bash </span><br></pre></td></tr></table></figure>
+
+<h4 id="2-执行dockerfile文件，创建镜像"><a href="#2-执行dockerfile文件，创建镜像" class="headerlink" title="2. 执行dockerfile文件，创建镜像"></a>2. 执行dockerfile文件，创建镜像</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -f参数表示dockerfile文件路径，-t参数表示镜像文件名称与版本，最后的.表示默认安装路径</span></span><br><span class="line">docker build -f ./centos_dockerfile -t ywrby_centos:1 .</span><br><span class="line"><span class="comment"># 运行后docker会逐行执行相关命令</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-查看当前镜像文件并创建容器测试"><a href="#3-查看当前镜像文件并创建容器测试" class="headerlink" title="3. 查看当前镜像文件并创建容器测试"></a>3. 查看当前镜像文件并创建容器测试</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/thauihufiha.png"></p>
+<h1 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h1><h2 id="服务编排概念"><a href="#服务编排概念" class="headerlink" title="服务编排概念"></a>服务编排概念</h2><p>微服务架构的应用系统中，一般包含若干个微服务，每个微服务一般都会部署多个实例，如果每个微服务都需要手动启动停止，维护的工作量是巨大的</p>
+<p>服务编排就是为了解决这种矛盾，服务编排是按照一定业务规则编排管理容器</p>
+<p>Docker Compose是一个编排多容器分布式部署的工具，提供命令集管理容器化应用完整的开发周期，包括服务的构建，启动和停止</p>
+<h2 id="Docker-Compose使用步骤"><a href="#Docker-Compose使用步骤" class="headerlink" title="Docker Compose使用步骤"></a>Docker Compose使用步骤</h2><ol>
+<li>利用Dockerfile定义运行环境镜像</li>
+<li>使用docker-compose.yml定义组成应用的各服务</li>
+<li>运行docker compose up命令启动应用</li>
+</ol>
+<h2 id="安装Docker-Compose"><a href="#安装Docker-Compose" class="headerlink" title="安装Docker Compose"></a>安装Docker Compose</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 从 Github 上下载它的二进制包来使用</span></span><br><span class="line">curl -L <span class="string">&quot;https://github.com/docker/compose/releases/download/1.24.1/docker-compose-<span class="subst">$(uname -s)</span>-<span class="subst">$(uname -m)</span>&quot;</span> -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 将可执行权限应用于二进制文件</span></span><br><span class="line">chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 创建软链</span></span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/bin/docker-compose /usr/bin/docker-compose</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试是否安装成功</span></span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载Docker-Compose"><a href="#卸载Docker-Compose" class="headerlink" title="卸载Docker Compose"></a>卸载Docker Compose</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm /usr/<span class="built_in">local</span>/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Docker-Compose"><a href="#使用Docker-Compose" class="headerlink" title="使用Docker Compose"></a>使用Docker Compose</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line">mkdir ~/docker-compose</span><br><span class="line"><span class="built_in">cd</span> ~/docker-compose</span><br><span class="line"><span class="comment"># 编写docker compose文件</span></span><br><span class="line">vim docker-compose.yml</span><br><span class="line"></span><br><span class="line">version: <span class="string">&#x27;3&#x27;</span></span><br><span class="line">services:</span><br><span class="line">    c_nginx:</span><br><span class="line">        image: nginx</span><br><span class="line">        ports:</span><br><span class="line">            - 80:80</span><br><span class="line">        links:</span><br><span class="line">            - c_tomcat</span><br><span class="line">        volumes:</span><br><span class="line">            - ./nginx/conf.d:/etc/nginx/conf.d</span><br><span class="line">    c_tomcat:</span><br><span class="line">        image: tomcat</span><br><span class="line">        expose:</span><br><span class="line">            - <span class="string">&quot;8080&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在docker compose目录下，使用docker-compose启动容器</span></span><br><span class="line">docker compose up</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/04/07/4-Dockerfile/">http://ywrby.cn/2021/04/07/4-Dockerfile/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Docker/">Docker</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/15/test-for-new-computer/"><img class="prev-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73604608_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">test for new computer</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">3-Docker应用部署</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/04/06/1-Docker概述/" title="1-Docker概述"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-06</div><div class="title">1-Docker概述</div></div></a></div><div><a href="/2021/04/06/2-Docker容器数据卷/" title="2-Docker容器数据卷"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-06</div><div class="title">2-Docker容器数据卷</div></div></a></div><div><a href="/2021/04/06/3-Docker应用部署/" title="3-Docker应用部署"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-06</div><div class="title">3-Docker应用部署</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">86</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Dockerfile"><span class="toc-number">1.</span> <span class="toc-text">Dockerfile</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E9%95%9C%E5%83%8F%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">Docker镜像原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E8%BD%AC%E6%8D%A2%E4%B8%BA%E9%95%9C%E5%83%8F"><span class="toc-number">1.2.</span> <span class="toc-text">容器转换为镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile%E6%A6%82%E8%BF%B0"><span class="toc-number">1.3.</span> <span class="toc-text">Dockerfile概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dockerfile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.3.1.</span> <span class="toc-text">Dockerfile关键字</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">1.4.</span> <span class="toc-text">Dockerfile使用案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89centos7%E9%95%9C%E5%83%8F"><span class="toc-number">1.4.1.</span> <span class="toc-text">案例一：自定义centos7镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BC%96%E8%BE%91Dockerfile%E6%96%87%E4%BB%B6%EF%BC%88centos-dockerfile%EF%BC%89"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">1. 编辑Dockerfile文件（centos_dockerfile）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%89%A7%E8%A1%8Cdockerfile%E6%96%87%E4%BB%B6%EF%BC%8C%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">2. 执行dockerfile文件，创建镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E5%B9%B6%E5%88%9B%E5%BB%BA%E5%AE%B9%E5%99%A8%E6%B5%8B%E8%AF%95"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">3. 查看当前镜像文件并创建容器测试</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-Compose"><span class="toc-number">2.</span> <span class="toc-text">Docker Compose</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%BC%96%E6%8E%92%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">服务编排概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-Compose%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.2.</span> <span class="toc-text">Docker Compose使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Docker-Compose"><span class="toc-number">2.3.</span> <span class="toc-text">安装Docker Compose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BDDocker-Compose"><span class="toc-number">2.4.</span> <span class="toc-text">卸载Docker Compose</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Docker-Compose"><span class="toc-number">2.5.</span> <span class="toc-text">使用Docker Compose</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/15/test-for-new-computer/" title="test for new computer"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73604608_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="test for new computer"/></a><div class="content"><a class="title" href="/2021/04/15/test-for-new-computer/" title="test for new computer">test for new computer</a><time datetime="2021-04-15T14:15:32.000Z" title="Created 2021-04-15 22:15:32">2021-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/07/4-Dockerfile/" title="4-Dockerfile And Docker Compose"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4-Dockerfile And Docker Compose"/></a><div class="content"><a class="title" href="/2021/04/07/4-Dockerfile/" title="4-Dockerfile And Docker Compose">4-Dockerfile And Docker Compose</a><time datetime="2021-04-07T00:39:56.000Z" title="Created 2021-04-07 08:39:56">2021-04-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" title="3-Docker应用部署"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3-Docker应用部署"/></a><div class="content"><a class="title" href="/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" title="3-Docker应用部署">3-Docker应用部署</a><time datetime="2021-04-06T11:18:53.000Z" title="Created 2021-04-06 19:18:53">2021-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/" title="2-Docker容器数据卷"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2-Docker容器数据卷"/></a><div class="content"><a class="title" href="/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/" title="2-Docker容器数据卷">2-Docker容器数据卷</a><time datetime="2021-04-06T07:41:07.000Z" title="Created 2021-04-06 15:41:07">2021-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/" title="1-Docker概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-Docker概述"/></a><div class="content"><a class="title" href="/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/" title="1-Docker概述">1-Docker概述</a><time datetime="2021-04-06T04:47:56.000Z" title="Created 2021-04-06 12:47:56">2021-04-06</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
