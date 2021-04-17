@@ -1,0 +1,1007 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>4-网络层（上） | Ywrby个人博客网站</title><meta name="keywords" content="计算机网络"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="网络层基础在参考模型中网络层位于传输层之下，链路层之上。 网络层的功能主要是将源端产生的数据包&#x2F;分组，送达至目的机 完成这项工作需要： 封装源数据 识别目的机 找到一条好的路径（路由）  可能遭遇的问题： 地址不够用 丢包 拥塞  网络层主要内容被路由协议：IP协议 IP地址：定位目的机 IP分组：解决信息封装 IPv6：新一代IP协议  路由选择协议：找到目的机和源机之间的最优路径 距离矢量路由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4-网络层（上）">
+<meta property="og:url" content="http://ywrby.cn/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="网络层基础在参考模型中网络层位于传输层之下，链路层之上。 网络层的功能主要是将源端产生的数据包&#x2F;分组，送达至目的机 完成这项工作需要： 封装源数据 识别目的机 找到一条好的路径（路由）  可能遭遇的问题： 地址不够用 丢包 拥塞  网络层主要内容被路由协议：IP协议 IP地址：定位目的机 IP分组：解决信息封装 IPv6：新一代IP协议  路由选择协议：找到目的机和源机之间的最优路径 距离矢量路由">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg">
+<meta property="article:published_time" content="2021-04-16T13:13:18.000Z">
+<meta property="article:modified_time" content="2021-04-16T13:18:47.979Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-16 21:18:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">86</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">4-网络层（上）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-16T13:13:18.000Z" title="Created 2021-04-16 21:13:18">2021-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-16T13:18:47.979Z" title="Updated 2021-04-16 21:18:47">2021-04-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="网络层基础"><a href="#网络层基础" class="headerlink" title="网络层基础"></a>网络层基础</h1><p>在参考模型中网络层位于传输层之下，链路层之上。</p>
+<p>网络层的功能主要是将源端产生的数据包/分组，送达至目的机</p>
+<h4 id="完成这项工作需要："><a href="#完成这项工作需要：" class="headerlink" title="完成这项工作需要："></a>完成这项工作需要：</h4><ol>
+<li>封装源数据</li>
+<li>识别目的机</li>
+<li>找到一条好的路径（路由）</li>
+</ol>
+<h4 id="可能遭遇的问题："><a href="#可能遭遇的问题：" class="headerlink" title="可能遭遇的问题："></a>可能遭遇的问题：</h4><ul>
+<li>地址不够用</li>
+<li>丢包</li>
+<li>拥塞</li>
+</ul>
+<h3 id="网络层主要内容"><a href="#网络层主要内容" class="headerlink" title="网络层主要内容"></a>网络层主要内容</h3><h4 id="被路由协议：IP协议"><a href="#被路由协议：IP协议" class="headerlink" title="被路由协议：IP协议"></a>被路由协议：IP协议</h4><ul>
+<li>IP地址：定位目的机</li>
+<li>IP分组：解决信息封装</li>
+<li>IPv6：新一代IP协议</li>
+</ul>
+<h4 id="路由选择协议：找到目的机和源机之间的最优路径"><a href="#路由选择协议：找到目的机和源机之间的最优路径" class="headerlink" title="路由选择协议：找到目的机和源机之间的最优路径"></a>路由选择协议：找到目的机和源机之间的最优路径</h4><ul>
+<li>距离矢量路由选择协议（RIP）</li>
+<li>链路状态路由选择协议（OSPF）</li>
+</ul>
+<h4 id="其他方面："><a href="#其他方面：" class="headerlink" title="其他方面："></a>其他方面：</h4><ul>
+<li>ARP</li>
+<li>ICMP</li>
+<li>CIDR</li>
+<li>NAT</li>
+</ul>
+<h2 id="源和目的机之间的网络分为："><a href="#源和目的机之间的网络分为：" class="headerlink" title="源和目的机之间的网络分为："></a>源和目的机之间的网络分为：</h2><h3 id="数据报网络："><a href="#数据报网络：" class="headerlink" title="数据报网络："></a>数据报网络：</h3><p>提供无连接的服务</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C.jpg"></p>
+<h3 id="虚电路网络："><a href="#虚电路网络：" class="headerlink" title="虚电路网络："></a>虚电路网络：</h3><p>提供面向连接的服务</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C.jpg"></p>
+<table>
+<thead>
+<tr>
+<th>比较项目</th>
+<th>数据报子网（无连接服务）</th>
+<th>虚电路子网（面向连接服务）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>建立电路</td>
+<td>不需要</td>
+<td>要求</td>
+</tr>
+<tr>
+<td>地址信息</td>
+<td>每个分组含完整的SA和DA</td>
+<td>每个VC包含一个很短的VC号码</td>
+</tr>
+<tr>
+<td>状态信息</td>
+<td>路由器不保留任何连接状态信息</td>
+<td>每个VC都要求路由器建立表项</td>
+</tr>
+<tr>
+<td>路由</td>
+<td>每个分组独立选择路由</td>
+<td>每个分组沿建立VC时确定的路由</td>
+</tr>
+<tr>
+<td>路由器失效影响</td>
+<td>没有，只有系统崩溃时丢失分组</td>
+<td>所有经过失效R的VC都终止</td>
+</tr>
+<tr>
+<td>服务质量，拥塞控制</td>
+<td>很难实现</td>
+<td>总资源（带宽、缓存）足够的情况下，采用提前给每个VC分配资源的方法，很容易实现</td>
+</tr>
+</tbody></table>
+<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><h2 id="IP（Internet-Protocol）"><a href="#IP（Internet-Protocol）" class="headerlink" title="IP（Internet Protocol）"></a>IP（Internet Protocol）</h2><p><strong>互联网协议</strong>，是TCP/IP协议栈的核心之一</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/TCPIP%E5%8D%8F%E8%AE%AE%E6%A0%88.jpg"></p>
+<h3 id="IP任务："><a href="#IP任务：" class="headerlink" title="IP任务："></a>IP任务：</h3><p>提供一种尽力而为（best-effort），把数据从源端运输到目的机的方法，IP就像是胶水，将整个互联网络连接起来</p>
+<h3 id="IP为路由提供路由所需要的信息，所以IP也被称为被路由协议"><a href="#IP为路由提供路由所需要的信息，所以IP也被称为被路由协议" class="headerlink" title="IP为路由提供路由所需要的信息，所以IP也被称为被路由协议"></a>IP为路由提供路由所需要的信息，所以IP也被称为被路由协议</h3><p>包含两方面的内容，一方面包含IP地址，<strong>IP地址的作用就在于标识收发的数据机</strong>。另一方面是IP分组/数据报，这是信息封装的格式</p>
+<h2 id="IP地址-1"><a href="#IP地址-1" class="headerlink" title="IP地址"></a>IP地址</h2><p>由32位二进制数表示，包含$2^{32}\approx43*10^8$即43亿个IP地址。缺点在于难于记忆。所以我们经常将IP地址的32位均等分为4组，中间用点分号隔开，每组八位用十进制表示，就形成了常见的IP地址格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000100100110010000110011000101</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000100.10011001.00001100.11000101</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">132.153.12.197</span><br></pre></td></tr></table></figure>
+
+<h3 id="IP地址具有层次结构"><a href="#IP地址具有层次结构" class="headerlink" title="IP地址具有层次结构"></a>IP地址具有层次结构</h3><p>各个地址之间可能具有一定的从属关系</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E7%BB%93%E6%9E%84%E5%B1%82%E6%AC%A1.jpg"></p>
+<p>这得益于IP地址天生就由两部分组成，IP地址中一部分表示网络部分，一部分表示主机部分，至于各部分占多少位，在不同类型的IP地址中有不同规定</p>
+<h4 id="A类地址"><a href="#A类地址" class="headerlink" title="A类地址"></a>A类地址</h4><p>前一个字节标识网络部分，后三个字节都标识主机部分，<br>由于第一个字节的第一位固定用0标识，所以这个网络公有从（0000000-1111111）也就是0~127组网络，每个网络能容纳$2^{24}-2$台主机，具有A类网络特征的网络有128个，属于大型网络</p>
+<table>
+<thead>
+<tr>
+<th>0xxxxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>网络部分</strong></td>
+<td>主机部分</td>
+<td>主机部分</td>
+<td>主机部分</td>
+</tr>
+</tbody></table>
+<h4 id="B类地址"><a href="#B类地址" class="headerlink" title="B类地址"></a>B类地址</h4><p>前两个字节用来标识网络部分，后两个字节用来标识主机部分，开头两位固定为10，所以这个网络第一字节从(10000000-10111111)也就是第一字节从128-191的网络，每个网络能容纳$2^{16}-2$台主机，具有B类特征的网络有$2^{14}$个，属于中型网络</p>
+<table>
+<thead>
+<tr>
+<th>10xxxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>网络部分</strong></td>
+<td><strong>网络部分</strong></td>
+<td>主机部分</td>
+<td>主机部分</td>
+</tr>
+</tbody></table>
+<h4 id="C类地址"><a href="#C类地址" class="headerlink" title="C类地址"></a>C类地址</h4><p>前三个字节标识网络部分，最后一个字节用来标识主机部分，开头三位固定为110，第一字节从11000000~11011111也就是192-223范围内的网络，每个网络能容纳254台主机，具有C类地址特征的网络总数为$2^{21}$个。属于小型网络</p>
+<table>
+<thead>
+<tr>
+<th>110xxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+<th>xxxxxxxx</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>网络部分</strong></td>
+<td><strong>网络部分</strong></td>
+<td><strong>网络部分</strong></td>
+<td>主机部分</td>
+</tr>
+</tbody></table>
+<h4 id="保留IP地址"><a href="#保留IP地址" class="headerlink" title="保留IP地址"></a>保留IP地址</h4><p><strong>D类地址</strong>：用作组播</p>
+<p><strong>E类地址</strong>：用作科研</p>
+<p><strong>网络地址</strong>：主机部分全部为0的地址</p>
+<p><strong>广播地址</strong>：主机部分全部为1的地址</p>
+<p><strong>32位全为0</strong>：0.0.0.0，标识这个主机，这个网络。路由表中默认路由的默认地址</p>
+<p><strong>32位全为1</strong>：255.255.255.255，泛洪广播地址，指代互联网所有机器，如果一个分组目的地址是泛洪广播地址，它将发送给互联网上所有主机，但这种行为实际非常可怕，他可能引起很严重的广播风暴，所以这个广播地址实际退化成了本地广播地址，路由器在截获这个地址后，不会再转发这种地址</p>
+<p><strong>环回地址</strong>：以127开头的地址，例如127.0.0.1代表本地主机</p>
+<p><strong>非正常地址</strong>：169.254.x.x,不能与外界正常通信</p>
+<h2 id="IP地址的分配"><a href="#IP地址的分配" class="headerlink" title="IP地址的分配"></a>IP地址的分配</h2><p>IP地址的分配是一种层级分配，全球的IP地址和域名分配，由<strong>ICANN</strong>负责，其下有诸多地区网络中心，如APNIC亚太地址网络信息中心，再往下就是各个国家网络中心，例如中国网络中心就从属于APNIC，国家网络中心下还有诸多运营商网络中心，<strong>普通用户就是从运营商处获取IP地址</strong></p>
+<hr>
+<h1 id="子网规划"><a href="#子网规划" class="headerlink" title="子网规划"></a>子网规划</h1><p>局域网不断发展，日益庞大以至于<strong>难以管理</strong>，所以必须要将庞大的局域网进行<strong>分割</strong>，分割成为不同的子网</p>
+<p>一个局域网虽然被分割成几部分（子网），但在外界看来，还是在一个局域网内，这是由于这些局域网对应的<strong>外部路由器仍然只有一条</strong></p>
+<p>同时允许不同的子网在一个组织内部连接起来</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E5%AD%90%E7%BD%91.jpg"></p>
+<h2 id="主-边界路由器"><a href="#主-边界路由器" class="headerlink" title="主/边界路由器"></a>主/边界路由器</h2><p>负责与外部进行联系，从外部收到分组，向内部分组转发，路由器识别选择子网的方式通过<strong>子网掩码</strong>实现。</p>
+<h3 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h3><p>一种了解网络规模的机制</p>
+<p>可以用点分十进制（连续的0和连续的1）表示，例如：11111111111111111111111111100000（255.255.255.224），其中1表示网络位，0表示主机位。</p>
+<p>还可以用/+网络位数+子网位数 表示，例如上文中的27个1和5个0表示的点分十进制形式的子网掩码还可以用 /27 表示</p>
+<p>路由器采用按位与操作，将目的IP地址和子网掩码进行按位与计算。例如：</p>
+<p>目的IP地址：128.125.23.102，当前路由器IP地址：128.125.0.0/16，前16位为网络地址，后16位中，前八位为子网位数，后八位为主机位数，所以，它的子网掩码就是/24，也就是前24位为1，后八位为0 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">128.125.23.102</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000000-01111101-00010111-01100110</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11111111-11111111-11111111-00000000</span><br></pre></td></tr></table></figure>
+<h4 id="执行按位与操作得到："><a href="#执行按位与操作得到：" class="headerlink" title="执行按位与操作得到："></a>执行按位与操作得到：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000000-01111101-00010111-00000000</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">128.125.23.0</span><br></pre></td></tr></table></figure>
+<p>最终得到的结果就是目的IP地址所属的网络（子网）的地址。</p>
+<p>适用子网掩码的机制，使得路由器不必记录所有主机的地址，缩减了路由表的规模</p>
+<h4 id="一些缺省的子网掩码"><a href="#一些缺省的子网掩码" class="headerlink" title="一些缺省的子网掩码"></a>一些缺省的子网掩码</h4><table>
+<thead>
+<tr>
+<th>网络类型</th>
+<th>点分十进制</th>
+<th>网络前缀表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A：</td>
+<td>255.0.0.0（8位网络位）</td>
+<td>/8</td>
+</tr>
+<tr>
+<td>B：</td>
+<td>255.255.0.0（16位网络位）</td>
+<td>/16</td>
+</tr>
+<tr>
+<td>C：</td>
+<td>255.255.255.0（24位网络位）</td>
+<td>/24</td>
+</tr>
+</tbody></table>
+<h3 id="主机借位"><a href="#主机借位" class="headerlink" title="主机借位"></a>主机借位</h3><p>IP地址长度不变，却从两级结构（网络位+主机位）变为了三级结构（网络位+子网位+主机位）。这个过程是通过向主机位借位形成子网位实现的</p>
+<p>例如对于C类地址，后八位是主机位，假设现在从其中借两位用来表示子网位，那么可以表示三个子网（00，01，11）.剩余6位可以形成$2^6$即64个IP地址，除了其中的保留地址(网络地址：000000和广播地址：111111)其余62个均为可用IP地址</p>
+<h4 id="借位原则："><a href="#借位原则：" class="headerlink" title="借位原则："></a>借位原则：</h4><ul>
+<li>借位必须从主机域的高位开始借</li>
+<li>主机域至少要求保留两位</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>网络类型</th>
+<th>主机位</th>
+<th>最大借位/子网位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>24</td>
+<td>22</td>
+</tr>
+<tr>
+<td>B</td>
+<td>16</td>
+<td>14</td>
+</tr>
+<tr>
+<td>C</td>
+<td>8</td>
+<td>6</td>
+</tr>
+</tbody></table>
+<h4 id="确定子网位"><a href="#确定子网位" class="headerlink" title="确定子网位"></a>确定子网位</h4><p><strong>按照主机位规划</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IP地址需求数量&lt;&#x3D;2^n</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(n表示主机位数)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">子网位数&#x3D;8-n</span><br></pre></td></tr></table></figure>
+
+<p><strong>按照网络数要求规划</strong></p>
+<p>根据子网数，确定借位数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">子网数&lt;&#x3D;2^n</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">借位数&#x3D;n</span><br></pre></td></tr></table></figure>
+
+<p><strong>还可以综合主机位与网络数两点因素共同规划确定子网位</strong></p>
+<h1 id="IP寻址"><a href="#IP寻址" class="headerlink" title="IP寻址"></a>IP寻址</h1><h3 id="互联网与网络层的关系"><a href="#互联网与网络层的关系" class="headerlink" title="互联网与网络层的关系"></a>互联网与网络层的关系</h3><ul>
+<li>在网络层上，可将整个互联网看作是一组互联的子网络的自治系统</li>
+<li>将整个互联网联合起来的正是网络层协议：IP</li>
+<li>IP的目的是提供一种尽力的传送方式，将数据从源传到目的</li>
+</ul>
+<h3 id="IP寻址：根据目的IP地址，找到目的网络的过程"><a href="#IP寻址：根据目的IP地址，找到目的网络的过程" class="headerlink" title="IP寻址：根据目的IP地址，找到目的网络的过程"></a>IP寻址：根据目的IP地址，找到目的网络的过程</h3><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IP%E5%AF%BB%E5%9D%80.jpg"></p>
+<p>在路由器之间进行的是IP寻址，根据路由器内部的路由表可以实现最短路径到达我们标记的目的地址，而在局域网内部是借助MAC寻址最终到达目的机</p>
+<h3 id="两种寻址方式比较"><a href="#两种寻址方式比较" class="headerlink" title="两种寻址方式比较"></a>两种寻址方式比较</h3><table>
+<thead>
+<tr>
+<th>区别\寻址方式</th>
+<th>IP寻址</th>
+<th>MAC寻址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用的网络范围不同</td>
+<td>大型网络(互联网间)</td>
+<td>小型网络(局域网)</td>
+</tr>
+<tr>
+<td>所依赖的地址结构不同</td>
+<td>结构化、层次化地址，其本身携带了位置信息</td>
+<td>平面地址</td>
+</tr>
+<tr>
+<td>所处的OSI模型层数不同</td>
+<td>网络层</td>
+<td>数据链路层</td>
+</tr>
+<tr>
+<td>地址数目的限制</td>
+<td>IP地址池正在枯竭</td>
+<td>暂无耗尽的危险</td>
+</tr>
+<tr>
+<td>地址格式区别</td>
+<td>32位/十进制表示</td>
+<td>48位/十六进制</td>
+</tr>
+</tbody></table>
+<h2 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h2><p>在IP寻址过程中，一个路由器又被称为一跳（HOP）。当数据到达最后一跳，最后将数据重新封装好后传给所在的目的网络，随后在目的网络内部开始进行的就变成了MAC寻址</p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><ul>
+<li>打开传来的分组</li>
+<li>确定目标网络，查找路由表</li>
+<li>将数据重新封装，转发</li>
+</ul>
+<h3 id="路由表（路由器转发数据的依据）"><a href="#路由表（路由器转发数据的依据）" class="headerlink" title="路由表（路由器转发数据的依据）"></a>路由表（路由器转发数据的依据）</h3><p>主要包括 </p>
+<ul>
+<li>目的网络地址network address </li>
+<li>接口interface</li>
+<li>代价metric (f.g. hop)</li>
+<li>子网掩码subnet mask</li>
+<li>网关gateway</li>
+</ul>
+<p><strong>除了路由表，路由器内部有一张ARP表（所有子网设备的IP-MAC映射（包括网关））</strong></p>
+<h4 id="路由表可能因厂家的不同而不同"><a href="#路由表可能因厂家的不同而不同" class="headerlink" title="路由表可能因厂家的不同而不同"></a>路由表可能因厂家的不同而不同</h4><h4 id="终端可通过route-print查看本地的路由表"><a href="#终端可通过route-print查看本地的路由表" class="headerlink" title="终端可通过route print查看本地的路由表"></a>终端可通过route print查看本地的路由表</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">===========================================================================</span><br><span class="line">接口列表</span><br><span class="line"> 23...e4 54 e8 14 47 a1 ......Realtek PCIe GbE Family Controller</span><br><span class="line"> 24...00 ff aa bb cc dd ......Gateway NC Adapter</span><br><span class="line"> 14...0a 00 27 00 00 0e ......VirtualBox Host-Only Ethernet Adapter</span><br><span class="line">  4...c2 b5 d7 79 6b bb ......Microsoft Wi-Fi Direct Virtual Adapter #3</span><br><span class="line"> 16...d2 b5 d7 79 6b bb ......Microsoft Wi-Fi Direct Virtual Adapter #4</span><br><span class="line">  5...00 50 56 c0 00 01 ......VMware Virtual Ethernet Adapter for VMnet1</span><br><span class="line">  9...00 50 56 c0 00 08 ......VMware Virtual Ethernet Adapter for VMnet8</span><br><span class="line"> 11...c0 b5 d7 79 6b bb ......Qualcomm QCA9377 802.11ac Wireless Adapter</span><br><span class="line">  1...........................Software Loopback Interface 1</span><br><span class="line">===========================================================================</span><br><span class="line"></span><br><span class="line">IPv4 路由表</span><br><span class="line">===========================================================================</span><br><span class="line">活动路由:</span><br><span class="line">网络目标        网络掩码          网关       接口   跃点数</span><br><span class="line">          0.0.0.0          0.0.0.0      192.168.1.1    192.168.1.107     50</span><br><span class="line">        127.0.0.0        255.0.0.0            在链路上         127.0.0.1    331</span><br><span class="line">        127.0.0.1  255.255.255.255            在链路上         127.0.0.1    331</span><br><span class="line">  127.255.255.255  255.255.255.255            在链路上         127.0.0.1    331</span><br><span class="line">      192.168.1.0    255.255.255.0            在链路上     192.168.1.107    306</span><br><span class="line">    192.168.1.107  255.255.255.255            在链路上     192.168.1.107    306</span><br><span class="line">    192.168.1.255  255.255.255.255            在链路上     192.168.1.107    306</span><br><span class="line">     192.168.56.0    255.255.255.0            在链路上      192.168.56.1    281</span><br><span class="line">     192.168.56.1  255.255.255.255            在链路上      192.168.56.1    281</span><br><span class="line">   192.168.56.255  255.255.255.255            在链路上      192.168.56.1    281</span><br><span class="line">    192.168.139.0    255.255.255.0            在链路上     192.168.139.1    291</span><br><span class="line">    192.168.139.1  255.255.255.255            在链路上     192.168.139.1    291</span><br><span class="line">  192.168.139.255  255.255.255.255            在链路上     192.168.139.1    291</span><br><span class="line">    192.168.190.0    255.255.255.0            在链路上     192.168.190.1    291</span><br><span class="line">    192.168.190.1  255.255.255.255            在链路上     192.168.190.1    291</span><br><span class="line">  192.168.190.255  255.255.255.255            在链路上     192.168.190.1    291</span><br><span class="line">        224.0.0.0        240.0.0.0            在链路上         127.0.0.1    331</span><br><span class="line">        224.0.0.0        240.0.0.0            在链路上      192.168.56.1    281</span><br><span class="line">        224.0.0.0        240.0.0.0            在链路上     192.168.139.1    291</span><br><span class="line">        224.0.0.0        240.0.0.0            在链路上     192.168.190.1    291</span><br><span class="line">        224.0.0.0        240.0.0.0            在链路上     192.168.1.107    306</span><br><span class="line">  255.255.255.255  255.255.255.255            在链路上         127.0.0.1    331</span><br><span class="line">  255.255.255.255  255.255.255.255            在链路上      192.168.56.1    281</span><br><span class="line">  255.255.255.255  255.255.255.255            在链路上     192.168.139.1    291</span><br><span class="line">  255.255.255.255  255.255.255.255            在链路上     192.168.190.1    291</span><br><span class="line">  255.255.255.255  255.255.255.255            在链路上     192.168.1.107    306</span><br><span class="line">===========================================================================</span><br><span class="line">永久路由:</span><br><span class="line">  无</span><br><span class="line"></span><br><span class="line">IPv6 路由表</span><br><span class="line">===========================================================================</span><br><span class="line">活动路由:</span><br><span class="line"> 接口跃点数网络目标                网关</span><br><span class="line">  1    331 ::1/128                  在链路上</span><br><span class="line"> 14    281 fe80::/64                在链路上</span><br><span class="line">  5    291 fe80::/64                在链路上</span><br><span class="line">  9    291 fe80::/64                在链路上</span><br><span class="line"> 11    306 fe80::/64                在链路上</span><br><span class="line"> 11    306 fe80::2016:6332:cc2f:b7a4/128</span><br><span class="line">                                    在链路上</span><br><span class="line">  5    291 fe80::2c4d:1555:e274:ab03/128</span><br><span class="line">                                    在链路上</span><br><span class="line"> 14    281 fe80::41a0:188a:c7c4:10ff/128</span><br><span class="line">                                    在链路上</span><br><span class="line">  9    291 fe80::fcf4:6fb0:8e57:33df/128</span><br><span class="line">                                    在链路上</span><br><span class="line">  1    331 ff00::/8                 在链路上</span><br><span class="line"> 14    281 ff00::/8                 在链路上</span><br><span class="line">  5    291 ff00::/8                 在链路上</span><br><span class="line">  9    291 ff00::/8                 在链路上</span><br><span class="line"> 11    306 ff00::/8                 在链路上</span><br><span class="line">===========================================================================</span><br><span class="line">永久路由:</span><br><span class="line">  无</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="IP分组"><a href="#IP分组" class="headerlink" title="IP分组"></a>IP分组</h1><h4 id="IP协议的另一个重要内容"><a href="#IP协议的另一个重要内容" class="headerlink" title="IP协议的另一个重要内容"></a>IP协议的另一个重要内容</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%BC%E5%BC%8F.jpg"></p>
+<h4 id="IP分组分为头部和数据两大部分，不含可选字段的头部有20个字节的长度，其中包含十二个字段。按照4个字节（32位）为一行排列，则一共有五行"><a href="#IP分组分为头部和数据两大部分，不含可选字段的头部有20个字节的长度，其中包含十二个字段。按照4个字节（32位）为一行排列，则一共有五行" class="headerlink" title="IP分组分为头部和数据两大部分，不含可选字段的头部有20个字节的长度，其中包含十二个字段。按照4个字节（32位）为一行排列，则一共有五行"></a>IP分组分为头部和数据两大部分，不含可选字段的头部有20个字节的长度，其中包含十二个字段。按照4个字节（32位）为一行排列，则一共有五行</h4><h3 id="协议版本"><a href="#协议版本" class="headerlink" title="协议版本"></a>协议版本</h3><p>长度为4位，用来表明IP协议版本号(IPv4:0100,IPv6:0110)</p>
+<h3 id="报头长度"><a href="#报头长度" class="headerlink" title="报头长度"></a>报头长度</h3><p>表明IP分组报头的长度，<strong>长度</strong>为4位，<strong>单位</strong>是4字节(32bit)。这4位数变化的范围在0101-1111对应的十进制数就是5-15，也就是<strong>报头长度的变化范围在20-60字节</strong>(其中包括<strong>二十字节的固定报头长度</strong>，和不确定的可选项)</p>
+<h3 id="服务类型"><a href="#服务类型" class="headerlink" title="服务类型"></a>服务类型</h3><p>区分服务(DS:Differentiated Service)，长度为8位，表示分组的优先级和丢弃级等，在现在的互联网中应用较少，可以用来提供一些服务质量的保证，拥塞控制等</p>
+<h3 id="数据报总长度"><a href="#数据报总长度" class="headerlink" title="数据报总长度"></a>数据报总长度</h3><p>长度位16位，表明整个报文/分组的长度（报头+数据），<strong>单位是字节</strong>，能够表示的总长度=$2^16-1$,即65535字节</p>
+<h3 id="数据报标识号"><a href="#数据报标识号" class="headerlink" title="数据报标识号"></a>数据报标识号</h3><p>也叫分组标识号，长度为16位，标识当前分组/数据报的序列号，这个序列号由源机（发送方）维护。接收方可以通过这个序列号进行数据报的重组</p>
+<h3 id="标志字段，分片偏移字段"><a href="#标志字段，分片偏移字段" class="headerlink" title="标志字段，分片偏移字段"></a>标志字段，分片偏移字段</h3><p>标志字段占3位，分片偏移字段占13位。前者决定是否进行分片操作，后者决定分片之后，接收方如何还原原数据报</p>
+<p>分组从源传输到目的机的过程可能会跨越一个很大的网络，这其间的网络的<strong>MTU</strong>(最大传输单元Maximum Transmission Unit)可能是不同的,当数据从一个大MTU的网络传输到一个小MTU的网络，就需要进行分片操作，将一个大数据报切割成多个小数据报。</p>
+<h3 id="生存时间TTL"><a href="#生存时间TTL" class="headerlink" title="生存时间TTL"></a>生存时间TTL</h3><p>现行的生存时间的单位是<strong>跳数</strong>(HOP)，每经过一个路由器，跳数都需要减一，当<strong>跳数为0</strong>时，这个数据报就会被<strong>丢弃</strong>，丢弃数据报的路由会向发送方返回一个超时消息，说明这个数据报没有到达目的机，但生存时间已经为0，所以被丢弃了。TTL可以<strong>防止一个分组在网络里无限循环</strong></p>
+<h3 id="用户协议"><a href="#用户协议" class="headerlink" title="用户协议"></a>用户协议</h3><p>长度为8位，用来指明上层传输层采用的协议，同时表明数据部分搭载的是哪种数据。常见的协议有：17表示UDP，6表示TCP</p>
+<h3 id="报头校验和"><a href="#报头校验和" class="headerlink" title="报头校验和"></a>报头校验和</h3><p>长度为16位，搭载的是互联网校验和，检验分组头部在传输过程中有没有发生错误</p>
+<h3 id="数据报选项"><a href="#数据报选项" class="headerlink" title="数据报选项"></a>数据报选项</h3><p>可选的选项，允许主机支持不同的选项（安全，源路由，时戳等到…）。很少被使用</p>
+<h3 id="填充位"><a href="#填充位" class="headerlink" title="填充位"></a>填充位</h3><p>如果其余部分总长度不是32位的整数倍，则填充位会补齐剩余部分，使报头总长度保持为32位的整数倍</p>
+<h2 id="Wireshark抓包工具"><a href="#Wireshark抓包工具" class="headerlink" title="Wireshark抓包工具"></a>Wireshark抓包工具</h2><p>Wireshark是一个免费开源的网络数据包分析软件，功能就是截取网络数据包，尽可能详细的截取网络数据报中的数据</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>开源，强大</li>
+<li>支持脚本</li>
+<li>支持的数据包类型众多</li>
+</ul>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/Wireshark.jpg"></p>
+<p>可以看到，上图就是利用wireshark实际抓取到的一个网络数据包，可以详细查看数据包内容，以IP协议为例，已经将报头内容详细展示了出来</p>
+<hr>
+<h1 id="IPv6地址"><a href="#IPv6地址" class="headerlink" title="IPv6地址"></a>IPv6地址</h1><h2 id="IPv4危机"><a href="#IPv4危机" class="headerlink" title="IPv4危机"></a>IPv4危机</h2><h4 id="IPv4面临的诸多问题"><a href="#IPv4面临的诸多问题" class="headerlink" title="IPv4面临的诸多问题"></a>IPv4面临的诸多问题</h4><ul>
+<li>地址危机(最主要的问题)</li>
+<li>移动性支持不够</li>
+<li>路由表的膨胀(进而带来延迟增加)</li>
+<li>安全问题</li>
+<li>配置复杂</li>
+<li>QoS和性能问题</li>
+<li>端到端业务模式受到破坏(由于地址池枯竭，所以出现大量私人地址，私人地址不具有唯一性，在接入互联网时需要经过NAT转换器进行转换，是的原来端到端的业务模式变成了“端-转换器-端”的模式)</li>
+</ul>
+<h4 id="IPv4地址危机"><a href="#IPv4地址危机" class="headerlink" title="IPv4地址危机"></a>IPv4地址危机</h4><p>IPv4拥有约43亿个的巨量地址，但由于网络飞速发展，以及过度分类浪费了大量地址，导致IPv4地址池逐渐枯竭</p>
+<p>2011年2月，IPv4总地址池彻底枯竭</p>
+<h2 id="解决方案-替换还是修补"><a href="#解决方案-替换还是修补" class="headerlink" title="解决方案-替换还是修补"></a>解决方案-替换还是修补</h2><h4 id="如果替换IPv4协议，表示网络中所有的系统均需要升级，所有设备也都需要升级或更换，这对大型组织来说是一场难以想象的过程"><a href="#如果替换IPv4协议，表示网络中所有的系统均需要升级，所有设备也都需要升级或更换，这对大型组织来说是一场难以想象的过程" class="headerlink" title="如果替换IPv4协议，表示网络中所有的系统均需要升级，所有设备也都需要升级或更换，这对大型组织来说是一场难以想象的过程"></a>如果替换IPv4协议，表示网络中所有的系统均需要升级，所有设备也都需要升级或更换，这对大型组织来说是一场难以想象的过程</h4><h4 id="如果是修补，可通过NAT、CIDR、VLSM等。但是，它们最终将阻碍未来Internet的发展，因为它们限制了可连接的网络数和主机数。"><a href="#如果是修补，可通过NAT、CIDR、VLSM等。但是，它们最终将阻碍未来Internet的发展，因为它们限制了可连接的网络数和主机数。" class="headerlink" title="如果是修补，可通过NAT、CIDR、VLSM等。但是，它们最终将阻碍未来Internet的发展，因为它们限制了可连接的网络数和主机数。"></a>如果是修补，可通过NAT、CIDR、VLSM等。但是，它们最终将阻碍未来Internet的发展，因为它们限制了可连接的网络数和主机数。</h4><h4 id="最终，经过讨论，人们决定替换IPv4协议"><a href="#最终，经过讨论，人们决定替换IPv4协议" class="headerlink" title="最终，经过讨论，人们决定替换IPv4协议"></a>最终，经过讨论，人们决定替换IPv4协议</h4><h2 id="新IP协议目标"><a href="#新IP协议目标" class="headerlink" title="新IP协议目标"></a>新IP协议目标</h2><ul>
+<li>支持几十亿台主机</li>
+<li>缩减路由表规模</li>
+<li>简化协议，让路由器更快处理分组</li>
+<li>提供比IPv4更好的安全性</li>
+<li>更加关注服务类型(尤其是实时应用)</li>
+<li>允许通过指定范围进行组播传输</li>
+<li>允许主机在不改变地址的情况下进行漫游</li>
+<li>允许协议具有扩展性</li>
+<li><strong>允许新老协议共存多年</strong></li>
+</ul>
+<p><strong>最终形成了我们如今所说的IPv6网络协议(前身是SIPP-简单增强IP协议)</strong></p>
+<h3 id="IPv6标准组织"><a href="#IPv6标准组织" class="headerlink" title="IPv6标准组织"></a>IPv6标准组织</h3><h4 id="IP-Version-6-Working-Group"><a href="#IP-Version-6-Working-Group" class="headerlink" title="IP Version 6 Working Group"></a>IP Version 6 Working Group</h4><ul>
+<li>制订IPv6规范和标准</li>
+</ul>
+<h4 id="IPv6-Operations"><a href="#IPv6-Operations" class="headerlink" title="IPv6 Operations"></a>IPv6 Operations</h4><ul>
+<li>为运营IPv4/IPv6共存的Internet和在已有的IPv4网络或者新的网络安装中部署IPv6提供指导</li>
+</ul>
+<h4 id="其它IPv6相关工作组"><a href="#其它IPv6相关工作组" class="headerlink" title="其它IPv6相关工作组"></a>其它IPv6相关工作组</h4><ul>
+<li>6lowpan, mip6, mipshop, monami6, multi6, shim6…</li>
+</ul>
+<h2 id="IPv6地址-1"><a href="#IPv6地址-1" class="headerlink" title="IPv6地址"></a>IPv6地址</h2><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IPv6%E5%9F%BA%E6%9C%AC%E6%9C%AF%E8%AF%AD.jpg"></p>
+<h4 id="邻节点"><a href="#邻节点" class="headerlink" title="邻节点"></a>邻节点</h4><p>一条链路上的两台主机之间互为邻节点</p>
+<h3 id="IPv6最先著的变化"><a href="#IPv6最先著的变化" class="headerlink" title="IPv6最先著的变化"></a>IPv6最先著的变化</h3><p>地址空间的变化，IPv4地址空间为$2^{32}≈4.3*10^9$</p>
+<p>而IPv6的地址用128个二进制位表示，达到了惊人的$2^{128}≈3.4<em>10^{34}=340涧(1涧=10^{36})$ 。相当于全球十四亿人，人均可以分配到$5</em>10^{28}$个IPv6地址</p>
+<h3 id="IPv6地址表示"><a href="#IPv6地址表示" class="headerlink" title="IPv6地址表示"></a>IPv6地址表示</h3><h4 id="由于IPv6地址过长，所以我们采用冒分十六进制来表示IPv6地址"><a href="#由于IPv6地址过长，所以我们采用冒分十六进制来表示IPv6地址" class="headerlink" title="由于IPv6地址过长，所以我们采用冒分十六进制来表示IPv6地址"></a>由于IPv6地址过长，所以我们采用冒分十六进制来表示IPv6地址</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">00100000000000010000010000010000000000000000000000000000000000010000000000000000000000000000000000000000000000000100010111111111</span><br></pre></td></tr></table></figure>
+
+<h4 id="先将128位的二进制地址按照16位一组的格式分成8组"><a href="#先将128位的二进制地址按照16位一组的格式分成8组" class="headerlink" title="先将128位的二进制地址按照16位一组的格式分成8组"></a>先将128位的二进制地址按照16位一组的格式分成8组</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0010000000000001</span><br><span class="line">0000010000010000</span><br><span class="line">0000000000000000</span><br><span class="line">0000000000000001</span><br><span class="line">0000000000000000</span><br><span class="line">0000000000000000</span><br><span class="line">0000000000000000</span><br><span class="line">0100010111111111</span><br></pre></td></tr></table></figure>
+
+<h4 id="每组都采用十六进制表示"><a href="#每组都采用十六进制表示" class="headerlink" title="每组都采用十六进制表示"></a>每组都采用十六进制表示</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2001:0410:0000:0001:0000:0000:0000:45ff</span><br></pre></td></tr></table></figure>
+
+<h4 id="规则1：省略前导0，每组前导0可被忽略"><a href="#规则1：省略前导0，每组前导0可被忽略" class="headerlink" title="规则1：省略前导0，每组前导0可被忽略"></a>规则1：省略前导0，每组前导0可被忽略</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2001:410:0:1:0:0:0:45ff</span><br></pre></td></tr></table></figure>
+
+<h4 id="规则2：如果某组全为0可被全部忽略，中间用双冒号表示-但一个IPv6地址中只能存在一个双冒号，否则无法还原IP地址"><a href="#规则2：如果某组全为0可被全部忽略，中间用双冒号表示-但一个IPv6地址中只能存在一个双冒号，否则无法还原IP地址" class="headerlink" title="规则2：如果某组全为0可被全部忽略，中间用双冒号表示(但一个IPv6地址中只能存在一个双冒号，否则无法还原IP地址)"></a>规则2：如果某组全为0可被全部忽略，中间用双冒号表示(但一个IPv6地址中只能存在一个双冒号，否则无法还原IP地址)</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2001:410:0:1::45ff</span><br><span class="line"></span><br><span class="line">或者根据规则，还可以写成如下：(只需保证不超过一个双冒号)</span><br><span class="line"></span><br><span class="line">2001:410::1:0:0:0:45ff</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="地址前缀长度用“-xx”来表示，如：-1-1-64"><a href="#地址前缀长度用“-xx”来表示，如：-1-1-64" class="headerlink" title="地址前缀长度用“/xx”来表示，如： 1::1/64"></a>地址前缀长度用“/xx”来表示，如： 1::1/64</h4><h3 id="IPv6地址分类"><a href="#IPv6地址分类" class="headerlink" title="IPv6地址分类"></a>IPv6地址分类</h3><ul>
+<li>单播地址 （Unicast Address）</li>
+<li>组播地址 （Multicast Address）</li>
+<li>任播地址 （Anycast Address）</li>
+<li>特殊地址 </li>
+</ul>
+<h4 id="特殊地址"><a href="#特殊地址" class="headerlink" title="特殊地址"></a>特殊地址</h4><table>
+<thead>
+<tr>
+<th>地址类型</th>
+<th>二进制前缀</th>
+<th>IPv6标识</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未指定</td>
+<td>00…0 (128 bits)</td>
+<td>::/128</td>
+</tr>
+<tr>
+<td>环回地址</td>
+<td>00…1 (128 bits)</td>
+<td>::1/128</td>
+</tr>
+<tr>
+<td>组播</td>
+<td>11111111</td>
+<td>FF00::/8</td>
+</tr>
+<tr>
+<td>链路本地地址</td>
+<td>1111111010</td>
+<td>FE80::/10</td>
+</tr>
+<tr>
+<td>网点本地地址</td>
+<td>1111111011</td>
+<td>FEC0::/10</td>
+</tr>
+<tr>
+<td>全局单播</td>
+<td>（其他）</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="单播地址中的链路-本地地址"><a href="#单播地址中的链路-本地地址" class="headerlink" title="单播地址中的链路-本地地址"></a>单播地址中的链路-本地地址</h4><p>用在单一链路上，带有链路-本地源或目的地址的数据包不转发到其它链路</p>
+<p>应用范围：只能在同一本地链路节点之间使用</p>
+<p>节点启动时，自动配置一个本地链路地址</p>
+<p><strong>链路本地地址组成</strong></p>
+<p>高64位（前64位）：FE80:0:0:0</p>
+<p>低64位（后64位）：EUI-64地址</p>
+<p>EUI-64地址是将MAC地址(48位)从中间（前24位，后24位）拆开，然后在中间部分插入一段“11111111 11111110”，最后从这64位的高位数起，第七位修改为1，就完成了。合计64位</p>
+<h4 id="（可在本地计算机DOS窗口通过“ipconfig”查看本地IPv6地址）"><a href="#（可在本地计算机DOS窗口通过“ipconfig”查看本地IPv6地址）" class="headerlink" title="（可在本地计算机DOS窗口通过“ipconfig”查看本地IPv6地址）"></a>（可在本地计算机DOS窗口通过“ipconfig”查看本地IPv6地址）</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">Windows IP 配置</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">以太网适配器 以太网:</span><br><span class="line"></span><br><span class="line">   媒体状态  . . . . . . . . . . . . : 媒体已断开连接</span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line"></span><br><span class="line">以太网适配器 以太网 2:</span><br><span class="line"></span><br><span class="line">   媒体状态  . . . . . . . . . . . . : 媒体已断开连接</span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line"></span><br><span class="line">以太网适配器 VirtualBox Host-Only Network:</span><br><span class="line"></span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line">   本地链接 IPv6 地址. . . . . . . . : fe80::41a0:188a:c7c4:10ff%14</span><br><span class="line">   IPv4 地址 . . . . . . . . . . . . : 192.168.56.1</span><br><span class="line">   子网掩码  . . . . . . . . . . . . : 255.255.255.0</span><br><span class="line">   默认网关. . . . . . . . . . . . . :</span><br><span class="line"></span><br><span class="line">无线局域网适配器 本地连接* 11:</span><br><span class="line"></span><br><span class="line">   媒体状态  . . . . . . . . . . . . : 媒体已断开连接</span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line"></span><br><span class="line">无线局域网适配器 本地连接* 12:</span><br><span class="line"></span><br><span class="line">   媒体状态  . . . . . . . . . . . . : 媒体已断开连接</span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line"></span><br><span class="line">以太网适配器 VMware Network Adapter VMnet1:</span><br><span class="line"></span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line">   本地链接 IPv6 地址. . . . . . . . : fe80::2c4d:1555:e274:ab03%5</span><br><span class="line">   IPv4 地址 . . . . . . . . . . . . : 192.168.139.1</span><br><span class="line">   子网掩码  . . . . . . . . . . . . : 255.255.255.0</span><br><span class="line">   默认网关. . . . . . . . . . . . . :</span><br><span class="line"></span><br><span class="line">以太网适配器 VMware Network Adapter VMnet8:</span><br><span class="line"></span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line">   本地链接 IPv6 地址. . . . . . . . : fe80::fcf4:6fb0:8e57:33df%9</span><br><span class="line">   IPv4 地址 . . . . . . . . . . . . : 192.168.190.1</span><br><span class="line">   子网掩码  . . . . . . . . . . . . : 255.255.255.0</span><br><span class="line">   默认网关. . . . . . . . . . . . . :</span><br><span class="line"></span><br><span class="line">无线局域网适配器 WLAN:</span><br><span class="line"></span><br><span class="line">   连接特定的 DNS 后缀 . . . . . . . :</span><br><span class="line">   本地链接 IPv6 地址. . . . . . . . : fe80::2016:6332:cc2f:b7a4%11</span><br><span class="line">   IPv4 地址 . . . . . . . . . . . . : 192.168.1.107</span><br><span class="line">   子网掩码  . . . . . . . . . . . . : 255.255.255.0</span><br><span class="line">   默认网关. . . . . . . . . . . . . : 192.168.1.1</span><br><span class="line">   </span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="可聚合全球单播地址"><a href="#可聚合全球单播地址" class="headerlink" title="可聚合全球单播地址"></a>可聚合全球单播地址</h4><p><strong>组成</strong></p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E5%8F%AF%E8%81%9A%E5%90%88%E5%85%A8%E7%90%83%E5%8D%95%E6%92%AD%E5%9C%B0%E5%9D%80.jpg"></p>
+<ul>
+<li>001：前三位固定，表示全球IPv6地址目前只用了1/8，剩余7/8还没有使用</li>
+<li>TLA：顶级聚类地址，分配给各大地区网络中心，例如亚太地区网络中心</li>
+<li>RES：保留位</li>
+<li>NLA：次级聚类</li>
+<li>SLA：站点级聚类地址</li>
+</ul>
+<h4 id="运营商分配给单位网络的地址通常是-48"><a href="#运营商分配给单位网络的地址通常是-48" class="headerlink" title="运营商分配给单位网络的地址通常是/48"></a>运营商分配给单位网络的地址通常是/48</h4><p>也就是说后续的16位地址可以由单位自行根据需求进行子网规划</p>
+<h4 id="时至今日，中国约申请到两万个-32地址，一个-32地址包含的IPv6地址数约等于全部的IPv4地址总数，所以是完全足够使用的"><a href="#时至今日，中国约申请到两万个-32地址，一个-32地址包含的IPv6地址数约等于全部的IPv4地址总数，所以是完全足够使用的" class="headerlink" title="时至今日，中国约申请到两万个/32地址，一个/32地址包含的IPv6地址数约等于全部的IPv4地址总数，所以是完全足够使用的"></a>时至今日，中国约申请到两万个/32地址，一个/32地址包含的IPv6地址数约等于全部的IPv4地址总数，所以是完全足够使用的</h4><h4 id="IPv6主机如何做到即插即用"><a href="#IPv6主机如何做到即插即用" class="headerlink" title="IPv6主机如何做到即插即用"></a>IPv6主机如何做到即插即用</h4><ul>
+<li>启动时，生成链路本地地址</li>
+<li>该地址主机可和默认网关这一节点进行通信，获得全球IP地址前缀</li>
+<li>后缀(InterfaceID)可以利用人工(笨重，容易出错)，EUI-64直接生成(有安全隐患，容易被他人获知MAC地址)，或者随机生成</li>
+<li>也可利用DHCP获得上网所需的资源</li>
+</ul>
+<h4 id="IPv6地址的子网规划"><a href="#IPv6地址的子网规划" class="headerlink" title="IPv6地址的子网规划"></a>IPv6地址的子网规划</h4><p>IPv4地址由于本身的稀缺性，所以在进行子网规划时需要精打细算，但IPv6地址不需要，它在进行子网规划时只需要考虑路由器数量以及所支持网络来规划即可</p>
+<h1 id="IPv6分组"><a href="#IPv6分组" class="headerlink" title="IPv6分组"></a>IPv6分组</h1><h3 id="IPv6分组由头部，扩展头，数据三部分组成"><a href="#IPv6分组由头部，扩展头，数据三部分组成" class="headerlink" title="IPv6分组由头部，扩展头，数据三部分组成"></a>IPv6分组由头部，扩展头，数据三部分组成</h3><h2 id="IPv6头部"><a href="#IPv6头部" class="headerlink" title="IPv6头部"></a>IPv6头部</h2><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IPv6%E5%88%86%E7%BB%84.jpg"></p>
+<p>IPv6分组头部长度共四十个字节，也就是320比特，按照每行32比特排列后结构如图。</p>
+<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><p>长度4bit，表明协议版本，在IPv6中为固定值“0110”</p>
+<h3 id="区分服务-业务等级"><a href="#区分服务-业务等级" class="headerlink" title="区分服务(业务等级)"></a>区分服务(业务等级)</h3><p>表明数据分组的服务类型，提供区分服务，表明分组的重要程度，优先级等因素</p>
+<h3 id="流标签"><a href="#流标签" class="headerlink" title="流标签"></a>流标签</h3><p>长度为20比特，表示分组的业务需求标记，提供服务质量。(为源端和接收端提供了一种建立伪连接的方式，即源端和接收端，把一组具有同样需求，并希望收到网络同等对待的数据分组，打上相同的分组，以便区分并执行对应操作)</p>
+<h3 id="净荷长度"><a href="#净荷长度" class="headerlink" title="净荷长度"></a>净荷长度</h3><p>也叫有效载荷长度，长为16比特，指明了跟在分组头部(固定头)后有多少个字节，可以表示$2^{16}-1=65535B=64KB$。</p>
+<h3 id="下一个头-next-header"><a href="#下一个头-next-header" class="headerlink" title="下一个头 next header"></a>下一个头 next header</h3><p>这是IPv6最与众不同之处，指明了<strong>紧跟的扩展头</strong>，如果当前头是最后一个IP头，此处就退化为协议说明，指明用户协议（例如：6表示TCP。17表示UDP），指定上层传输层协议。</p>
+<p>IPv6相较于IPv4之所以能大大减少头部的种类就是由于扩展头的存在，而next header就是负责指向下一个头的工具</p>
+<h3 id="跳数限制"><a href="#跳数限制" class="headerlink" title="跳数限制"></a>跳数限制</h3><p>Hop Limit，跳数限制完全等同于IPv4协议中的TTL，都是为了避免一个分组在网络中一直存在，跳数归零后，路由依旧是舍弃这个分组，并返回一个错误信息，解释情况</p>
+<h4 id="总体来说，IPv6分组头部是在IPv4分组头部的基础上，进行了增加，修改和删除操作最终得到的结果"><a href="#总体来说，IPv6分组头部是在IPv4分组头部的基础上，进行了增加，修改和删除操作最终得到的结果" class="headerlink" title="总体来说，IPv6分组头部是在IPv4分组头部的基础上，进行了增加，修改和删除操作最终得到的结果"></a>总体来说，IPv6分组头部是在IPv4分组头部的基础上，进行了增加，修改和删除操作最终得到的结果</h4><p>IPv6删除了IPv4中的分段/分片偏移，因为分片操作会占用分片路由器大量资源，无形中增加路由器负担，所以IPv6放弃了分片操作，选择在发出时利用PMTU算法推测整条路径上最小的MTU网络，在发出前就对数据大小做出处理。</p>
+<p>IPv6协议对校验和这一部分也作出了删除，因为计算校验和会消耗CPU时间，同时它的下层数据链路层以及上层传输层都拥有各自的校验和方法，在IP协议处进行校验显得冗余</p>
+<h2 id="扩展头"><a href="#扩展头" class="headerlink" title="扩展头"></a>扩展头</h2><p>扩展头是<strong>可选</strong>的，目前已经定义的<strong>有6种扩展头</strong>，一个分组可以有多个扩展头也可以没有，当有多个扩展头时，扩展头之间必须<strong>按照相对顺序</strong>排列</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>头部类型Header type</th>
+<th>Next Header Code</th>
+<th>用途purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Basic IPv6 Header基本报文头部</td>
+<td>-</td>
+<td>位于报文最前端，包含必要信息，后接可选的扩展头或数据</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Hop-by-Hop Options跳跃选项头部</td>
+<td>0</td>
+<td>包含数据包发送路径上的所有节点都必须处理的可选信息</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Destination Options目的地选项头部</td>
+<td>60</td>
+<td>只包含接收方节点所需的可选信息</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Routing Header路由选择头部</td>
+<td>43</td>
+<td>松散的路由器头列表，它允许Ｉｐｖ６起端通过列出所要访问的一个或多个节点来决定到达目的地的路由</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Fragment Header分段头部</td>
+<td>44</td>
+<td>利用分段头部，IPv6源节点就可以向目的节点传送一个比路径MTU还大的分组</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Authentication Header身份认证头部</td>
+<td>51</td>
+<td>提供无连接的完整性、数据源认证、和抗重放服务。无论接的完整性确保数据中的数据包中的数据在从发送者到接收者的传输过程中不会被修改，它是对付数据篡改的策略；数据源认证确保数据所由所期望的用户发送，而不是由假冒者来发送，它是对付ＩＰ欺骗的策略；抗重放服务是保证一旦数据包被接收，其会话编号不能被攻击者再次使用。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Encapsulation Security Payload Header封装安全性有效载荷头部</td>
+<td>50</td>
+<td>提供数据保密性、数据源认证、无连接完整性、抗重放服务和有限的数据流保密服务。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Mobility Header</td>
+<td>135</td>
+<td></td>
+</tr>
+<tr>
+<td>上层协议</td>
+<td>TCP</td>
+<td>6</td>
+<td>-</td>
+</tr>
+<tr>
+<td>上层协议</td>
+<td>UDP</td>
+<td>17</td>
+<td>-</td>
+</tr>
+<tr>
+<td>上层协议</td>
+<td>ICMPv6</td>
+<td>58</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h4 id="以下就是用wireshark随机抓取的一段IPv6分组"><a href="#以下就是用wireshark随机抓取的一段IPv6分组" class="headerlink" title="以下就是用wireshark随机抓取的一段IPv6分组"></a>以下就是用wireshark随机抓取的一段IPv6分组</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IPv6%E6%8D%95%E8%8E%B7.jpg"><br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IPv6%E5%8D%8F%E8%AE%AE.jpg"></p>
+<h4 id="可以看到清楚的给出了IPv6协议内的主要部分以及扩展头内容"><a href="#可以看到清楚的给出了IPv6协议内的主要部分以及扩展头内容" class="headerlink" title="可以看到清楚的给出了IPv6协议内的主要部分以及扩展头内容"></a>可以看到清楚的给出了IPv6协议内的主要部分以及扩展头内容</h4><hr>
+<h1 id="IPv6过渡技术"><a href="#IPv6过渡技术" class="headerlink" title="IPv6过渡技术"></a>IPv6过渡技术</h1><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/IPv6%E5%8F%91%E5%B1%95%E8%BF%87%E7%A8%8B.jpg"></p>
+<h3 id="IPv4与IPv6共存策略"><a href="#IPv4与IPv6共存策略" class="headerlink" title="IPv4与IPv6共存策略"></a>IPv4与IPv6共存策略</h3><ul>
+<li>短时间内IPv4迁移到IPv6是不可能的</li>
+<li>在较长一段时间内都要保证二者共存的状态</li>
+</ul>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ul>
+<li>加快IPv6网络的成熟与稳定</li>
+<li>解决IPv4与IPv6网络之间的相互通信问题</li>
+</ul>
+<h2 id="三种基类过渡技术"><a href="#三种基类过渡技术" class="headerlink" title="三种基类过渡技术"></a>三种基类过渡技术</h2><ol>
+<li>双协议栈（Dual Stack）</li>
+<li>隧道（Tunnel）</li>
+<li>地址转换技术</li>
+</ol>
+<h3 id="双协议栈"><a href="#双协议栈" class="headerlink" title="双协议栈"></a>双协议栈</h3><ul>
+<li>网络设备与主机必须全部支持双协议栈</li>
+<li>主机端只需要支持IPv4或IPv6任一即可</li>
+<li>主机端设备如果也是双栈的，优先使用IPv6，如果不通，则采用IPv4</li>
+</ul>
+<h3 id="隧道技术"><a href="#隧道技术" class="headerlink" title="隧道技术"></a>隧道技术</h3><ul>
+<li>通过隧道技术，IPv6分组，被作为无结构，无意义的数据封装在IPv4分组中，被IPv4网络传输</li>
+<li>同样的，也存在将IPv4分组看作无结构无意义的纯数据封装在IPv6中的情况</li>
+<li>适用于第一阶段与第三阶段，也就是IPv4或IPv6是孤岛时的通信</li>
+</ul>
+<h3 id="翻译转换技术"><a href="#翻译转换技术" class="headerlink" title="翻译转换技术"></a>翻译转换技术</h3><ul>
+<li>从IPv4转换到IPv6，或反过来，不仅发生在网络层，还有传输层和应用层。</li>
+<li>当双栈和隧道都无法使用的时候，才使用；适用纯IPv4节点和纯IPv6节点间的通信。</li>
+</ul>
+<h3 id="IPv6试验网"><a href="#IPv6试验网" class="headerlink" title="IPv6试验网"></a>IPv6试验网</h3><h4 id="北美"><a href="#北美" class="headerlink" title="北美"></a>北美</h4><ul>
+<li>美国: 6REN, 6TAP, ESnet, vBNS, Internet2, NASA</li>
+<li>加拿大: CA*Net, Viagenie, Freenet6.net</li>
+</ul>
+<h4 id="欧洲"><a href="#欧洲" class="headerlink" title="欧洲"></a>欧洲</h4><ul>
+<li>欧盟: 6INIT</li>
+<li>法国: CNRS/UREC, INRIA, G6, Renater2, @IRS</li>
+<li>德国: DFN, JOIN</li>
+<li>意大利: CSELT</li>
+</ul>
+<h4 id="亚太地区"><a href="#亚太地区" class="headerlink" title="亚太地区"></a>亚太地区</h4><ul>
+<li>日本: KAME, WIDE, NTT, TAHI</li>
+<li>韩国: KRv6, ETRI</li>
+<li>中国：CNGI，CERNET2</li>
+</ul>
+<hr>
+<h1 id="路由表来源"><a href="#路由表来源" class="headerlink" title="路由表来源"></a>路由表来源</h1><h4 id="一个路由在收到IP分组后，会进行如下操作："><a href="#一个路由在收到IP分组后，会进行如下操作：" class="headerlink" title="一个路由在收到IP分组后，会进行如下操作："></a>一个路由在收到IP分组后，会进行如下操作：</h4><ol>
+<li>打开分组(解封装)到第三层网络层，提取目的IP地址</li>
+<li>利用按位与操作，计算确定出目的网络，查找路由表</li>
+<li>重新封装好(封装过程中会进行TTL-1，置换源和目的的MAC地址，重新计算校验和，分片/分段操作（可选）等)，然后转发出去</li>
+</ol>
+<h2 id="路由表内容："><a href="#路由表内容：" class="headerlink" title="路由表内容："></a>路由表内容：</h2><table>
+<thead>
+<tr>
+<th>目的网络/子网掩码</th>
+<th>路径代价</th>
+<th>下一跳（网关）</th>
+<th>转出接口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>202.182.112.0/24</td>
+<td>5</td>
+<td>192.168.1.1</td>
+<td>Fe0/0</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<h2 id="路由表来源-1"><a href="#路由表来源-1" class="headerlink" title="路由表来源"></a>路由表来源</h2><ul>
+<li>直连路由：通过学习感知</li>
+<li>静态路由：通过人工配置</li>
+<li>动态路由：自动生成，更新，维护</li>
+</ul>
+<h2 id="直连路由"><a href="#直连路由" class="headerlink" title="直连路由"></a>直连路由</h2><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E7%9B%B4%E8%BF%9E%E8%B7%AF%E7%94%B1.jpg"></p>
+<p>当一台路由器开启它的接口后，路由器就会自动将这些接口所连接的子网加入到路由表中成为直连路由。</p>
+<p>例如，图中的FE0/0接口所连的子网：192.168.1.0/24就会被放入路由表中</p>
+<h2 id="静态路由"><a href="#静态路由" class="headerlink" title="静态路由"></a>静态路由</h2><p>由管理员手工配置的路由</p>
+<h3 id="常用的静态路由-默认-缺省路由"><a href="#常用的静态路由-默认-缺省路由" class="headerlink" title="常用的静态路由-默认/缺省路由"></a>常用的静态路由-默认/缺省路由</h3><h4 id="是默认的路径，找不到路的时候可以从这里通过"><a href="#是默认的路径，找不到路的时候可以从这里通过" class="headerlink" title="是默认的路径，找不到路的时候可以从这里通过"></a>是默认的路径，找不到路的时候可以从这里通过</h4><ul>
+<li>避免错误丢包</li>
+<li>缩减路由表的规模</li>
+<li>减少路由器的运行负担</li>
+</ul>
+<h3 id="静态路由优缺点"><a href="#静态路由优缺点" class="headerlink" title="静态路由优缺点"></a>静态路由优缺点</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>在小型网络中容易实施</td>
+<td>仅适用于小型网络或特殊用途（默认路由）</td>
+</tr>
+<tr>
+<td>非常安全，不会发送通告</td>
+<td>随着网络增多，配置复杂性增加</td>
+</tr>
+<tr>
+<td>总是从同意路径到达同一目的，稳定可靠</td>
+<td>需要人工更新维护</td>
+</tr>
+<tr>
+<td>不需要CPU，RAM，带宽消耗</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h2><p>最常见的路由，适用于网络大，变化多时。在小型网络中也可以应用。开销较大，可以减少网络管理人员的负担</p>
+<p>通过路由选择协议动态的建立，更新和维护的路由</p>
+<p>路由表中动态路由占多数</p>
+<p>路由选择协议会计算最优路径，装载最优路径到路由表中，引导IP分组转发</p>
+<h3 id="路由选择协议如何量度路径是否最优（代价-开销-成本）"><a href="#路由选择协议如何量度路径是否最优（代价-开销-成本）" class="headerlink" title="路由选择协议如何量度路径是否最优（代价/开销/成本）"></a>路由选择协议如何量度路径是否最优（代价/开销/成本）</h3><ul>
+<li>路径长度：从源端到目的端代价总和为路径长度，即hop跳数</li>
+<li>带宽：链路的最大传输能力以及网络流量</li>
+<li>延迟：数据包从源到宿需要花费的传输时间</li>
+<li>带宽：链路的最大传输能力以及网络流量</li>
+<li>负载：网络资源（例如路由器的CPU）的使用率</li>
+<li>通信代价：占用通信线路的费用</li>
+</ul>
+<h3 id="动态路由的优点与缺点"><a href="#动态路由的优点与缺点" class="headerlink" title="动态路由的优点与缺点"></a>动态路由的优点与缺点</h3><table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>适用于有多个路由器的网络</td>
+<td>可能使实施更加复杂</td>
+</tr>
+<tr>
+<td>通常不受网络规模限制</td>
+<td>又安全隐患，因为通告在路由间传输</td>
+</tr>
+<tr>
+<td>自动更新和维护路由信息</td>
+<td>消耗CPU，RAM,带宽</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="距离矢量路由选择协议"><a href="#距离矢量路由选择协议" class="headerlink" title="距离矢量路由选择协议"></a>距离矢量路由选择协议</h1><h3 id="（Distance-Vector）"><a href="#（Distance-Vector）" class="headerlink" title="（Distance Vector）"></a>（Distance Vector）</h3><h3 id="路由选择协议分类："><a href="#路由选择协议分类：" class="headerlink" title="路由选择协议分类："></a>路由选择协议分类：</h3><ul>
+<li>距离矢量路由选择协议（Distance Vector 简称DV）</li>
+<li>链路状态路由选择协议（Link State 简称LS）</li>
+</ul>
+<p>根据距离矢量路由选择协议，每个路由器维护两张表。表$D_i$存储当前到各个节点最短路径，表$S_i$存储到达最短路径的下一跳</p>
+<p>D-V算法是一种动态和分布式的，常被应用于小型网络，RIP是一个典型的D-V算法 (RIP：Routing information protocol，路由选择信息协议)</p>
+<p>DV算法是典型的<strong>分布式Bellman-Ford算法</strong></p>
+<p>通过不断在邻居间更换交换信息实现路由表的更新</p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>简单 </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>交换的信息太大了</li>
+<li>路由信息传播慢，可能导致路</li>
+<li>径信息不一致</li>
+<li>收敛慢，度量计数到无穷</li>
+<li>不适合大型的网络</li>
+</ul>
+<h4 id="收敛–整个网络寻找最佳路径的过程"><a href="#收敛–整个网络寻找最佳路径的过程" class="headerlink" title="收敛–整个网络寻找最佳路径的过程"></a>收敛–整个网络寻找最佳路径的过程</h4><h2 id="RIP-路由选择信息协议"><a href="#RIP-路由选择信息协议" class="headerlink" title="RIP (路由选择信息协议)"></a>RIP (路由选择信息协议)</h2><h3 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h3><p>收敛快（好消息传的快，也就是更短的路径很容易被传播到其他路由节点中去）</p>
+<p>坏消息传的慢，存在无穷计数问题。当一个网络趋于稳定后，若其中某个节点发生故障导致该节点崩溃后，在修复过程中坏消息传播缓慢，并且可能形成路由环，进而导致无穷计数问题</p>
+<p>（例如：一条路径X-&gt;A-&gt;B-&gt;C,假设各边权重为1<br/>此时B路由到X距离为2，假设A路由崩溃，B此时失去到X的路径<br/>但是在更新邻居节点时，发现邻居C路径可达X节点，且距离为3，所以B更新到X节点最短路径为4<br/>但实际上C中所储存的路径已经过时了，就是X-&gt;A-&gt;B-&gt;C这一条）<br/>所以由于坏消息传播慢，B更新了一个错误节点<br/>之后C开始更新节点，发现A路由崩溃不能到达X，就从邻居中搜索<br/>发现B路由可达（实际上仍是那条错误路径），所以更新到X距离为４＋１＝５<br/>由此路由环形成，后续只会不断增加路径，最终导致无穷计数问题产生</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="定义路由表中的最大跳数，例如15"><a href="#定义路由表中的最大跳数，例如15" class="headerlink" title="定义路由表中的最大跳数，例如15"></a>定义路由表中的最大跳数，例如15</h4><p>在超过15跳后，认定路径不可达（这可能会导致时间消耗）</p>
+<h4 id="加快收敛的方法"><a href="#加快收敛的方法" class="headerlink" title="加快收敛的方法"></a>加快收敛的方法</h4><ul>
+<li>水平分割</li>
+<li>毒性逆转</li>
+<li>抑制定时器</li>
+</ul>
+<h3 id="RIP产生无穷计数问题的原因"><a href="#RIP产生无穷计数问题的原因" class="headerlink" title="RIP产生无穷计数问题的原因"></a>RIP产生无穷计数问题的原因</h3><p>收集信息来源单一，只从邻居处获得信息，并只能相信邻居的信息。也就是站的不够高，看的不够远(就像刚才的例子，在A崩溃之前，路由节点之间相互传递的信息还是完全真实的，但是A崩溃后，C传给了B第一个虚假的过时的信息，并在二者之间不断传递)</p>
+<p>站得高，看得远的代价是消耗带宽，CPU等</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/">http://ywrby.cn/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/04/07/4-Dockerfile/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">4-Dockerfile And Docker Compose</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/07/1-计算机网络和因特网/" title="1-计算机网络和因特网"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/80857290_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-07</div><div class="title">1-计算机网络和因特网</div></div></a></div><div><a href="/2021/03/12/2-应用层/" title="2-应用层"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-12</div><div class="title">2-应用层</div></div></a></div><div><a href="/2021/03/25/3-传输层/" title="3-传输层"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">3-传输层</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">86</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">网络层基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8C%E6%88%90%E8%BF%99%E9%A1%B9%E5%B7%A5%E4%BD%9C%E9%9C%80%E8%A6%81%EF%BC%9A"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">完成这项工作需要：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E9%81%AD%E9%81%87%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">可能遭遇的问题：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="toc-number">1.0.1.</span> <span class="toc-text">网络层主要内容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A2%AB%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%EF%BC%9AIP%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">被路由协议：IP协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE%EF%BC%9A%E6%89%BE%E5%88%B0%E7%9B%AE%E7%9A%84%E6%9C%BA%E5%92%8C%E6%BA%90%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%9A%84%E6%9C%80%E4%BC%98%E8%B7%AF%E5%BE%84"><span class="toc-number">1.0.1.2.</span> <span class="toc-text">路由选择协议：找到目的机和源机之间的最优路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E9%9D%A2%EF%BC%9A"><span class="toc-number">1.0.1.3.</span> <span class="toc-text">其他方面：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E5%92%8C%E7%9B%AE%E7%9A%84%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%9A%84%E7%BD%91%E7%BB%9C%E5%88%86%E4%B8%BA%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">源和目的机之间的网络分为：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E7%BD%91%E7%BB%9C%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">数据报网络：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E7%94%B5%E8%B7%AF%E7%BD%91%E7%BB%9C%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">虚电路网络：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80"><span class="toc-number">2.</span> <span class="toc-text">IP地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%EF%BC%88Internet-Protocol%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">IP（Internet Protocol）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP%E4%BB%BB%E5%8A%A1%EF%BC%9A"><span class="toc-number">2.1.1.</span> <span class="toc-text">IP任务：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP%E4%B8%BA%E8%B7%AF%E7%94%B1%E6%8F%90%E4%BE%9B%E8%B7%AF%E7%94%B1%E6%89%80%E9%9C%80%E8%A6%81%E7%9A%84%E4%BF%A1%E6%81%AF%EF%BC%8C%E6%89%80%E4%BB%A5IP%E4%B9%9F%E8%A2%AB%E7%A7%B0%E4%B8%BA%E8%A2%AB%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.1.2.</span> <span class="toc-text">IP为路由提供路由所需要的信息，所以IP也被称为被路由协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80-1"><span class="toc-number">2.2.</span> <span class="toc-text">IP地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80%E5%85%B7%E6%9C%89%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.1.</span> <span class="toc-text">IP地址具有层次结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">A类地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#B%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">B类地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">C类地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80"><span class="toc-number">2.2.1.4.</span> <span class="toc-text">保留IP地址</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E5%88%86%E9%85%8D"><span class="toc-number">2.3.</span> <span class="toc-text">IP地址的分配</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E8%A7%84%E5%88%92"><span class="toc-number">3.</span> <span class="toc-text">子网规划</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB-%E8%BE%B9%E7%95%8C%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">主&#x2F;边界路由器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">3.1.1.</span> <span class="toc-text">子网掩码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%8C%89%E4%BD%8D%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%BE%97%E5%88%B0%EF%BC%9A"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">执行按位与操作得到：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BC%BA%E7%9C%81%E7%9A%84%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-number">3.1.1.2.</span> <span class="toc-text">一些缺省的子网掩码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%80%9F%E4%BD%8D"><span class="toc-number">3.1.2.</span> <span class="toc-text">主机借位</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%80%9F%E4%BD%8D%E5%8E%9F%E5%88%99%EF%BC%9A"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">借位原则：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E5%AD%90%E7%BD%91%E4%BD%8D"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">确定子网位</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%E5%AF%BB%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">IP寻址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">4.0.1.</span> <span class="toc-text">互联网与网络层的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP%E5%AF%BB%E5%9D%80%EF%BC%9A%E6%A0%B9%E6%8D%AE%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%89%BE%E5%88%B0%E7%9B%AE%E7%9A%84%E7%BD%91%E7%BB%9C%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">4.0.2.</span> <span class="toc-text">IP寻址：根据目的IP地址，找到目的网络的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83"><span class="toc-number">4.0.3.</span> <span class="toc-text">两种寻址方式比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">路由器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="toc-number">4.1.1.</span> <span class="toc-text">主要功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%EF%BC%88%E8%B7%AF%E7%94%B1%E5%99%A8%E8%BD%AC%E5%8F%91%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BE%9D%E6%8D%AE%EF%BC%89"><span class="toc-number">4.1.2.</span> <span class="toc-text">路由表（路由器转发数据的依据）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%E5%8F%AF%E8%83%BD%E5%9B%A0%E5%8E%82%E5%AE%B6%E7%9A%84%E4%B8%8D%E5%90%8C%E8%80%8C%E4%B8%8D%E5%90%8C"><span class="toc-number">4.1.2.1.</span> <span class="toc-text">路由表可能因厂家的不同而不同</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%88%E7%AB%AF%E5%8F%AF%E9%80%9A%E8%BF%87route-print%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%A1%A8"><span class="toc-number">4.1.2.2.</span> <span class="toc-text">终端可通过route print查看本地的路由表</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%E5%88%86%E7%BB%84"><span class="toc-number">5.</span> <span class="toc-text">IP分组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IP%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E5%86%85%E5%AE%B9"><span class="toc-number">5.0.0.1.</span> <span class="toc-text">IP协议的另一个重要内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IP%E5%88%86%E7%BB%84%E5%88%86%E4%B8%BA%E5%A4%B4%E9%83%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E4%B8%A4%E5%A4%A7%E9%83%A8%E5%88%86%EF%BC%8C%E4%B8%8D%E5%90%AB%E5%8F%AF%E9%80%89%E5%AD%97%E6%AE%B5%E7%9A%84%E5%A4%B4%E9%83%A8%E6%9C%8920%E4%B8%AA%E5%AD%97%E8%8A%82%E7%9A%84%E9%95%BF%E5%BA%A6%EF%BC%8C%E5%85%B6%E4%B8%AD%E5%8C%85%E5%90%AB%E5%8D%81%E4%BA%8C%E4%B8%AA%E5%AD%97%E6%AE%B5%E3%80%82%E6%8C%89%E7%85%A74%E4%B8%AA%E5%AD%97%E8%8A%82%EF%BC%8832%E4%BD%8D%EF%BC%89%E4%B8%BA%E4%B8%80%E8%A1%8C%E6%8E%92%E5%88%97%EF%BC%8C%E5%88%99%E4%B8%80%E5%85%B1%E6%9C%89%E4%BA%94%E8%A1%8C"><span class="toc-number">5.0.0.2.</span> <span class="toc-text">IP分组分为头部和数据两大部分，不含可选字段的头部有20个字节的长度，其中包含十二个字段。按照4个字节（32位）为一行排列，则一共有五行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E7%89%88%E6%9C%AC"><span class="toc-number">5.0.1.</span> <span class="toc-text">协议版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E5%A4%B4%E9%95%BF%E5%BA%A6"><span class="toc-number">5.0.2.</span> <span class="toc-text">报头长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.0.3.</span> <span class="toc-text">服务类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%80%BB%E9%95%BF%E5%BA%A6"><span class="toc-number">5.0.4.</span> <span class="toc-text">数据报总长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E6%A0%87%E8%AF%86%E5%8F%B7"><span class="toc-number">5.0.5.</span> <span class="toc-text">数据报标识号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%BF%97%E5%AD%97%E6%AE%B5%EF%BC%8C%E5%88%86%E7%89%87%E5%81%8F%E7%A7%BB%E5%AD%97%E6%AE%B5"><span class="toc-number">5.0.6.</span> <span class="toc-text">标志字段，分片偏移字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E5%AD%98%E6%97%B6%E9%97%B4TTL"><span class="toc-number">5.0.7.</span> <span class="toc-text">生存时间TTL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.0.8.</span> <span class="toc-text">用户协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E5%A4%B4%E6%A0%A1%E9%AA%8C%E5%92%8C"><span class="toc-number">5.0.9.</span> <span class="toc-text">报头校验和</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%A5%E9%80%89%E9%A1%B9"><span class="toc-number">5.0.10.</span> <span class="toc-text">数据报选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A1%AB%E5%85%85%E4%BD%8D"><span class="toc-number">5.0.11.</span> <span class="toc-text">填充位</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Wireshark%E6%8A%93%E5%8C%85%E5%B7%A5%E5%85%B7"><span class="toc-number">5.1.</span> <span class="toc-text">Wireshark抓包工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">5.1.1.</span> <span class="toc-text">优点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IPv6%E5%9C%B0%E5%9D%80"><span class="toc-number">6.</span> <span class="toc-text">IPv6地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv4%E5%8D%B1%E6%9C%BA"><span class="toc-number">6.1.</span> <span class="toc-text">IPv4危机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv4%E9%9D%A2%E4%B8%B4%E7%9A%84%E8%AF%B8%E5%A4%9A%E9%97%AE%E9%A2%98"><span class="toc-number">6.1.0.1.</span> <span class="toc-text">IPv4面临的诸多问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv4%E5%9C%B0%E5%9D%80%E5%8D%B1%E6%9C%BA"><span class="toc-number">6.1.0.2.</span> <span class="toc-text">IPv4地址危机</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E6%9B%BF%E6%8D%A2%E8%BF%98%E6%98%AF%E4%BF%AE%E8%A1%A5"><span class="toc-number">6.2.</span> <span class="toc-text">解决方案-替换还是修补</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%9B%BF%E6%8D%A2IPv4%E5%8D%8F%E8%AE%AE%EF%BC%8C%E8%A1%A8%E7%A4%BA%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%9D%87%E9%9C%80%E8%A6%81%E5%8D%87%E7%BA%A7%EF%BC%8C%E6%89%80%E6%9C%89%E8%AE%BE%E5%A4%87%E4%B9%9F%E9%83%BD%E9%9C%80%E8%A6%81%E5%8D%87%E7%BA%A7%E6%88%96%E6%9B%B4%E6%8D%A2%EF%BC%8C%E8%BF%99%E5%AF%B9%E5%A4%A7%E5%9E%8B%E7%BB%84%E7%BB%87%E6%9D%A5%E8%AF%B4%E6%98%AF%E4%B8%80%E5%9C%BA%E9%9A%BE%E4%BB%A5%E6%83%B3%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">6.2.0.1.</span> <span class="toc-text">如果替换IPv4协议，表示网络中所有的系统均需要升级，所有设备也都需要升级或更换，这对大型组织来说是一场难以想象的过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E6%98%AF%E4%BF%AE%E8%A1%A5%EF%BC%8C%E5%8F%AF%E9%80%9A%E8%BF%87NAT%E3%80%81CIDR%E3%80%81VLSM%E7%AD%89%E3%80%82%E4%BD%86%E6%98%AF%EF%BC%8C%E5%AE%83%E4%BB%AC%E6%9C%80%E7%BB%88%E5%B0%86%E9%98%BB%E7%A2%8D%E6%9C%AA%E6%9D%A5Internet%E7%9A%84%E5%8F%91%E5%B1%95%EF%BC%8C%E5%9B%A0%E4%B8%BA%E5%AE%83%E4%BB%AC%E9%99%90%E5%88%B6%E4%BA%86%E5%8F%AF%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%BD%91%E7%BB%9C%E6%95%B0%E5%92%8C%E4%B8%BB%E6%9C%BA%E6%95%B0%E3%80%82"><span class="toc-number">6.2.0.2.</span> <span class="toc-text">如果是修补，可通过NAT、CIDR、VLSM等。但是，它们最终将阻碍未来Internet的发展，因为它们限制了可连接的网络数和主机数。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%EF%BC%8C%E7%BB%8F%E8%BF%87%E8%AE%A8%E8%AE%BA%EF%BC%8C%E4%BA%BA%E4%BB%AC%E5%86%B3%E5%AE%9A%E6%9B%BF%E6%8D%A2IPv4%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.2.0.3.</span> <span class="toc-text">最终，经过讨论，人们决定替换IPv4协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0IP%E5%8D%8F%E8%AE%AE%E7%9B%AE%E6%A0%87"><span class="toc-number">6.3.</span> <span class="toc-text">新IP协议目标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E6%A0%87%E5%87%86%E7%BB%84%E7%BB%87"><span class="toc-number">6.3.1.</span> <span class="toc-text">IPv6标准组织</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IP-Version-6-Working-Group"><span class="toc-number">6.3.1.1.</span> <span class="toc-text">IP Version 6 Working Group</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6-Operations"><span class="toc-number">6.3.1.2.</span> <span class="toc-text">IPv6 Operations</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E5%AE%83IPv6%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C%E7%BB%84"><span class="toc-number">6.3.1.3.</span> <span class="toc-text">其它IPv6相关工作组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6%E5%9C%B0%E5%9D%80-1"><span class="toc-number">6.4.</span> <span class="toc-text">IPv6地址</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%BB%E8%8A%82%E7%82%B9"><span class="toc-number">6.4.0.1.</span> <span class="toc-text">邻节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E6%9C%80%E5%85%88%E8%91%97%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-number">6.4.1.</span> <span class="toc-text">IPv6最先著的变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E5%9C%B0%E5%9D%80%E8%A1%A8%E7%A4%BA"><span class="toc-number">6.4.2.</span> <span class="toc-text">IPv6地址表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%B1%E4%BA%8EIPv6%E5%9C%B0%E5%9D%80%E8%BF%87%E9%95%BF%EF%BC%8C%E6%89%80%E4%BB%A5%E6%88%91%E4%BB%AC%E9%87%87%E7%94%A8%E5%86%92%E5%88%86%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E6%9D%A5%E8%A1%A8%E7%A4%BAIPv6%E5%9C%B0%E5%9D%80"><span class="toc-number">6.4.2.1.</span> <span class="toc-text">由于IPv6地址过长，所以我们采用冒分十六进制来表示IPv6地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%88%E5%B0%86128%E4%BD%8D%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%9C%B0%E5%9D%80%E6%8C%89%E7%85%A716%E4%BD%8D%E4%B8%80%E7%BB%84%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%88%86%E6%88%908%E7%BB%84"><span class="toc-number">6.4.2.2.</span> <span class="toc-text">先将128位的二进制地址按照16位一组的格式分成8组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%8F%E7%BB%84%E9%83%BD%E9%87%87%E7%94%A8%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA"><span class="toc-number">6.4.2.3.</span> <span class="toc-text">每组都采用十六进制表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%84%E5%88%991%EF%BC%9A%E7%9C%81%E7%95%A5%E5%89%8D%E5%AF%BC0%EF%BC%8C%E6%AF%8F%E7%BB%84%E5%89%8D%E5%AF%BC0%E5%8F%AF%E8%A2%AB%E5%BF%BD%E7%95%A5"><span class="toc-number">6.4.2.4.</span> <span class="toc-text">规则1：省略前导0，每组前导0可被忽略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%84%E5%88%992%EF%BC%9A%E5%A6%82%E6%9E%9C%E6%9F%90%E7%BB%84%E5%85%A8%E4%B8%BA0%E5%8F%AF%E8%A2%AB%E5%85%A8%E9%83%A8%E5%BF%BD%E7%95%A5%EF%BC%8C%E4%B8%AD%E9%97%B4%E7%94%A8%E5%8F%8C%E5%86%92%E5%8F%B7%E8%A1%A8%E7%A4%BA-%E4%BD%86%E4%B8%80%E4%B8%AAIPv6%E5%9C%B0%E5%9D%80%E4%B8%AD%E5%8F%AA%E8%83%BD%E5%AD%98%E5%9C%A8%E4%B8%80%E4%B8%AA%E5%8F%8C%E5%86%92%E5%8F%B7%EF%BC%8C%E5%90%A6%E5%88%99%E6%97%A0%E6%B3%95%E8%BF%98%E5%8E%9FIP%E5%9C%B0%E5%9D%80"><span class="toc-number">6.4.2.5.</span> <span class="toc-text">规则2：如果某组全为0可被全部忽略，中间用双冒号表示(但一个IPv6地址中只能存在一个双冒号，否则无法还原IP地址)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E5%89%8D%E7%BC%80%E9%95%BF%E5%BA%A6%E7%94%A8%E2%80%9C-xx%E2%80%9D%E6%9D%A5%E8%A1%A8%E7%A4%BA%EF%BC%8C%E5%A6%82%EF%BC%9A-1-1-64"><span class="toc-number">6.4.2.6.</span> <span class="toc-text">地址前缀长度用“&#x2F;xx”来表示，如： 1::1&#x2F;64</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="toc-number">6.4.3.</span> <span class="toc-text">IPv6地址分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%9C%B0%E5%9D%80"><span class="toc-number">6.4.3.1.</span> <span class="toc-text">特殊地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E6%92%AD%E5%9C%B0%E5%9D%80%E4%B8%AD%E7%9A%84%E9%93%BE%E8%B7%AF-%E6%9C%AC%E5%9C%B0%E5%9C%B0%E5%9D%80"><span class="toc-number">6.4.3.2.</span> <span class="toc-text">单播地址中的链路-本地地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E5%8F%AF%E5%9C%A8%E6%9C%AC%E5%9C%B0%E8%AE%A1%E7%AE%97%E6%9C%BADOS%E7%AA%97%E5%8F%A3%E9%80%9A%E8%BF%87%E2%80%9Cipconfig%E2%80%9D%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0IPv6%E5%9C%B0%E5%9D%80%EF%BC%89"><span class="toc-number">6.4.3.3.</span> <span class="toc-text">（可在本地计算机DOS窗口通过“ipconfig”查看本地IPv6地址）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%81%9A%E5%90%88%E5%85%A8%E7%90%83%E5%8D%95%E6%92%AD%E5%9C%B0%E5%9D%80"><span class="toc-number">6.4.3.4.</span> <span class="toc-text">可聚合全球单播地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%90%A5%E5%95%86%E5%88%86%E9%85%8D%E7%BB%99%E5%8D%95%E4%BD%8D%E7%BD%91%E7%BB%9C%E7%9A%84%E5%9C%B0%E5%9D%80%E9%80%9A%E5%B8%B8%E6%98%AF-48"><span class="toc-number">6.4.3.5.</span> <span class="toc-text">运营商分配给单位网络的地址通常是&#x2F;48</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E8%87%B3%E4%BB%8A%E6%97%A5%EF%BC%8C%E4%B8%AD%E5%9B%BD%E7%BA%A6%E7%94%B3%E8%AF%B7%E5%88%B0%E4%B8%A4%E4%B8%87%E4%B8%AA-32%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%B8%80%E4%B8%AA-32%E5%9C%B0%E5%9D%80%E5%8C%85%E5%90%AB%E7%9A%84IPv6%E5%9C%B0%E5%9D%80%E6%95%B0%E7%BA%A6%E7%AD%89%E4%BA%8E%E5%85%A8%E9%83%A8%E7%9A%84IPv4%E5%9C%B0%E5%9D%80%E6%80%BB%E6%95%B0%EF%BC%8C%E6%89%80%E4%BB%A5%E6%98%AF%E5%AE%8C%E5%85%A8%E8%B6%B3%E5%A4%9F%E4%BD%BF%E7%94%A8%E7%9A%84"><span class="toc-number">6.4.3.6.</span> <span class="toc-text">时至今日，中国约申请到两万个&#x2F;32地址，一个&#x2F;32地址包含的IPv6地址数约等于全部的IPv4地址总数，所以是完全足够使用的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6%E4%B8%BB%E6%9C%BA%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E5%8D%B3%E6%8F%92%E5%8D%B3%E7%94%A8"><span class="toc-number">6.4.3.7.</span> <span class="toc-text">IPv6主机如何做到即插即用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#IPv6%E5%9C%B0%E5%9D%80%E7%9A%84%E5%AD%90%E7%BD%91%E8%A7%84%E5%88%92"><span class="toc-number">6.4.3.8.</span> <span class="toc-text">IPv6地址的子网规划</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IPv6%E5%88%86%E7%BB%84"><span class="toc-number">7.</span> <span class="toc-text">IPv6分组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E5%88%86%E7%BB%84%E7%94%B1%E5%A4%B4%E9%83%A8%EF%BC%8C%E6%89%A9%E5%B1%95%E5%A4%B4%EF%BC%8C%E6%95%B0%E6%8D%AE%E4%B8%89%E9%83%A8%E5%88%86%E7%BB%84%E6%88%90"><span class="toc-number">7.0.1.</span> <span class="toc-text">IPv6分组由头部，扩展头，数据三部分组成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IPv6%E5%A4%B4%E9%83%A8"><span class="toc-number">7.1.</span> <span class="toc-text">IPv6头部</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">7.1.1.</span> <span class="toc-text">版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BA%E5%88%86%E6%9C%8D%E5%8A%A1-%E4%B8%9A%E5%8A%A1%E7%AD%89%E7%BA%A7"><span class="toc-number">7.1.2.</span> <span class="toc-text">区分服务(业务等级)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E6%A0%87%E7%AD%BE"><span class="toc-number">7.1.3.</span> <span class="toc-text">流标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%80%E8%8D%B7%E9%95%BF%E5%BA%A6"><span class="toc-number">7.1.4.</span> <span class="toc-text">净荷长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A4%B4-next-header"><span class="toc-number">7.1.5.</span> <span class="toc-text">下一个头 next header</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%B3%E6%95%B0%E9%99%90%E5%88%B6"><span class="toc-number">7.1.6.</span> <span class="toc-text">跳数限制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%9D%A5%E8%AF%B4%EF%BC%8CIPv6%E5%88%86%E7%BB%84%E5%A4%B4%E9%83%A8%E6%98%AF%E5%9C%A8IPv4%E5%88%86%E7%BB%84%E5%A4%B4%E9%83%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E4%B8%8A%EF%BC%8C%E8%BF%9B%E8%A1%8C%E4%BA%86%E5%A2%9E%E5%8A%A0%EF%BC%8C%E4%BF%AE%E6%94%B9%E5%92%8C%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E6%9C%80%E7%BB%88%E5%BE%97%E5%88%B0%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-number">7.1.6.1.</span> <span class="toc-text">总体来说，IPv6分组头部是在IPv4分组头部的基础上，进行了增加，修改和删除操作最终得到的结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E5%A4%B4"><span class="toc-number">7.2.</span> <span class="toc-text">扩展头</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8B%E5%B0%B1%E6%98%AF%E7%94%A8wireshark%E9%9A%8F%E6%9C%BA%E6%8A%93%E5%8F%96%E7%9A%84%E4%B8%80%E6%AE%B5IPv6%E5%88%86%E7%BB%84"><span class="toc-number">7.2.0.1.</span> <span class="toc-text">以下就是用wireshark随机抓取的一段IPv6分组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E6%B8%85%E6%A5%9A%E7%9A%84%E7%BB%99%E5%87%BA%E4%BA%86IPv6%E5%8D%8F%E8%AE%AE%E5%86%85%E7%9A%84%E4%B8%BB%E8%A6%81%E9%83%A8%E5%88%86%E4%BB%A5%E5%8F%8A%E6%89%A9%E5%B1%95%E5%A4%B4%E5%86%85%E5%AE%B9"><span class="toc-number">7.2.0.2.</span> <span class="toc-text">可以看到清楚的给出了IPv6协议内的主要部分以及扩展头内容</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IPv6%E8%BF%87%E6%B8%A1%E6%8A%80%E6%9C%AF"><span class="toc-number">8.</span> <span class="toc-text">IPv6过渡技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv4%E4%B8%8EIPv6%E5%85%B1%E5%AD%98%E7%AD%96%E7%95%A5"><span class="toc-number">8.0.1.</span> <span class="toc-text">IPv4与IPv6共存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">8.0.2.</span> <span class="toc-text">问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E5%9F%BA%E7%B1%BB%E8%BF%87%E6%B8%A1%E6%8A%80%E6%9C%AF"><span class="toc-number">8.1.</span> <span class="toc-text">三种基类过渡技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="toc-number">8.1.1.</span> <span class="toc-text">双协议栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF"><span class="toc-number">8.1.2.</span> <span class="toc-text">隧道技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E8%BD%AC%E6%8D%A2%E6%8A%80%E6%9C%AF"><span class="toc-number">8.1.3.</span> <span class="toc-text">翻译转换技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPv6%E8%AF%95%E9%AA%8C%E7%BD%91"><span class="toc-number">8.1.4.</span> <span class="toc-text">IPv6试验网</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%97%E7%BE%8E"><span class="toc-number">8.1.4.1.</span> <span class="toc-text">北美</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AC%A7%E6%B4%B2"><span class="toc-number">8.1.4.2.</span> <span class="toc-text">欧洲</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%9A%E5%A4%AA%E5%9C%B0%E5%8C%BA"><span class="toc-number">8.1.4.3.</span> <span class="toc-text">亚太地区</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%E6%9D%A5%E6%BA%90"><span class="toc-number">9.</span> <span class="toc-text">路由表来源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E5%9C%A8%E6%94%B6%E5%88%B0IP%E5%88%86%E7%BB%84%E5%90%8E%EF%BC%8C%E4%BC%9A%E8%BF%9B%E8%A1%8C%E5%A6%82%E4%B8%8B%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="toc-number">9.0.0.1.</span> <span class="toc-text">一个路由在收到IP分组后，会进行如下操作：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="toc-number">9.1.</span> <span class="toc-text">路由表内容：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A1%A8%E6%9D%A5%E6%BA%90-1"><span class="toc-number">9.2.</span> <span class="toc-text">路由表来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E8%BF%9E%E8%B7%AF%E7%94%B1"><span class="toc-number">9.3.</span> <span class="toc-text">直连路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">9.4.</span> <span class="toc-text">静态路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1-%E9%BB%98%E8%AE%A4-%E7%BC%BA%E7%9C%81%E8%B7%AF%E7%94%B1"><span class="toc-number">9.4.1.</span> <span class="toc-text">常用的静态路由-默认&#x2F;缺省路由</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84%E8%B7%AF%E5%BE%84%EF%BC%8C%E6%89%BE%E4%B8%8D%E5%88%B0%E8%B7%AF%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%AF%E4%BB%A5%E4%BB%8E%E8%BF%99%E9%87%8C%E9%80%9A%E8%BF%87"><span class="toc-number">9.4.1.1.</span> <span class="toc-text">是默认的路径，找不到路的时候可以从这里通过</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">9.4.2.</span> <span class="toc-text">静态路由优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">9.5.</span> <span class="toc-text">动态路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE%E5%A6%82%E4%BD%95%E9%87%8F%E5%BA%A6%E8%B7%AF%E5%BE%84%E6%98%AF%E5%90%A6%E6%9C%80%E4%BC%98%EF%BC%88%E4%BB%A3%E4%BB%B7-%E5%BC%80%E9%94%80-%E6%88%90%E6%9C%AC%EF%BC%89"><span class="toc-number">9.5.1.</span> <span class="toc-text">路由选择协议如何量度路径是否最优（代价&#x2F;开销&#x2F;成本）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E7%9A%84%E4%BC%98%E7%82%B9%E4%B8%8E%E7%BC%BA%E7%82%B9"><span class="toc-number">9.5.2.</span> <span class="toc-text">动态路由的优点与缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E7%9F%A2%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE"><span class="toc-number">10.</span> <span class="toc-text">距离矢量路由选择协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EF%BC%88Distance-Vector%EF%BC%89"><span class="toc-number">10.0.1.</span> <span class="toc-text">（Distance Vector）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E5%8D%8F%E8%AE%AE%E5%88%86%E7%B1%BB%EF%BC%9A"><span class="toc-number">10.0.2.</span> <span class="toc-text">路由选择协议分类：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9-1"><span class="toc-number">10.0.3.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">10.0.4.</span> <span class="toc-text">缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B6%E6%95%9B%E2%80%93%E6%95%B4%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%AF%BB%E6%89%BE%E6%9C%80%E4%BD%B3%E8%B7%AF%E5%BE%84%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">10.0.4.1.</span> <span class="toc-text">收敛–整个网络寻找最佳路径的过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RIP-%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E4%BF%A1%E6%81%AF%E5%8D%8F%E8%AE%AE"><span class="toc-number">10.1.</span> <span class="toc-text">RIP (路由选择信息协议)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="toc-number">10.1.1.</span> <span class="toc-text">特点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">10.1.2.</span> <span class="toc-text">解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E8%B7%AF%E7%94%B1%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E8%B7%B3%E6%95%B0%EF%BC%8C%E4%BE%8B%E5%A6%8215"><span class="toc-number">10.1.2.1.</span> <span class="toc-text">定义路由表中的最大跳数，例如15</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E5%BF%AB%E6%94%B6%E6%95%9B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">10.1.2.2.</span> <span class="toc-text">加快收敛的方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIP%E4%BA%A7%E7%94%9F%E6%97%A0%E7%A9%B7%E8%AE%A1%E6%95%B0%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">10.1.3.</span> <span class="toc-text">RIP产生无穷计数问题的原因</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/" title="4-网络层（上）"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4-网络层（上）"/></a><div class="content"><a class="title" href="/2021/04/16/4-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8A%EF%BC%89/" title="4-网络层（上）">4-网络层（上）</a><time datetime="2021-04-16T13:13:18.000Z" title="Created 2021-04-16 21:13:18">2021-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/07/4-Dockerfile/" title="4-Dockerfile And Docker Compose"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4-Dockerfile And Docker Compose"/></a><div class="content"><a class="title" href="/2021/04/07/4-Dockerfile/" title="4-Dockerfile And Docker Compose">4-Dockerfile And Docker Compose</a><time datetime="2021-04-07T00:39:56.000Z" title="Created 2021-04-07 08:39:56">2021-04-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" title="3-Docker应用部署"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3-Docker应用部署"/></a><div class="content"><a class="title" href="/2021/04/06/3-Docker%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2/" title="3-Docker应用部署">3-Docker应用部署</a><time datetime="2021-04-06T11:18:53.000Z" title="Created 2021-04-06 19:18:53">2021-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/" title="2-Docker容器数据卷"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2-Docker容器数据卷"/></a><div class="content"><a class="title" href="/2021/04/06/2-Docker%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7/" title="2-Docker容器数据卷">2-Docker容器数据卷</a><time datetime="2021-04-06T07:41:07.000Z" title="Created 2021-04-06 15:41:07">2021-04-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/" title="1-Docker概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/68304874_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-Docker概述"/></a><div class="content"><a class="title" href="/2021/04/06/1-Docker%E6%A6%82%E8%BF%B0/" title="1-Docker概述">1-Docker概述</a><time datetime="2021-04-06T04:47:56.000Z" title="Created 2021-04-06 12:47:56">2021-04-06</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/67888138_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
