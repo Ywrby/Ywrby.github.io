@@ -7447,11 +7447,173 @@
 
 
 <p>测试结果</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpringBootTestApplicationTests</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Person person;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(person);</span><br><span class="line">        <span class="comment">//Person&#123;name=&#x27;Leslie&#x27;, age=18, birth=Sun Feb 14 00:00:00 CST 2021, state=true, map=&#123;k1=v1, k2=v2&#125;, list=[l1, l2, l3], pet=Pet&#123;name=&#x27;Dog&#x27;, age=3&#125;&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpringBootTestApplicationTests</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Person person;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(person);</span><br><span class="line">        <span class="comment">//Person&#123;name=&#x27;Leslie&#x27;, age=18, birth=Sun Feb 14 00:00:00 CST 2021, state=true, map=&#123;k1=v1, k2=v2&#125;, list=[l1, l2, l3], pet=Pet&#123;name=&#x27;Dog&#x27;, age=3&#125;&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Yaml文件与properties为属性赋值的区别"><a href="#Yaml文件与properties为属性赋值的区别" class="headerlink" title="Yaml文件与properties为属性赋值的区别"></a>Yaml文件与properties为属性赋值的区别</h3><table>
+<thead>
+<tr>
+<th>—</th>
+<th>@ConfigurationProperties</th>
+<th>@Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能</td>
+<td>批量注入配置文件中的属性</td>
+<td>一个一个注入</td>
+</tr>
+<tr>
+<td>松散绑定（松散语法）</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>SpEL</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>JSR303数据校验</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>复杂类型封装</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+</tbody></table>
+<p>松散绑定就是方便我们在对象定义的Java代码中继续使用驼峰命名法（例如：lastName）但是在yml配置文件中可以使用下划线命名法（例如：last-name或last_name或LAST_NAME）来进行匹配</p>
+<h3 id="JSR303校验"><a href="#JSR303校验" class="headerlink" title="JSR303校验"></a>JSR303校验</h3><p>JSR是Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。任何人都可以提交JSR，以向Java平台增添新的API和服务。JSR已成为Java界的一个重要标准。</p>
+<p>JSR-303 是JAVA EE 6 中的一项子规范，叫做Bean Validation，Hibernate Validator 是 Bean Validation 的参考实现 . Hibernate Validator 提供了 JSR 303 规范中所有内置 constraint 的实现，除此之外还有一些附加的 constraint。</p>
+<h4 id="基本内容"><a href="#基本内容" class="headerlink" title="基本内容"></a>基本内容</h4><p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/20200525161753312.png"></p>
+<p>扩展部分<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/20200525161900254.png"></p>
+<h4 id="使用测试"><a href="#使用测试" class="headerlink" title="使用测试"></a>使用测试</h4><p>定义POJO，在类前使用@Validated表示使用JSR303校验，在参数前加注解@Email表示检查传入参数是否符合规定格式</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;pet&quot;)</span></span><br><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pet</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String lastName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="meta">@Email()</span></span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>编写yml文件传入参数(可以看到此时email参数不符合规定格式)</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">pet:</span></span><br><span class="line">  <span class="attr">LAST_NAME:</span> <span class="string">Cat</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">email:</span> <span class="number">233</span></span><br></pre></td></tr></table></figure>
+
+<p>测试类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpringBootTestApplicationTests</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Pet pet;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">contextLoads</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(pet);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 运行结果:</span></span><br><span class="line"><span class="comment">    Property: pet.email</span></span><br><span class="line"><span class="comment">    Value: 233</span></span><br><span class="line"><span class="comment">    Origin: class path resource [application.yaml] - 31:10</span></span><br><span class="line"><span class="comment">    Reason: 不是一个合法的电子邮件地址</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置文件优先级"><a href="#配置文件优先级" class="headerlink" title="配置文件优先级"></a>配置文件优先级</h2><p>项目路径下各个位置核心配置文件的优先级如下：</p>
+<ol>
+<li>file:./config/</li>
+<li>file:./</li>
+<li>classpath:/config/</li>
+<li>classpath:/</li>
+</ol>
+<p>即file路径指的是项目根路径，classpath指的是资源路径即resources目录下，可以看到SpringBoot项目自动创建的核心配置文件是优先级最低的配置文件</p>
+<p>当配置文件位于同一路径下时，按照扩展名的优先级顺序如下：properties&gt;yaml&gt;yml，即先加载yml文件，再加载yaml文件，最后加载properties文件</p>
+<h3 id="多环境配置"><a href="#多环境配置" class="headerlink" title="多环境配置"></a>多环境配置</h3><p>实际企业开发过程中，可能需要在项目的不同阶段使用不同配置文件，这时，就可以在配置中指定不同的配置文件，但所有配置文件都需要以application开头，通过分号-表示不同环境下的配置文件</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/springboottest5.png"></p>
+<p>默认情况下，依然执行application.yaml文件，只有当我们在application.yaml中指定要执行的配置文件时，才会切换环境配置</p>
+<p>在application文件中配置时，不需要全部的文件名，只需要写清分号后缀即可</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+
+<p>不过yaml支持多文档模块，即将一个文档下的语句通过分隔符分为多个模块，可以简化多文件的创建</p>
+<p>yml以—为分隔符，每个分隔符创建一个模块，通过spring.profiles为模块命名</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span> <span class="string">test</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8081</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">profiles:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8082</span></span><br></pre></td></tr></table></figure>
+
+<p>建议配置量小的情况下可以使用多文档模块，配置量较大的情况下还是文件分离更加直观</p>
+]]></content>
       <tags>
         <tag>Spring</tag>
         <tag>SpringBoot</tag>
         <tag>Yaml</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>14-关系代数Relation Algebra</title>
+    <url>/2021/04/18/14-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0Relation-Algebra/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="关系代数Relation-Algebra"><a href="#关系代数Relation-Algebra" class="headerlink" title="关系代数Relation Algebra"></a>关系代数Relation Algebra</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>关系代数是一种抽象的查询语言，用对关系的运算来表达查询，作为研究关系数据语言的数学工具。关系代数的运算对象是关系（集合），运算结果亦为关系（集合）。</p>
+</blockquote>
+<ul>
+<li>传统的集合运算：广义笛卡尔积运算，并，交和差运算</li>
+<li>专门的关系运算：选择，投影，连接和除运算</li>
+</ul>
+<h2 id="传统的集合运算"><a href="#传统的集合运算" class="headerlink" title="传统的集合运算"></a>传统的集合运算</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>设关系模式为$R(A_1,A_2,…,A_n)$</p>
+<ul>
+<li>R表示关系模式$R(A_1,A_2,…,A_n)$的一个关系</li>
+<li>t表示元组，$t\in R$表示t是R的一个元组，可以理解为数据库某一表中一行实例</li>
+<li>$t[A_i]$表示元组t中相对应于属性$A_i$的一个分量，即表中t元组中$A_i$属性所对应单元格的值</li>
+<li>若$A={ A_{i1},A_{i2},A_{i3},…,A_{ik}}$，其中$A_{i1},A_{i2},….,A_{ik}$是$A_1,A_2,…,A_n$中的一部分，则称A为属性列或属性组，简单来说，属性组就是一个关系所有属性的一个子集</li>
+<li>$t[A]=(t[A_{i1}],t[A_{i2}],…,t[A_{ik}])$表示元组t在属性列A上诸分量的集合，简言之就是按照属性组筛选后的一个元组</li>
+<li>$\overline{A}$表示完整属性集合${ A_1,A_2,…,A_n}$中去除A属性组${ A_{i1},A_{i2},…,A_{ik}}$后剩余的属性组</li>
+<li>$\overgroup{t_r\ \ t_s}$称为元组的连接<ul>
+<li>R为n元关系，S为m元关系</li>
+<li>$t_r\in R,t_s\in S$</li>
+<li>元组的连接本质上就是直接将两个元组前后连接成一个元组，所以连接后的元组是一个n+m元的元组，前n个分量为R中的一个n元组，后m个分量为S中的一个m元组</li>
+</ul>
+</li>
+<li>象集(Images Set)：<ul>
+<li>给定一个关系R(X,Y),X和Y为属性组</li>
+<li>当$t[X]=x$时，x在R中的象集为：$Y_x={ t[Y] | t\in R,t[X]=x}$</li>
+<li>举例说明：给定一个关系R(学号，总成绩)，则当t[学号]=001时，x在R中的象集表示的就是学号为001的学生的总成绩，只不过实际使用中X和Y都是属性组，其中不仅只有一个属性</li>
+</ul>
+</li>
+</ul>
+<h3 id="并运算（Union）"><a href="#并运算（Union）" class="headerlink" title="并运算（Union）"></a>并运算（Union）</h3><p>并运算的基本要求</p>
+<ul>
+<li>R和S两个关系必须具有相同的n个元（即两个关系都有n个属性）</li>
+<li>相应的属性必须取自同一个域下</li>
+</ul>
+<p>所以进行并运算后，原本的两个n元关系，仍未n元关系，由属于R或属于S的元组组成<br>$$R\cup S={ t|t\in R\vee t\in S}$$</p>
+<p>简言之就是两个属性值完全一致并且属性取值域相同的两个表进行并运算，只是最后要去重</p>
+<p>两个关系</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable1.png"><br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable2.png"></p>
+<p>进行并运算后</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/xxxtable3.png"></p>
+<h3 id="交运算（Intersection）"><a href="#交运算（Intersection）" class="headerlink" title="交运算（Intersection）"></a>交运算（Intersection）</h3><p>交运算的基本要求</p>
+<ul>
+<li>R和S两个关系必须具有相同的n个元（即两个关系都有n个属性）</li>
+<li>相应的属性必须取自同一个域下</li>
+</ul>
+<p>进行交运算后仍未一个n元关系，由所有既属于R又属于S的元组组成<br>$$R\cap S={ t|t\in R\wedge t\in S}$$<br>$$R\cap S=R-(R-S)$$</p>
+<h3 id="差运算（Difference）"><a href="#差运算（Difference）" class="headerlink" title="差运算（Difference）"></a>差运算（Difference）</h3><p>差运算的基本要求</p>
+<ul>
+<li>R和S两个关系必须具有相同的n个元（即两个关系都有n个属性）</li>
+<li>相应的属性必须取自同一个域下</li>
+</ul>
+<p>进行差运算后仍未一个n元关系，由所有属于R却不属于S的元组组成<br>$$R- S={ t|t\in R\wedge t\notin S}$$</p>
+<h3 id="笛卡尔积（Cartesian-Product）"><a href="#笛卡尔积（Cartesian-Product）" class="headerlink" title="笛卡尔积（Cartesian Product）"></a>笛卡尔积（Cartesian Product）</h3><p>R为n元关系，包含$k_1$个分组，S为m元关系，包含$k_2$个分组</p>
+<p>经过笛卡尔积的关系，具有n+m元，即n+m列的集合，元组的前n列是R的一个元组，元组的后m列是S的一个元组。一共具有$k_1*k_2$个元组</p>
+<p>$$R\times S={ \overgroup{t_r\ \ t_s}|t_r\in R \wedge t_s\in S}$$</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dikaerji.png"></p>
+<h2 id="专门的关系运算"><a href="#专门的关系运算" class="headerlink" title="专门的关系运算"></a>专门的关系运算</h2><h3 id="选择运算（Selection）"><a href="#选择运算（Selection）" class="headerlink" title="选择运算（Selection）"></a>选择运算（Selection）</h3><p>选择又被称为限制（Restriction），选择运算符的含义是在关系R中选择满足给定条件的诸元组，即选择是对元组的选择，选择的结果属性个数不会发生改变<br>$$\sigma_{F}(R)={ t|t\in R\wedge F(t)=true}$$<br>上面的F表示选择条件，是一个逻辑表达式，结果是布尔值</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/selection.png"></p>
+<p>例如：Student(name,age,score,dept)是一个学生信息表，属性分别是姓名，年龄，分数和专业，现在通过选择运算获取所有专业为CS的元组</p>
+<p>$$\sigma_{dept=’CS’}(Student)$$</p>
+<h3 id="投影运算（Projection）"><a href="#投影运算（Projection）" class="headerlink" title="投影运算（Projection）"></a>投影运算（Projection）</h3><p>投影运算符的含义是从R中选择出若干个属性列组成新的关系，简言之就是从关系中选择出完整属性列的子集组成一个新关系</p>
+<p>$$\pi_A(R)={ t[A]|t\in R}$$<br>其中的A表示R中的属性列</p>
+<p>这里需要注意的是经过投影之后，不仅原关系中的某些列取消了，部分元组也会取消，即不仅列数减少，行数也有可能减少，这是由于去除某些列后，原关系的限制关系解除，某些元组发生重复</p>
+<p>例如上文的学生信息表，现在从其中只投影（筛选）专业这个属性，则必然重复专业的元组会被删除，只保留一个<br>$$\pi_{dept}(Student)$$</p>
+<p>投影多个属性的情况下按照如下方式书写，或将多个属性定义为一个属性列<br>$$\pi_{name,score,dept}(Student)$$<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/projection.png"></p>
+<h3 id="连接运算（Join）"><a href="#连接运算（Join）" class="headerlink" title="连接运算（Join）"></a>连接运算（Join）</h3><p>连接也被称为$\theta$连接，连接运算的含义表示从两个关系的笛卡尔积中选择出属性间满足一定条件的元组</p>
+<p>$$R \operatorname*{\Join}\limits_{A\theta B} S={ \overgroup{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\wedge t_r[A]\theta t_s[B]}$$</p>
+<p>其中A和B分别表示的是R和S上度数相等且可比的两个属性组，$\theta$表示比较运算符</p>
+<p>连接运算就是从R和S的笛卡尔积$R\times S$中选取A属性组上的值与B属性组上值满足比较关系$\theta$ 的元组</p>
+<h4 id="等值连接"><a href="#等值连接" class="headerlink" title="等值连接"></a>等值连接</h4><p>等值连接就是比较关系是等于的连接运算（$\theta$ = “=”），等值连接就是从笛卡尔积中选取A和B属性值相等的元组，即<br>$$R \operatorname*{\Join}\limits_{A= B} S={ \overgroup{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\wedge t_r[A]= t_s[B]}$$</p>
+<h4 id="自然连接"><a href="#自然连接" class="headerlink" title="自然连接"></a>自然连接</h4><p>自然连接是特殊的等值连接，其在等值连接的基础上要求两个关系中进行比较的分量必须是相同的属性组，并且最后的运算结果中只保留两个属性中的一个即可（即在结果中去掉重复的属性列）</p>
+<p>自然连接的含义是R和S的相同属性组的值相等<br>$$R \Join S={ \overgroup{t_r\ \ t_s}|t_r\in R \wedge t_s\in S\wedge t_r[A]= t_s[A]}$$</p>
+<h4 id="内外连接"><a href="#内外连接" class="headerlink" title="内外连接"></a>内外连接</h4><p>可以看到两个关系在做自然连接时，满足比较关系的元组被保留，不满足比较关系的元组被舍弃，这就说明R和S两个关系中都可能会有元组被舍弃，这种连接方式被称为内连接</p>
+<p>与之相对的一种连接方式称为外连接，外连接会将某个关系中不满足条件的元组保留下来，并在他的其他属性上填控制NULL，如果把左边关系R中要舍弃的元组保留下来，则称为左外连接，如果将右边关系S中要舍弃的元组保留下来，称为右外连接</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/djasio.png"></p>
+<h3 id="除运算（Division）"><a href="#除运算（Division）" class="headerlink" title="除运算（Division）"></a>除运算（Division）</h3><p><a href="https://blog.csdn.net/weixin_42023723/article/details/80876568">除运算</a></p>
+]]></content>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>3-SprngBoot下的Web开发</title>
+    <url>/2021/04/18/3-SprngBoot%E4%B8%8B%E7%9A%84Web%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h1 id="SpringBoot下的Web开发"><a href="#SpringBoot下的Web开发" class="headerlink" title="SpringBoot下的Web开发"></a>SpringBoot下的Web开发</h1>]]></content>
+      <tags>
+        <tag>Spring</tag>
+        <tag>SpringBoot</tag>
       </tags>
   </entry>
 </search>
