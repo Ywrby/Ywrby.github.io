@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://ywrby.cn/2021/04/18/14-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0Relation-Algebra/</loc>
+    <loc>http://ywrby.cn/2021/04/19/4-%E5%9F%BA%E4%BA%8ESpringBoot%E7%9A%84Web%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2021-04-20</lastmod>
+  </url>
+  <url>
+    <loc>http://ywrby.cn/2021/04/19/3-Lombok%E5%BA%94%E7%94%A8/</loc>
     <lastmod>2021-04-19</lastmod>
   </url>
   <url>
-    <loc>http://ywrby.cn/2021/04/18/3-SprngBoot%E4%B8%8B%E7%9A%84Web%E5%BC%80%E5%8F%91/</loc>
-    <lastmod>2021-04-18</lastmod>
+    <loc>http://ywrby.cn/2021/04/18/14-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0Relation-Algebra/</loc>
+    <lastmod>2021-04-19</lastmod>
   </url>
   <url>
     <loc>http://ywrby.cn/2021/04/17/2-Yaml%E6%96%87%E4%BB%B6/</loc>
