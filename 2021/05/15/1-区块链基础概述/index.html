@@ -1,0 +1,355 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>1-区块链基础概述 | Ywrby个人博客网站</title><meta name="keywords" content="区块链"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1-区块链基础概述 区块链（英语：blockchain或block chain）是借由密码学串接并保护内容的串连文字记录（又称区块）。每一个区块包含了前一个区块的加密散列、相应时间戳记以及交易资料（通常用默克尔树（Merkle tree）算法计算的散列值表示），这样的设计使得区块内容具有难以篡改的特性。用区块链技术所串接的分布式账本能让两方有效记录交易，且可永久查验此交易。目前区块链技术最大的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-区块链基础概述">
+<meta property="og:url" content="http://ywrby.cn/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="1-区块链基础概述 区块链（英语：blockchain或block chain）是借由密码学串接并保护内容的串连文字记录（又称区块）。每一个区块包含了前一个区块的加密散列、相应时间戳记以及交易资料（通常用默克尔树（Merkle tree）算法计算的散列值表示），这样的设计使得区块内容具有难以篡改的特性。用区块链技术所串接的分布式账本能让两方有效记录交易，且可永久查验此交易。目前区块链技术最大的应用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg">
+<meta property="article:published_time" content="2021-05-15T12:06:13.000Z">
+<meta property="article:modified_time" content="2021-05-16T17:15:42.276Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="区块链">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-17 01:15:42'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">94</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">1-区块链基础概述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-05-15T12:06:13.000Z" title="Created 2021-05-15 20:06:13">2021-05-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-16T17:15:42.276Z" title="Updated 2021-05-17 01:15:42">2021-05-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-区块链基础概述"><a href="#1-区块链基础概述" class="headerlink" title="1-区块链基础概述"></a>1-区块链基础概述</h1><blockquote>
+<p>区块链（英语：blockchain或block chain）是借由密码学串接并保护内容的串连文字记录（又称区块）。每一个区块包含了前一个区块的加密散列、相应时间戳记以及交易资料（通常用默克尔树（Merkle tree）算法计算的散列值表示），这样的设计使得区块内容具有难以篡改的特性。用区块链技术所串接的分布式账本能让两方有效记录交易，且可永久查验此交易。目前区块链技术最大的应用是数字货币，例如比特币的发明。</p>
+</blockquote>
+<blockquote>
+<p>比特币（英语：Bitcoin，缩写：BTC 或 XBT）是一种基于去中心化，采用点对点网络与共识主动性，开放源代码，以区块链作为底层技术的加密货币，比特币由中本聪（网名）（Satoshi Nakamoto）于2008年10月31日发表论文，2009年1月3日，创世区块诞生。在某些国家、央行、政府机关则将比特币视为虚拟商品，而不认为是货币。</p>
+</blockquote>
+<h2 id="区块链结构"><a href="#区块链结构" class="headerlink" title="区块链结构"></a>区块链结构</h2><p>在加密货币应用中，区块链结构的作用就是用作账本，每一个区块都是一页账册，它们相互之间通过哈希值进行连接形成一条完整有序的链表，每个区块的头部哈希是它们的唯一标识。</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BB%93%E6%9E%84.jpg"></p>
+<p>从上面的区块链结构可以看得出，一个区块由主要的三部分组成，分别是区块头部以及区块主体还有单独的确认数。区块头部存储了整个区块的基本信息：区块高度本质是区块的索引值，标识了该区块在整个区块中的索引位置，难度指标记录了当前区块链网络中所挖取的区块的难度值，PoW结果即符合难度指标下求解出的nonce值，时间戳记录了当前区块生成的时间，区块头部哈希唯一标识该区块，其由区块头部数据经过哈希算法得出，前置区块preHash记录了该区块前一位区块的哈希值。区块主体Body只负责存储开始挖矿操作前，交易池中所存储的全部交易数据。最后第三部分是确认数，即当某一结点发现区块时将其广播出去后，得到其他节点确认的数量，比特币中，以6个为界，6个以上确认数的区块一般被认为是不可能出现错误的区块，以太坊中，则以12个确认数为界。</p>
+<p>在区块链结构中，展现的最重要的内容就是通过哈希算法，确保数据的不可篡改性，上面的区块链结构对区块链内容进行部分省略，真实结构中区块头部存储了额外的属性“Merkle Hash”，MerkleHash通过对所有交易数据进行哈希计算得来，这与我们一般进行哈希计算不同，首先对每笔交易进行哈希计算，随后将结果按照顺序两两相加，在对相加的结果进行哈希计算，不断重复，直到算得唯一的哈希值为止，以该值为Merkle Hash，该值可以保证区块中交易的不可篡改，只要改动任意一笔交易都会导致merklehash的值被改变从而无法通过校验<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/merklehash.png"><br>（碰到奇数情况，最后一个哈希值无法配对的情况下，则该哈希值进行自加运算自己与自己相加后计算哈希值）</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/merklehash2.png"></p>
+<p>除了上面提到的Merkle Hash，记录在区块头部的头部Hash则是用来唯一表示该区块，其由区块头部的全部数据生成</p>
+<blockquote>
+<p>如果一个恶意的攻击者修改了一个区块中的某个交易，那么Merkle Hash验证就不会通过。所以，他只能重新计算Merkle Hash，然后把区块头的Merkle Hash也修改了。这时，我们就会发现，这个区块本身的Block Hash就变了，所以，下一个区块指向它的链接就断掉了。由于比特币区块的哈希必须满足一个难度值，因此，攻击者必须先重新计算这个区块的Block Hash，然后，再把后续所有区块全部重新计算并且伪造出来，才能够修改整个区块链。在后面的挖矿中，我们会看到，修改一个区块的成本就已经非常非常高了，要修改后续所有区块，这个攻击者必须掌握全网51%以上的算力才行，所以，修改区块链的难度是非常非常大的，并且，由于正常的区块链在不断增长，同样一个区块，修改它的难度会随着时间的推移而不断增加。</p>
+</blockquote>
+<p>比特币使用的加密算法分为两种：SHA-256和RipeMD160，其利用这两种哈希算法的方式分别是</p>
+<ul>
+<li>对数据进行两次SHA-256计算，这种算法在比特币协议中通常被称为hash256或者dhash</li>
+<li>先计算SHA-256，再计算RipeMD160，这种算法在比特币协议中通常被称为hash160</li>
+</ul>
+<h3 id="定义区块链结构"><a href="#定义区块链结构" class="headerlink" title="定义区块链结构"></a>定义区块链结构</h3><h4 id="区块结构设计"><a href="#区块结构设计" class="headerlink" title="区块结构设计"></a>区块结构设计</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Block</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 区块 Header</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> BlockHeader header;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 区块 Body</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> BlockBody body;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 确认数</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> confirmNum = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="区块头部设计"><a href="#区块头部设计" class="headerlink" title="区块头部设计"></a>区块头部设计</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区块头</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlockHeader</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 区块高度</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> Integer index;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 难度指标</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> BigInteger difficulty;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * PoW 问题的答案</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> Long nonce;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 时间戳</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> Long timestamp;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 区块头 Hash</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> String hash;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 上一个区块的 hash 地址</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> String previousHash;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BlockHeader</span><span class="params">(Integer index, String previousHash)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.index = index;</span><br><span class="line">		<span class="keyword">this</span>.timestamp = System.currentTimeMillis();</span><br><span class="line">		<span class="keyword">this</span>.previousHash = previousHash;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BlockHeader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.timestamp = System.currentTimeMillis();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;BlockHeader&#123;&quot;</span> +</span><br><span class="line">				<span class="string">&quot;index=&quot;</span> + index +</span><br><span class="line">				<span class="string">&quot;, difficulty=&quot;</span> + difficulty +</span><br><span class="line">				<span class="string">&quot;, nonce=&quot;</span> + nonce +</span><br><span class="line">				<span class="string">&quot;, timestamp=&quot;</span> + timestamp +</span><br><span class="line">				<span class="string">&quot;, hash=&#x27;&quot;</span> + hash + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">				<span class="string">&quot;, previousHash=&#x27;&quot;</span> + previousHash + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">				<span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 计算当前区块头的 hash 值</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">hash</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> Hash.sha3(<span class="string">&quot;BlockHeader&#123;&quot;</span> +</span><br><span class="line">				<span class="string">&quot;index=&quot;</span> + index +</span><br><span class="line">				<span class="string">&quot;, difficulty=&quot;</span> + difficulty +</span><br><span class="line">				<span class="string">&quot;, nonce=&quot;</span> + nonce +</span><br><span class="line">				<span class="string">&quot;, timestamp=&quot;</span> + timestamp +</span><br><span class="line">				<span class="string">&quot;, previousHash=&#x27;&quot;</span> + previousHash + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">				<span class="string">&#x27;&#125;&#x27;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="区块主体设计"><a href="#区块主体设计" class="headerlink" title="区块主体设计"></a>区块主体设计</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区块数据</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlockBody</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 区块所包含的交易记录</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">private</span> List&lt;Transaction&gt; transactions;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BlockBody</span><span class="params">(List&lt;Transaction&gt; transactions)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.transactions = transactions;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">BlockBody</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.transactions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Transaction&gt; <span class="title">getTransactions</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> transactions;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 添加一笔交易打包到区块</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> transaction</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTransaction</span><span class="params">(Transaction transaction)</span> </span>&#123;</span><br><span class="line">		transactions.add(transaction);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;BlockBody&#123;&quot;</span> +</span><br><span class="line">				<span class="string">&quot;transactions=&quot;</span> + transactions +</span><br><span class="line">				<span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="区块链结构设计"><a href="#区块链结构设计" class="headerlink" title="区块链结构设计"></a>区块链结构设计</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 区块链主类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlockChain</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//日志打印工具</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Logger logger = LoggerFactory.getLogger(BlockChain.class);</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> DBAccess dbAccess; <span class="comment">//数据库操作</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AppClient appClient; <span class="comment">//客户端启动</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> Miner miner; <span class="comment">//矿工类，用于进行挖矿</span></span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> TransactionPool transactionPool; <span class="comment">//交易池</span></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> TransactionExecutor transactionExecutor;  <span class="comment">//交易执行器</span></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> AppConfig appConfig; <span class="comment">//系统配置</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 是否正在同步区块</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> syncing = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 挖取一个区块</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Block <span class="title">mining</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">		Optional&lt;Block&gt; lastBlock = getLastBlock(); <span class="comment">//获取当前区块链上最后一个区块</span></span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">		 * 创建新区块，这里需要注意这个新建区块的过程不是简单的新建一个对象，而是在该方法</span></span><br><span class="line"><span class="comment">		 * 中完成了区块对象的创建，以及挖矿计算（工作量证明），并且写入了该区块的基本信息。</span></span><br><span class="line"><span class="comment">		 * 同时写入了第一笔交易，即CoinBase交易（矿工奖励）</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		Block block = miner.newBlock(lastBlock);   </span><br><span class="line">		<span class="comment">// 获取当前未打包的交易记录</span></span><br><span class="line">		<span class="keyword">for</span> (Iterator t = transactionPool.getTransactions().iterator(); t.hasNext();) &#123;</span><br><span class="line">			<span class="comment">//向区块中添加交易记录</span></span><br><span class="line">			block.getBody().addTransaction((Transaction) t.next());</span><br><span class="line">			t.remove(); <span class="comment">// 已打包的交易移出交易池</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 存储区块信息到数据库</span></span><br><span class="line">		dbAccess.putLastBlockIndex(block.getHeader().getIndex());</span><br><span class="line">		dbAccess.putBlock(block);</span><br><span class="line">		logger.info(<span class="string">&quot;Find a New Block, &#123;&#125;&quot;</span>, block);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 判断系统是否设置了自动发现其他节点，如果设置了，需要在挖矿成功后，将新区块广播到所有节点</span></span><br><span class="line">		<span class="keyword">if</span> (appConfig.isNodeDiscover()) &#123;</span><br><span class="line">			<span class="comment">// 触发挖矿事件，并等待其他节点确认区块</span></span><br><span class="line">			ApplicationContextProvider.publishEvent(<span class="keyword">new</span> NewBlockEvent(block));</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 未开启节点自动发现，不需要发布信息</span></span><br><span class="line">			transactionExecutor.run(block);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> block;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 发送交易</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> credentials 交易发起者的凭证</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> to 交易接收者</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> amount</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> data 交易附言</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Transaction <span class="title">sendTransaction</span><span class="params">(Credentials credentials, String to, BigDecimal amount, String data)</span> <span class="keyword">throws</span></span></span><br><span class="line"><span class="function">			Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//校验付款和收款地址</span></span><br><span class="line">		Preconditions.checkArgument(to.startsWith(<span class="string">&quot;0x&quot;</span>), <span class="string">&quot;收款地址格式不正确&quot;</span>);</span><br><span class="line">		Preconditions.checkArgument(!credentials.getAddress().equals(to), <span class="string">&quot;收款地址不能和发送地址相同&quot;</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//构建交易对象</span></span><br><span class="line">		Transaction transaction = <span class="keyword">new</span> Transaction(credentials.getAddress(), to, amount);</span><br><span class="line">		transaction.setPublicKey(Keys.publicKeyEncode(credentials.getEcKeyPair().getPublicKey().getEncoded()));</span><br><span class="line">		transaction.setStatus(TransactionStatusEnum.APPENDING);</span><br><span class="line">		transaction.setData(data);</span><br><span class="line">		transaction.setTxHash(transaction.hash());</span><br><span class="line">		<span class="comment">//签名</span></span><br><span class="line">		String sign = Sign.sign(credentials.getEcKeyPair().getPrivateKey(), transaction.toSignString());</span><br><span class="line">		transaction.setSign(sign);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//先验证私钥是否正确</span></span><br><span class="line">		<span class="keyword">if</span> (!Sign.verify(credentials.getEcKeyPair().getPublicKey(), sign, transaction.toSignString())) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;私钥签名验证失败，非法的私钥&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 加入交易池，等待打包</span></span><br><span class="line">		transactionPool.addTransaction(transaction);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (appConfig.isNodeDiscover()) &#123;</span><br><span class="line">			<span class="comment">//触发交易事件，向全网广播交易，并等待确认</span></span><br><span class="line">			ApplicationContextProvider.publishEvent(<span class="keyword">new</span> NewTransactionEvent(transaction));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> transaction;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 获取最后一个区块</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Optional&lt;Block&gt; <span class="title">getLastBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> dbAccess.getLastBlock();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 添加一个节点</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> port</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addNode</span><span class="params">(String ip, <span class="keyword">int</span> port)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		appClient.addNode(ip, port);</span><br><span class="line">		Node node = <span class="keyword">new</span> Node(ip, port);</span><br><span class="line">		dbAccess.addNode(node);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="加密货币的两种货币模型（UTXO和Account模型）"><a href="#加密货币的两种货币模型（UTXO和Account模型）" class="headerlink" title="加密货币的两种货币模型（UTXO和Account模型）"></a>加密货币的两种货币模型（UTXO和Account模型）</h2><p>在加密货币领域存在两种货币存储模型，一种是以太坊所使用的也是最常见，最为普遍应用的账户模型（Account模型），另一种则是中本聪提出的目前比特币所使用的UTXO模型（未使用的交易输出）</p>
+<p>Account模型即账户模型，简单来讲，就是系统会始终维护一张账户表，账户表记录了有关于使用者的所有账户信息（核心在于始终维护账户余额）。在每次计算账户余额时都需要遍历区块链，获取有关该用户的所有交易信息，然后对交易信息核算，得到账户余额，这种模型在为支付而产生的比特币身上并不适用。</p>
+<p>UTXO模型则直接从概念上去除了货币与钱包模型，只保留了支付输入和支付输出两个概念，即每笔交易都是由输入和输出组成的，例如：A所有的未使用的交易输出为10，此时A向B转账2，本质上就是A的10单位未支付输出转化为两部分（UTXO模型中不存在使用一部分未支付输出的概念，转换的前提一定是用尽这个用户的所有未支付输出），一部分是转换给B的2单位未支付输出，另一部分就是转给A（自己）的8单位未支付输出，这个概念更类似于我们现实生活中的纸币概念，每张纸币的源头一定是国家进行发行，每张纸币不能再细分，只会以找零的形式回到我们手中一部分。</p>
+<p>例如，我们以一个稍微复杂的交易图来展示两种货币模型在计算余额过程中的区别</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/dahdjkahjk.jpg"></p>
+<p>现在，在Account模型的前提下，我们要计算甲的账户余额就需要遍历整个交易网络，筛选出有关于甲的所有交易，然后进行计算<br><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/hausfhfofdaio.jpg"></p>
+<p>而通过UTXO模型，我们只需要计算最后剩余的UTXO列表，找出有关于甲的UTXO相加，最终的结果即为甲当前余额</p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/bitcoin%E4%B8%A4%E7%A7%8D%E6%94%AF%E4%BB%98%E6%A8%A1%E5%9E%8B4djsaio.jpg"></p>
+<p><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/bitcoin%E4%B8%A4%E7%A7%8D%E6%94%AF%E4%BB%98%E6%A8%A1%E5%9E%8B3dsjaio.jpg"></p>
+<p>可以看到UTXO模型充分考虑到了比特币的交易属性，以及区块链的结构特性，能够更加快速的获得账户余额</p>
+<h3 id="Account模型建立"><a href="#Account模型建立" class="headerlink" title="Account模型建立"></a>Account模型建立</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 钱包账户</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 钱包地址</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">protected</span> String address;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 钱包私钥</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">protected</span> String priKey;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 账户余额</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">protected</span> BigDecimal balance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 账户控制工具类, 锁定，解锁等操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Personal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">private</span> DBAccess dbAccess;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 创建一个默认账户</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Account <span class="title">newAccount</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		ECKeyPair keyPair = Keys.createEcKeyPair();</span><br><span class="line">		<span class="keyword">return</span> newAccount(keyPair);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 使用指定的秘钥创建一个默认账户</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> keyPair</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Account <span class="title">newAccount</span><span class="params">(ECKeyPair keyPair)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Account account = <span class="keyword">new</span> Account(keyPair.getAddress(), keyPair.exportPrivateKey(), BigDecimal.ZERO);</span><br><span class="line">		dbAccess.putAccount(account); <span class="comment">// 存储账户</span></span><br><span class="line">		<span class="keyword">return</span> account;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="加密货币的挖矿流程"><a href="#加密货币的挖矿流程" class="headerlink" title="加密货币的挖矿流程"></a>加密货币的挖矿流程</h2><h2 id="多种共识机制"><a href="#多种共识机制" class="headerlink" title="多种共识机制"></a>多种共识机制</h2><h2 id="加密货币的交易流程"><a href="#加密货币的交易流程" class="headerlink" title="加密货币的交易流程"></a>加密货币的交易流程</h2><h2 id="加密方式"><a href="#加密方式" class="headerlink" title="加密方式"></a>加密方式</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/">http://ywrby.cn/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/05/15/%E5%9F%BA%E4%BA%8Etio%E5%AE%9E%E7%8E%B0P2P%E7%BD%91%E7%BB%9C/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">基于tio实现P2P网络</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/05/15/基于tio实现P2P网络/" title="基于tio实现P2P网络"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-15</div><div class="title">基于tio实现P2P网络</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">94</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">1-区块链基础概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">区块链结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text">定义区块链结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">区块结构设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E5%A4%B4%E9%83%A8%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">区块头部设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E4%B8%BB%E4%BD%93%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">区块主体设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%9D%97%E9%93%BE%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">区块链结构设计</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E7%9A%84%E4%B8%A4%E7%A7%8D%E8%B4%A7%E5%B8%81%E6%A8%A1%E5%9E%8B%EF%BC%88UTXO%E5%92%8CAccount%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">加密货币的两种货币模型（UTXO和Account模型）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Account%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B"><span class="toc-number">1.2.1.</span> <span class="toc-text">Account模型建立</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E7%9A%84%E6%8C%96%E7%9F%BF%E6%B5%81%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">加密货币的挖矿流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%A7%8D%E5%85%B1%E8%AF%86%E6%9C%BA%E5%88%B6"><span class="toc-number">1.4.</span> <span class="toc-text">多种共识机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81%E7%9A%84%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text">加密货币的交易流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E6%96%B9%E5%BC%8F"><span class="toc-number">1.6.</span> <span class="toc-text">加密方式</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="1-区块链基础概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-区块链基础概述"/></a><div class="content"><a class="title" href="/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="1-区块链基础概述">1-区块链基础概述</a><time datetime="2021-05-15T12:06:13.000Z" title="Created 2021-05-15 20:06:13">2021-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/15/%E5%9F%BA%E4%BA%8Etio%E5%AE%9E%E7%8E%B0P2P%E7%BD%91%E7%BB%9C/" title="基于tio实现P2P网络"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于tio实现P2P网络"/></a><div class="content"><a class="title" href="/2021/05/15/%E5%9F%BA%E4%BA%8Etio%E5%AE%9E%E7%8E%B0P2P%E7%BD%91%E7%BB%9C/" title="基于tio实现P2P网络">基于tio实现P2P网络</a><time datetime="2021-05-14T16:02:18.000Z" title="Created 2021-05-15 00:02:18">2021-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/13/Swagger%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="Swagger技术概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Swagger技术概述"/></a><div class="content"><a class="title" href="/2021/05/13/Swagger%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0/" title="Swagger技术概述">Swagger技术概述</a><time datetime="2021-05-13T07:38:09.000Z" title="Created 2021-05-13 15:38:09">2021-05-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/19/4-%E5%9F%BA%E4%BA%8ESpringBoot%E7%9A%84Web%E5%BC%80%E5%8F%91/" title="4-基于SpringBoot的Web开发"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73604608_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4-基于SpringBoot的Web开发"/></a><div class="content"><a class="title" href="/2021/04/19/4-%E5%9F%BA%E4%BA%8ESpringBoot%E7%9A%84Web%E5%BC%80%E5%8F%91/" title="4-基于SpringBoot的Web开发">4-基于SpringBoot的Web开发</a><time datetime="2021-04-19T07:17:22.000Z" title="Created 2021-04-19 15:17:22">2021-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/19/3-Lombok%E5%BA%94%E7%94%A8/" title="3-Lombok应用"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/83821828_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3-Lombok应用"/></a><div class="content"><a class="title" href="/2021/04/19/3-Lombok%E5%BA%94%E7%94%A8/" title="3-Lombok应用">3-Lombok应用</a><time datetime="2021-04-19T06:14:02.000Z" title="Created 2021-04-19 14:14:02">2021-04-19</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73870940_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
