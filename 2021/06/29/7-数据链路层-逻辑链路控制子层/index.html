@@ -1,0 +1,857 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>7-数据链路层-逻辑链路控制子层 | Ywrby个人博客网站</title><meta name="keywords" content="计算机网络"><meta name="author" content="Ywrby"><meta name="copyright" content="Ywrby"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据链路层概述保证数据传输的有效，可靠性 差错的检测和控制 流量控制（基于速率&#x2F;基于反馈）-在数据链路层通常采取基于反馈的模式，即由接收方向发送方提供处理能力大小，发送方根据处理能力提供对应流量   帧（数据链路层处理的协议数据单元PDU）帧的组成：帧头+载荷+帧尾 帧头：包含定位所需要的地址，物理地址信息 载荷：上层网络层传递下来的包 帧尾：校验和，做帧的校验   数据链路层使用物理层提供的服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7-数据链路层-逻辑链路控制子层">
+<meta property="og:url" content="http://ywrby.cn/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/index.html">
+<meta property="og:site_name" content="Ywrby个人博客网站">
+<meta property="og:description" content="数据链路层概述保证数据传输的有效，可靠性 差错的检测和控制 流量控制（基于速率&#x2F;基于反馈）-在数据链路层通常采取基于反馈的模式，即由接收方向发送方提供处理能力大小，发送方根据处理能力提供对应流量   帧（数据链路层处理的协议数据单元PDU）帧的组成：帧头+载荷+帧尾 帧头：包含定位所需要的地址，物理地址信息 载荷：上层网络层传递下来的包 帧尾：校验和，做帧的校验   数据链路层使用物理层提供的服务">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg">
+<meta property="article:published_time" content="2021-06-29T07:52:37.000Z">
+<meta property="article:modified_time" content="2021-06-29T07:55:28.614Z">
+<meta property="article:author" content="Ywrby">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg"><link rel="shortcut icon" href="/img/title.png"><link rel="canonical" href="http://ywrby.cn/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="code-9KH3pHEMgz"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-06-29 15:55:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/ywrby.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">98</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">17</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Ywrby个人博客网站</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://space.bilibili.com/353923033"><i class="fa-fw fas fa-file-video"></i><span> Bilibili</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">7-数据链路层-逻辑链路控制子层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-06-29T07:52:37.000Z" title="Created 2021-06-29 15:52:37">2021-06-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-06-29T07:55:28.614Z" title="Updated 2021-06-29 15:55:28">2021-06-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="数据链路层概述"><a href="#数据链路层概述" class="headerlink" title="数据链路层概述"></a>数据链路层概述</h1><h3 id="保证数据传输的有效，可靠性"><a href="#保证数据传输的有效，可靠性" class="headerlink" title="保证数据传输的有效，可靠性"></a>保证数据传输的有效，可靠性</h3><ul>
+<li>差错的检测和控制</li>
+<li>流量控制（基于速率/基于反馈）-在数据链路层通常采取基于反馈的模式，即由接收方向发送方提供处理能力大小，发送方根据处理能力提供对应流量</li>
+</ul>
+<hr>
+<h2 id="帧"><a href="#帧" class="headerlink" title="帧"></a>帧</h2><h4 id="（数据链路层处理的协议数据单元PDU）"><a href="#（数据链路层处理的协议数据单元PDU）" class="headerlink" title="（数据链路层处理的协议数据单元PDU）"></a>（数据链路层处理的协议数据单元PDU）</h4><h4 id="帧的组成：帧头-载荷-帧尾"><a href="#帧的组成：帧头-载荷-帧尾" class="headerlink" title="帧的组成：帧头+载荷+帧尾"></a>帧的组成：帧头+载荷+帧尾</h4><ul>
+<li>帧头：包含定位所需要的地址，物理地址信息</li>
+<li>载荷：上层网络层传递下来的包</li>
+<li>帧尾：校验和，做帧的校验</li>
+</ul>
+<p><img src="https://note.youdao.com/yws/res/11235/8495AD2C3C404A6ABC48BE4B5E33340A" alt="帧的组成"></p>
+<h4 id="数据链路层使用物理层提供的服务，所以要将物理层处理的位流（bits）转换成数据链路层能够处理的帧，这个过程就叫做“成帧”。"><a href="#数据链路层使用物理层提供的服务，所以要将物理层处理的位流（bits）转换成数据链路层能够处理的帧，这个过程就叫做“成帧”。" class="headerlink" title="数据链路层使用物理层提供的服务，所以要将物理层处理的位流（bits）转换成数据链路层能够处理的帧，这个过程就叫做“成帧”。"></a>数据链路层使用物理层提供的服务，所以要将物理层处理的位流（bits）转换成数据链路层能够处理的帧，这个过程就叫做“成帧”。</h4><h2 id="成帧"><a href="#成帧" class="headerlink" title="成帧"></a>成帧</h2><p>将原始的位流分散到离散的帧中</p>
+<h4 id="常见的四种成帧方法"><a href="#常见的四种成帧方法" class="headerlink" title="常见的四种成帧方法"></a>常见的四种成帧方法</h4><ol>
+<li>字符计数法</li>
+<li>字节填充的标志字节法</li>
+<li>比特填充的比特标记法</li>
+<li>物理层编码违例法</li>
+</ol>
+<h4 id="字符计数法"><a href="#字符计数法" class="headerlink" title="字符计数法"></a>字符计数法</h4><p>发送方：</p>
+<p>在每个帧头部中的第一个字段，标识该帧的长度共有多少字符</p>
+<p>接收方：</p>
+<p>通过第一个字段，就知道这个帧有几个字符，在哪里结束该帧</p>
+<p><strong>优点：</strong> 实现简单</p>
+<p><strong>缺点：</strong> 没有考虑重新同步问题，一旦出错，无法恢复，工程中极少使用</p>
+<h4 id="字节填充的标志字节法"><a href="#字节填充的标志字节法" class="headerlink" title="字节填充的标志字节法"></a>字节填充的标志字节法</h4><p>考虑了重新同步问题，每一帧采用一个特殊字节做帧界，<strong>即当前帧的开始与上一个帧的结束</strong></p>
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>数据</th>
+<th>标记</th>
+<th>数据</th>
+<th>…</th>
+</tr>
+</thead>
+</table>
+<p>将这个特殊字节称为标志字节（flag byte）</p>
+<h5 id="存在问题：当传输数据中也存在标志字节时，会和真正的帧界混淆"><a href="#存在问题：当传输数据中也存在标志字节时，会和真正的帧界混淆" class="headerlink" title="存在问题：当传输数据中也存在标志字节时，会和真正的帧界混淆"></a>存在问题：当传输数据中也存在标志字节时，会和真正的帧界混淆</h5><p>解决方案：当数据中存在标记字节时，在标记前添加转义字符（这种方式解决了一部分问题，但同时也带来了一些特殊情况，当数据中包含转义字符时，又必须在转义字符前添加转义字符避免混淆）</p>
+<p>特殊情况下传输数据内容：</p>
+<table>
+<thead>
+<tr>
+<th>ESC</th>
+<th>FLAG</th>
+<th>ESC</th>
+<th>FLAG</th>
+<th>ESC</th>
+<th>FLAG</th>
+</tr>
+</thead>
+</table>
+<p>在成帧过程中就变成了<br>ESC |ESC | ESC | FLAG |ESC | ESC |ESC | FLAG |ESC | ESC |ESC | FLAG<br>—|—|—|—|—|—|—|—|—|—|—|—</p>
+<p><strong>缺点：</strong> 1.数据中存在帧界或转义符时容易混淆，大量的标志字节或转义字符会造成低效率的成帧（最坏情况50%）。2. 不适用于任意比特数的帧，必须是8位整数倍</p>
+<h4 id="比特填充的比特标记法"><a href="#比特填充的比特标记法" class="headerlink" title="比特填充的比特标记法"></a>比特填充的比特标记法</h4><p>这是一种面向二进制位的帧格式，把所有需传输的数据以比<br>特位一字排开，并以特殊的位模式01111110作为帧标志，即<br>一个帧的开始（同时标志前一个帧的结束）</p>
+<p><strong>当帧内容出现与帧标志相同位串01111110时：</strong></p>
+<p>在5个1后插入一个0，即变成01111101，接收方将自动删除第5 个1后的0。这称为<strong>位填充法（零比特填充法）</strong>，也称为透明传输。</p>
+<p><strong>当扫描过程中出现错误导致部分帧没有被正确接收：</strong></p>
+<p>接收方会继续扫描直到读取到下一个帧标志，开始重写转换同步数据</p>
+<p><strong>优点：</strong> 可以传输任意比特数的帧，同时传输效率更高</p>
+<h4 id="物理层编码违例法"><a href="#物理层编码违例法" class="headerlink" title="物理层编码违例法"></a>物理层编码违例法</h4><p>将冗余信号用作帧界</p>
+<p>例如：在4B/5B编码模式中，将4比特映射到5比特上，能够承载32位却只利用了16位，剩下的位就可以用作帧界</p>
+<p>例如：在曼彻斯特编码中，只利用了高到低表示1，低到高表示0，却没有利用高到高，低到低两种情况</p>
+<p><img src="https://note.youdao.com/yws/res/11369/7EC4B66F1E584778A78424E240AA8023" alt="曼彻斯特编码"></p>
+<p><strong>优点：</strong> 由于利用的是冗余信号，不会混淆，传输效率较高</p>
+<hr>
+<h1 id="差错处理的概述"><a href="#差错处理的概述" class="headerlink" title="差错处理的概述"></a>差错处理的概述</h1><h4 id="处理错误的常见手段"><a href="#处理错误的常见手段" class="headerlink" title="处理错误的常见手段"></a>处理错误的常见手段</h4><ol>
+<li>纠错：恢复出正确的数据</li>
+<li>检错：仅仅检出错误，不恢复，通常伴随重传</li>
+</ol>
+<h4 id="常见错误类型"><a href="#常见错误类型" class="headerlink" title="常见错误类型"></a>常见错误类型</h4><ol>
+<li>单个错误：分散在各个数据块中</li>
+<li>突发错误：集中于一个数据块，整个数据块都是错误</li>
+</ol>
+<h2 id="纠错码（前向纠错技术）"><a href="#纠错码（前向纠错技术）" class="headerlink" title="纠错码（前向纠错技术）"></a>纠错码（前向纠错技术）</h2><p>发现错误，从错误中恢复出正确的来。</p>
+<p>由于纠错码需要纠错，这个过程中需要太多的冗余位，所以开销较大。在有线网络中极少使用，主要应用于无线网络中</p>
+<h2 id="检错码"><a href="#检错码" class="headerlink" title="检错码"></a>检错码</h2><p>只能发现错误，不能从错误中恢复，但可采用重传恢复</p>
+<p>主要应用于局域网</p>
+<hr>
+<h4 id="码字：包含数据位和校验位的n位单元（模式）"><a href="#码字：包含数据位和校验位的n位单元（模式）" class="headerlink" title="码字：包含数据位和校验位的n位单元（模式）"></a>码字：包含数据位和校验位的n位单元（模式）</h4><h4 id="海明距离：两个码字的海明距离指，两个码字间不同位的数目"><a href="#海明距离：两个码字的海明距离指，两个码字间不同位的数目" class="headerlink" title="海明距离：两个码字的海明距离指，两个码字间不同位的数目"></a>海明距离：两个码字的海明距离指，两个码字间不同位的数目</h4><p>例如：“11010101”与“10000101”的海明距离就是2</p>
+<p>海明距离可以利用异或运算，其中1的个数表示海明距离</p>
+<h4 id="全部码字的海明距离："><a href="#全部码字的海明距离：" class="headerlink" title="全部码字的海明距离："></a>全部码字的海明距离：</h4><p>指在全部码字中任意两个码字间海明距离的最小值</p>
+<h4 id="海明距离的意义："><a href="#海明距离的意义：" class="headerlink" title="海明距离的意义："></a>海明距离的意义：</h4><p>如果海明距离为d，则一个码字要变成另一个码字，需要跳变d位（发生d个一位错误）才能实现。</p>
+<h4 id="海明距离与“检错”的关系："><a href="#海明距离与“检错”的关系：" class="headerlink" title="海明距离与“检错”的关系："></a>海明距离与“检错”的关系：</h4><p>海明距离为d+1的编码能检测出d位的差错</p>
+<h4 id="奇偶校验码："><a href="#奇偶校验码：" class="headerlink" title="奇偶校验码："></a>奇偶校验码：</h4><p>海明距离为2，能检验出1位错误</p>
+<h4 id="奇偶校验码就是将一个校验位追加到传输数据中，分为奇校验和偶校验，校验位的值是“0”还是“1”取决于数据中“1”的个数。"><a href="#奇偶校验码就是将一个校验位追加到传输数据中，分为奇校验和偶校验，校验位的值是“0”还是“1”取决于数据中“1”的个数。" class="headerlink" title="奇偶校验码就是将一个校验位追加到传输数据中，分为奇校验和偶校验，校验位的值是“0”还是“1”取决于数据中“1”的个数。"></a>奇偶校验码就是将一个校验位追加到传输数据中，分为奇校验和偶校验，校验位的值是“0”还是“1”取决于数据中“1”的个数。</h4><p>例如：<br/><br>DATA:100011<br/><br>偶校验:100011 1<br/><br>奇校验:100011 0<br/></p>
+<p>因为Data中含义3个1，偶校验就是加入校验码后1为偶数个，所以添加1。对应的奇校验则加入0</p>
+<h5 id="奇偶校验检错举例："><a href="#奇偶校验检错举例：" class="headerlink" title="奇偶校验检错举例："></a>奇偶校验检错举例：</h5><p>有一组传输数据只有四种格式“00”，“11”，“01”，“10” 。<br>经过偶校验，编码后变为“000”，“110”，“011”，“101”</p>
+<p>此时发送方向接收方传输数据“101”.产生一个跳变成为“111”.</p>
+<p>显而易见“111”这个数据不在四种基本数据内，所以接收方可以成功检错</p>
+<p>如果这个过程中发生两次跳变，可能变为“011”.</p>
+<p>这个数据虽然变化了，但也出现在基本数据内，所以接收方无法成功检错，说明接收方无法通过奇偶校验处理两次及以上跳变</p>
+<h4 id="海明距离与“纠错”关系"><a href="#海明距离与“纠错”关系" class="headerlink" title="海明距离与“纠错”关系"></a>海明距离与“纠错”关系</h4><p><strong>海明距离为2d+1的编码，能够纠正d位及以内的差错</strong></p>
+<p>纠错的原理在于，此时即使码字发生d次跳变，这个<strong>错误码字与原码字之间的距离仍然是最近的</strong>。所以接收方只需要找到与这个错误码字海明距离最接近的码字就能将错误纠正</p>
+<p><strong>例如：一个系统有4个合法码字（0000000000, 0000011111, 1111100000 ， 1111111111）</strong><br/></p>
+<p>海明距离是 5=2*2+1，所以可纠正2位错误.<br/><br>发送方：0000011111<br/><br>发生两次跳变后：0000000111<br/><br>接收方发现差错并且找到海明距离最近的码字进行替换。<br/><br>收方纠正后: 0000011111</p>
+<p>假如发生3次跳变（超出纠错范围）：0000000011<br/><br>收方找到的海明距离最近码字是：0000000000<br/><br>可以看到无法再进行纠错</p>
+<h4 id="显而易见，随着海明距离增大，纠错能力就不断增强"><a href="#显而易见，随着海明距离增大，纠错能力就不断增强" class="headerlink" title="显而易见，随着海明距离增大，纠错能力就不断增强"></a>显而易见，随着海明距离增大，纠错能力就不断增强</h4><h4 id="但是，海明距离越大意味着合法码字越少，传输效率也就越低"><a href="#但是，海明距离越大意味着合法码字越少，传输效率也就越低" class="headerlink" title="但是，海明距离越大意味着合法码字越少，传输效率也就越低"></a>但是，海明距离越大意味着合法码字越少，传输效率也就越低</h4><h4 id="二者只能找到一种平衡，而不能同时保持高纠察率以及高传输效率吧"><a href="#二者只能找到一种平衡，而不能同时保持高纠察率以及高传输效率吧" class="headerlink" title="二者只能找到一种平衡，而不能同时保持高纠察率以及高传输效率吧"></a>二者只能找到一种平衡，而不能同时保持高纠察率以及高传输效率吧</h4><hr>
+<h1 id="纠1位错的海明码"><a href="#纠1位错的海明码" class="headerlink" title="纠1位错的海明码"></a>纠1位错的海明码</h1><p>假设一个系统，经过编码后的码字位数是n位，则n位的组成应该为<strong>n=m+r</strong> 。其中m表示传输的数据位，r表示冗余位。</p>
+<h4 id="在海明码中，将这些冗余位用作纠错位"><a href="#在海明码中，将这些冗余位用作纠错位" class="headerlink" title="在海明码中，将这些冗余位用作纠错位"></a>在海明码中，将这些冗余位用作纠错位</h4><h4 id="如何确定冗余位个数r："><a href="#如何确定冗余位个数r：" class="headerlink" title="如何确定冗余位个数r："></a>如何确定冗余位个数r：</h4><p>在数据传输过程中有m位数据位，所以<strong>合法码字</strong>有2^m个，而总位数为n，所以<strong>一共</strong> 有2^n个码字。任取一个合法码字，要保证其跳变一位后能够被纠错，或者说其跳变一位就变成错误码字，就需要至少n+1个码字来表示它。<br/><br>例如：总位数为5的 “10010” 是一个合法码字，为了保证其跳变一位后会变成错误码字，就要求 “10011”，“10000”，“10110”，“11010”，“00010”这五个与其海明距离为1的码字全部为错，也就是“10010”需要5+1个码字来表示。</p>
+<p>综上，则有以下条件成立：</p>
+<p>$$<br>(n+1)2^m&lt;=2^n<br>$$</p>
+<p>$$<br>n=m+r<br>$$<br>推导出：</p>
+<p>$$<br>(m+r+1)&lt;=2^r<br>$$</p>
+<p>利用上式容易得出，纠正单个错误需要的校验位的下界满足：</p>
+<table>
+<thead>
+<tr>
+<th>m</th>
+<th>r</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2~4</td>
+<td>3</td>
+<td>5~7</td>
+</tr>
+<tr>
+<td>5~11</td>
+<td>4</td>
+<td>9~15</td>
+</tr>
+<tr>
+<td>12~26</td>
+<td>5</td>
+<td>17~31</td>
+</tr>
+<tr>
+<td>27~57</td>
+<td>6</td>
+<td>33~63</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="海明纠错码"><a href="#海明纠错码" class="headerlink" title="海明纠错码"></a>海明纠错码</h3><ol>
+<li>将每一个码字从左到右编号，最左边为第一位</li>
+<li>规定凡编号为2的次幂的位是校验位，如1位，2位，4位，8位，16位…</li>
+<li>其余各位均是数据位，如3，5，6，7，9…</li>
+<li>每一个校验位的设置规则：包括自己在内的一些位的集合的奇偶值（奇偶校验）</li>
+</ol>
+<h4 id="如何决定每个数据位的校验位："><a href="#如何决定每个数据位的校验位：" class="headerlink" title="如何决定每个数据位的校验位："></a>如何决定每个数据位的校验位：</h4><p>将某一位数据位的编号展开成2的次幂的和（例如11可以写作：1+2+8），那么每一项所对应的位即为该数据位的校验位（供接收方使用）</p>
+<p>如：一个系统中，码字的数据位是7位，根据上文公式求得冗余位是4位，所以码字位数一共11位，其中1，2，4，8位属于校验位（下图P表示校验位，D表示数据位）</p>
+<table>
+<thead>
+<tr>
+<th>—</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>—</td>
+<td>P1</td>
+<td>P2</td>
+<td>D1</td>
+<td>P3</td>
+<td>D2</td>
+<td>D3</td>
+<td>D4</td>
+<td>P4</td>
+<td>D5</td>
+<td>D6</td>
+<td>D7</td>
+</tr>
+<tr>
+<td>1=2^0</td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+<td></td>
+<td>Y</td>
+</tr>
+<tr>
+<td>2=2^1</td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>4=2^2</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8=2^3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+<p>上述图表中描述了我们在第四条中所说的每一个校验位所在的集合，例如第三行表示了1这个校验位的值由1，3，5，7，9，11这些位的值结合奇偶校验决定</p>
+<table>
+<thead>
+<tr>
+<th>—</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>—</td>
+<td>P1</td>
+<td>P2</td>
+<td>D1</td>
+<td>P3</td>
+<td>D2</td>
+<td>D3</td>
+<td>D4</td>
+<td>P4</td>
+<td>D5</td>
+<td>D6</td>
+<td>D7</td>
+</tr>
+<tr>
+<td>信息码</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>检验位</td>
+<td>0</td>
+<td>0</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>海明码</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>(上图采用了偶校验)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="海明码纠错过程"><a href="#海明码纠错过程" class="headerlink" title="海明码纠错过程"></a>海明码纠错过程</h2><ol>
+<li>首先将差错计数器置0</li>
+<li>当海明码数据到达接收端后，接收端逐个检查各个校验位的奇偶性。</li>
+<li>如发现某一校验位和它所检测的集合的奇偶性不正确，就将<strong>该检验位的编号</strong>加到差错计数器中。</li>
+<li>Counter=0，无差错。Counter ≠0，出错，该值指明出错的位</li>
+</ol>
+<h4 id="比如："><a href="#比如：" class="headerlink" title="比如："></a>比如：</h4><p>接收到码字为00111000100，校验各校验位：(采用偶校验)<br/><br>第一位：<strong>0</strong>0<strong>1</strong>1<strong>1</strong>0<strong>0</strong>0<strong>1</strong>0<strong>0</strong>，校验集合有3个1，错。counter+1<br/><br>第二位：0<strong>01</strong>11<strong>00</strong>01<strong>00</strong>，校验集合有1个1，错。counter+2<br/><br>第四位：001<strong>1100</strong>0100，校验集合有2个1，对<br/><br>第八位：0011100<strong>0100</strong>，校验集合有1个1，错。counter+8<br/></p>
+<p>累加出错位编号：1+2+8=11</p>
+<p>可计算得其第11位出错，将该位由0改为1，即纠正得到正确结果: 00111000101</p>
+<hr>
+<h2 id="利用海明码纠正突发错误"><a href="#利用海明码纠正突发错误" class="headerlink" title="利用海明码纠正突发错误"></a>利用海明码纠正突发错误</h2><p>突发错误虽然是整个数据块的错误，但可以利用海明码巧妙的逐个纠正</p>
+<ol>
+<li>将连续的k个码字<strong>按行排列</strong>成矩阵</li>
+<li>发送数据时，<strong>按列发送</strong>，每列k位</li>
+<li>如果一个突发性错误长度是k位，则在k个码字中，<strong>至多只有一位</strong>受到影响，正好可用海明码纠错改位后恢复</li>
+</ol>
+<p><img src="https://note.youdao.com/yws/res/11942/A93E4862D1BF450FAC3797CAD515D1C9" alt="海明码纠错"></p>
+<hr>
+<h1 id="检错码-1"><a href="#检错码-1" class="headerlink" title="检错码"></a>检错码</h1><h4 id="采用检错码的原因："><a href="#采用检错码的原因：" class="headerlink" title="采用检错码的原因："></a>采用检错码的原因：</h4><p>纠错码占用太多冗余位，信道利用率不高</p>
+<h4 id="在局域网中，主要使用的是检错码"><a href="#在局域网中，主要使用的是检错码" class="headerlink" title="在局域网中，主要使用的是检错码"></a>在局域网中，主要使用的是检错码</h4><h4 id="常见的检错码："><a href="#常见的检错码：" class="headerlink" title="常见的检错码："></a>常见的检错码：</h4><ul>
+<li>奇偶校验码（海明距离为2，检一位错）</li>
+<li>互联网校验和</li>
+<li>循环冗余校验码</li>
+</ul>
+<h2 id="奇偶校验码：-1"><a href="#奇偶校验码：-1" class="headerlink" title="奇偶校验码："></a>奇偶校验码：</h2><p>奇偶位取值等同于对数据位进行模2和运算<br/><br>例如，采用偶校验: 1110000 -&gt; 1110000<strong>1</strong> <br/><br>接收方能够检查出是否存在单个比特的错误（或者奇数个）</p>
+<p>出错误的概率在50%（奇数跳变成功检验，偶数则不能）</p>
+<h2 id="校验和"><a href="#校验和" class="headerlink" title="校验和"></a>校验和</h2><p>校验和通常是按照N位码字来进行模2加/和运算，发送方将运算结果附加在<strong>数据报文尾部</strong> ，作为校验位。<br/><br>例如：16位的互联网补码校验和</p>
+<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><ul>
+<li>比奇偶检验更好的检错性能</li>
+<li>能检出高至N位的突发错误</li>
+<li>检错随机错误率1-2^N</li>
+<li>易受系统错误干扰，比如，增加的“0”</li>
+</ul>
+<blockquote>
+<p>互联网校验和计算文档：RFC1071（computing the internet checksum）<br/><br>（1）待校验的相邻字节成对组成16比特的整数一行，按列<br>从低位开始计算其模2和；并将结果按位取反码，作为校验<br>和取值。<br/><br>（2）检查校验和时，将所有字节，包括校验和，进行相加<br>并求二进制反码。接收方：如果结果为全1 ，无错误<br/><br>注意：如果某列的模2和有溢出，向高位进位，如果高位产<br>生进位，循环向低位进位。</p>
+</blockquote>
+<h2 id="循环冗余检错码CRC"><a href="#循环冗余检错码CRC" class="headerlink" title="循环冗余检错码CRC"></a>循环冗余检错码CRC</h2><p>任何一个k位的帧都可以看成一个k-1次的多项式<br/><br>例如：1011001 可以看成-&gt;<br>$$<br>x^6+x^4+x^3+x^0<br>$$<br>(k项k-1阶多项式)</p>
+<h4 id="CRC系统里一定具有生成多项式：G-x-，G-x-为r-冗余码个数-阶"><a href="#CRC系统里一定具有生成多项式：G-x-，G-x-为r-冗余码个数-阶" class="headerlink" title="CRC系统里一定具有生成多项式：G(x)，G(x)为r(冗余码个数)阶"></a>CRC系统里一定具有生成多项式：G(x)，G(x)为r(冗余码个数)阶</h4><h4 id="还具有m位帧的多项式：M-x-且一般-m-gt-r-M-x-gt-G-x"><a href="#还具有m位帧的多项式：M-x-且一般-m-gt-r-M-x-gt-G-x" class="headerlink" title="还具有m位帧的多项式：M(x),且一般 m&gt;r , M(x)&gt;G(x)"></a>还具有m位帧的多项式：M(x),且一般 m&gt;r , M(x)&gt;G(x)</h4><p>接下来：</p>
+<p>$$<br>\frac{x^rM(x)}{G(x)}=Q(x)+R(x)<br>$$<br>Q(x)表示商，R(x)表示余数</p>
+<p>易知：</p>
+<p>$$<br>\frac{x^rM(x)-R(x)}{G(x)}=Q(x)<br>$$<br>说明<br>$$<br>x^rM(x)-R(x)<br>$$<br>一定能被G(x)整除，所以将它作为转码后的数据传送给接收方</p>
+<p>接收方在收到后，将其与约定好的生成多项式G(x)相除：</p>
+<ul>
+<li>若为0，说明传输过程中没有发生错误</li>
+<li>若不为0，说明传输过程发生错误</li>
+</ul>
+<hr>
+<h4 id="在二进制运算中，减法和加法都做异或运算，即相同得0，相异得1"><a href="#在二进制运算中，减法和加法都做异或运算，即相同得0，相异得1" class="headerlink" title="在二进制运算中，减法和加法都做异或运算，即相同得0，相异得1"></a>在二进制运算中，减法和加法都做异或运算，即相同得0，相异得1</h4><p>例如：11010+10100=01110，11001-10010=01011</p>
+<h4 id="模2运算：模2加以及模2减等同于异或运算，即相同得0，相异得1"><a href="#模2运算：模2加以及模2减等同于异或运算，即相同得0，相异得1" class="headerlink" title="模2运算：模2加以及模2减等同于异或运算，即相同得0，相异得1"></a>模2运算：模2加以及模2减等同于异或运算，即相同得0，相异得1</h4><p>0⊕0=0; 0⊕1=1;<br>1⊕0=1; 1⊕1=0.</p>
+<hr>
+<h3 id="CRC码计算："><a href="#CRC码计算：" class="headerlink" title="CRC码计算："></a>CRC码计算：</h3><h4 id="发送方"><a href="#发送方" class="headerlink" title="发送方"></a>发送方</h4><p>传输的一帧：1101011011（m=10）<br/><br>易知：<br>$$<br>M(x)=x^9+x^8+x^6+x^4+z^3+x+1<br>$$</p>
+<p>规定：收发双方采用统一的<br>$$<br>G(x)=x^4+x+1<br>$$</p>
+<p>计算得：<br>$$<br>T(x)=x^4M(x)=x^4(x^9+x^8+x^6+x^4+z^3+x+1)=x^{13}+x^{12}+x^{10}+x^8+z^7+x^5+x^4<br>$$<br>(相当于在原码字后边加r个0)</p>
+<p>开始计算：（采用模2除法，用G(x)去除X^r*M(x)，得余数）<br/><br><img src="https://note.youdao.com/yws/res/12365/346D9BEBACC146C0B0F365510B00CFE4" alt="运算"></p>
+<p>计算11010110110000/10011 得余数1110 ，采用模2减法，用XrM(x)减去余数，得到带CRC校验和的帧,11010110110000-1110=11010110111110，所以：</p>
+<p><strong>最终得到发送给接收方的数据= 1101011011(帧数据)1110(余数)</strong></p>
+<h4 id="接收方"><a href="#接收方" class="headerlink" title="接收方"></a>接收方</h4><p>接收方在得到传输过来的码字后，会利用规定的G(x)与之相除，能够整除则认为传输正确<br/><br>如果不能被整除，则检测为传输出错</p>
+<hr>
+<h3 id="生成多项式国际标准"><a href="#生成多项式国际标准" class="headerlink" title="生成多项式国际标准"></a>生成多项式国际标准</h3><p>CRC-12 ：$x^{12} + x^{11} + x^3 + x^2 + x^1 + 1 $。用于字符长度为6位<br/><br>CRC-16 ：$x^{16} + x^{15}+ x^2+ 1 $。用于字符长度为8位<br/><br>CRC-CCITT ：$x^{16} + x^{12}+ x^5+ 1$。 用于字符长度为8<br/><br>CRC32 ：$G(x)= x^{32}+x^{26}+x^{23}+x^{22}+x^{16}+x^{12}+x^{11}+x^{10}+x^8+x^7+x^5+x^4+x^3+x+1$</p>
+<h4 id="CRC32广泛应用于以太网计算循环冗余校验时用"><a href="#CRC32广泛应用于以太网计算循环冗余校验时用" class="headerlink" title="CRC32广泛应用于以太网计算循环冗余校验时用"></a>CRC32广泛应用于以太网计算循环冗余校验时用</h4><h4 id="例题：如果生成多项式是-G-x-x-3-x-2-1，待传送的原始码字分别是1111-和-1100，请计算采用CRC编码后的码字分别是多少？"><a href="#例题：如果生成多项式是-G-x-x-3-x-2-1，待传送的原始码字分别是1111-和-1100，请计算采用CRC编码后的码字分别是多少？" class="headerlink" title="例题：如果生成多项式是 G(x)= x^3 + x^2 + 1，待传送的原始码字分别是1111 和 1100，请计算采用CRC编码后的码字分别是多少？"></a>例题：如果生成多项式是 G(x)= x^3 + x^2 + 1，待传送的原始码字分别是1111 和 1100，请计算采用CRC编码后的码字分别是多少？</h4><p>解题：生成多项式是3阶的，所以r=3，生成多项式对应的位（除数）是：1101<br/><br>待传输的1111，移位后变为：1111000（被除数），得到余数111<br/><br>用1111000-111，得到编码后的码字为：<strong>1111111</strong></p>
+<hr>
+<h1 id="三个单工协议-基本数据链路层协议"><a href="#三个单工协议-基本数据链路层协议" class="headerlink" title="三个单工协议-基本数据链路层协议"></a>三个单工协议-基本数据链路层协议</h1><h3 id="单工：数据的传输在某时是单向的"><a href="#单工：数据的传输在某时是单向的" class="headerlink" title="单工：数据的传输在某时是单向的"></a>单工：数据的传输在某时是单向的</h3><ul>
+<li>无限制的单工协议</li>
+<li>单工停-等协议</li>
+<li>有噪声信道的弹弓协议</li>
+</ul>
+<h3 id="理想条件下假设："><a href="#理想条件下假设：" class="headerlink" title="理想条件下假设："></a>理想条件下假设：</h3><ul>
+<li>物理层，数据链路层和网络层是各自独立运行的进程（在工程中可能有各自不同的存在形式）</li>
+<li>机器A希望向B发送的是一个可靠的面向连接的长数据流</li>
+<li>假设机器不会崩溃，即使崩溃，我们不会处理因崩溃产生的错误</li>
+<li>从网络层拿到的数据是纯数据</li>
+</ul>
+<h3 id="几个协议共用的数据类型，调用函数"><a href="#几个协议共用的数据类型，调用函数" class="headerlink" title="几个协议共用的数据类型，调用函数"></a>几个协议共用的数据类型，调用函数</h3><h4 id="protocol-h文件"><a href="#protocol-h文件" class="headerlink" title="protocol.h文件"></a>protocol.h文件</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_PKT 1024                    <span class="comment">/* packet size in bytes */</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> <span class="literal">false</span>, <span class="literal">true</span> &#125; boolean;   <span class="comment">/* boolean type */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> seq_nr;            <span class="comment">/* sequence or ACK numbers  序列号或确认号*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> data[MAX_PKT];</span><br><span class="line">&#125; packet;                               <span class="comment">/* 从网络层传输来的包/分组 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> data, ack, nak &#125; frame_kind; <span class="comment">/* frame kind definition ack表示确认字符，nak表示否定应答或者非应答 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    frame_kind kind;                    <span class="comment">/* what kind of frame? 帧的类型 */</span></span><br><span class="line">    seq_nr seq;                         <span class="comment">/* sequence number 序列号*/</span></span><br><span class="line">    seq_nr ack;                         <span class="comment">/* ACK number 确认号/确认字符*/</span></span><br><span class="line">    packet info;                        <span class="comment">/* the Network layer packet 包/分组（来自网络层）直接作为帧的载荷定义在帧的结构中*/</span></span><br><span class="line">&#125; frame;   <span class="comment">//定义帧结构</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">	frame_arrival,  <span class="comment">//帧到达</span></span><br><span class="line">	cksum_err,   <span class="comment">//检错码错误</span></span><br><span class="line">	timeout,   <span class="comment">//时间超出</span></span><br><span class="line">	network_layer_ready,   <span class="comment">//网络层完成准备（可以发送下一条数据）</span></span><br><span class="line">	ack_timeout  <span class="comment">//延时确认计时器时间超出</span></span><br><span class="line">&#125; event_type;  <span class="comment">//定义事件类型</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* wait for an event to happen; return its type of event */</span></span><br><span class="line"><span class="comment">/*等待事件发生，并返回事件类型：即上文事件类型类中的内容*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">wait_for_event</span><span class="params">(event_type* event)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* fetch a packet from the network layer for transmission 从网络层获取数据*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">from_network_layer</span><span class="params">(packet* p)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* deliver information from an inbound frame to the network layer 向网络层发送数据*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">to_network_layer</span><span class="params">(packet* p)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* get an inbound frame from the physical layer 从物理层获取数据*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">from_physical_layer</span><span class="params">(frame* r)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* pass the frame to the physical layer 向物理层发送数据*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">to_physical_layer</span><span class="params">(frame* s)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* start the clock and enable the timeout event 重传定时器启动*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">start_timer</span><span class="params">(seq_nr k)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* stop the clock and disable the timeout event 重传定时器关闭*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">stop_timer</span><span class="params">(seq_nr k)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* start an auxiliary timer and enable the ack_timeout event 捎带确认定时器启动*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">start_ack_timer</span><span class="params">(seq_nr k)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* stop an auxiliary timer and disable the ack_timeout event 稍待确认定时器关闭*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">stop_ack_timer</span><span class="params">(seq_nr k)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* allow the network to cause a network_layer_ready event */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">enable_network_layer</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* forbid the network to cause a network_layer_ready event */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">disable_network_layer</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* macro inc */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> inc(k) <span class="meta-keyword">if</span> (k &lt; MAX_SEQ) k = k + 1; <span class="meta-keyword">else</span> k = 0</span></span><br></pre></td></tr></table></figure>
+<h4 id="其中定义了很重要的帧结构，以及事件类型，基本操作等等…"><a href="#其中定义了很重要的帧结构，以及事件类型，基本操作等等…" class="headerlink" title="其中定义了很重要的帧结构，以及事件类型，基本操作等等…"></a>其中定义了很重要的帧结构，以及事件类型，基本操作等等…</h4><hr>
+<h2 id="无限制的单工协议-协议1"><a href="#无限制的单工协议-协议1" class="headerlink" title="无限制的单工协议-协议1"></a>无限制的单工协议-协议1</h2><p>这种协议设定了很多理想条件，在现实中很难满足，所以被称为“乌托邦协议”</p>
+<h4 id="理想条件："><a href="#理想条件：" class="headerlink" title="理想条件："></a>理想条件：</h4><ul>
+<li>收发双方的网络层都处于就绪状态（随时待命）</li>
+<li>处理时间忽略不计（瞬间完成）</li>
+<li>可用的缓存空间无穷大（无限空间）</li>
+<li>假设DLL之间的信道永远不会损坏或者丢失帧（完美通道）</li>
+</ul>
+<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">typedef <span class="class"><span class="keyword">enum</span> </span>&#123; frame_arrival &#125; event_type;</span><br><span class="line">#include &quot;protocol.h&quot;</span><br><span class="line"></span><br><span class="line"><span class="comment">//封装发送过程</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sender1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	frame s; <span class="comment">/*buffer for an outbound frame 为帧准备内存空间*/</span></span><br><span class="line">	packet buffer; <span class="comment">/*buffer for an outbound packet*/</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">		from_network_layer(&amp;buffer); <span class="comment">/*go get something to send 从网络层获取数据存入缓存 */</span></span><br><span class="line">		s.info = buffer; <span class="comment">/*copy it into s for transmission 将数据写入帧的载荷*/</span></span><br><span class="line">		to_physical_layer(&amp;s); <span class="comment">/*send it on its way 将帧传递给物理层处理*/</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//解封装发送过程</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">receiver1</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	frame r;</span><br><span class="line">	event_type event; <span class="comment">/*filled in by wait, but not used here*/</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">		wait_for_event(&amp;event); <span class="comment">/*only possibility is frame arrival 等待数据到达事件*/</span></span><br><span class="line">		from_physical_layer(&amp;r); <span class="comment">/*go get the inbound frame 接收来自物理层的数据并进行成帧*/</span></span><br><span class="line">		to_network_layer(&amp;r.info); <span class="comment">/*pass the data to the network layer 将数据中的包向上传递到网络层*/</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="单工停-等协议-协议2"><a href="#单工停-等协议-协议2" class="headerlink" title="单工停-等协议 协议2"></a>单工停-等协议 协议2</h2><p>无限制的单工协议条件过于完美，现实中要想实现就需要不断<strong>解除</strong>这些完美条件。<br/><br><strong>单工停-等协议首先取消了可用缓存空间无限大这一理想条件</strong><br/><br>也因此，需要解决接收方有可能被发送方传输的大量数据淹没这一问题<br/></p>
+<h3 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h3><p>接收方在每次接收到数据后，会向发送方返回一个<strong>哑帧</strong>，表示自己已经正常接收到数据，并且可以继续接收数据。发送方在收到返回的哑帧后，才会继续传输下一个数据。<br><img src="https://note.youdao.com/yws/res/12514/09E7538217A4492EA1D5BEF2198ACD6F" alt="停等协议"></p>
+<h4 id="代码实现：-1"><a href="#代码实现：-1" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> frame_arrival &#125; event_type;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;protocol.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sender2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	frame s; <span class="comment">/*buffer for an outbound frame*/</span></span><br><span class="line">	packet buffer; <span class="comment">/*buffer for an outbound packet*/</span></span><br><span class="line">	event_type event; <span class="comment">/*frame arrival is the only possibility */</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">		from_network_layer(&amp;buffer); <span class="comment">/*go get something to send */</span></span><br><span class="line">		s.info = buffer; <span class="comment">/*copy it into s for transmission*/</span></span><br><span class="line">		to_physical_layer(&amp;s); <span class="comment">/*bye - bye little frame */</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 *这里体现了与第一种协议的区别，</span></span><br><span class="line"><span class="comment">		 *在发送一条数据后不会立即循环发送下一条</span></span><br><span class="line"><span class="comment">		 *而是等待返回的哑帧再进一步操作</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		wait_for_event(&amp;event); <span class="comment">/*do not proceed until given the go ahead*/</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">receiver2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	frame r, s; <span class="comment">/*buffers for frames*/</span></span><br><span class="line">	event_type event; <span class="comment">/*frame arrival is the only possibility */</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">		wait_for_event(&amp;event); <span class="comment">/*only possibility is frame arrival */</span></span><br><span class="line">		from_physical_layer(&amp;r); <span class="comment">/*go get the inbound frame */</span></span><br><span class="line">		to_network_layer(&amp;r.info); <span class="comment">/*pass the data to the network layer */</span></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 *与第一种协议不同之处</span></span><br><span class="line"><span class="comment">		 *收到信息并传到网络层后，没有立即进入接收状态</span></span><br><span class="line"><span class="comment">		 *而是返回一段哑帧</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		to_physical_layer(&amp;s); <span class="comment">/*send a dummy frame to awaken sender */</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="有噪声信道的单工协议-协议3"><a href="#有噪声信道的单工协议-协议3" class="headerlink" title="有噪声信道的单工协议-协议3"></a>有噪声信道的单工协议-协议3</h2><p>有噪声的单工信道协议在前文基础上，取消了帧不会损坏或丢失这一理想条件<br/><br>认为信道中含有噪声，有噪声就会引发错误<br/><br>进而考虑如何处理以下衍生问题并解决</p>
+<h4 id="发现错误后如何通知发送方，如何修正错误，恢复正确帧：（PAR肯定确认重传协议-ARQ自动重传请求）"><a href="#发现错误后如何通知发送方，如何修正错误，恢复正确帧：（PAR肯定确认重传协议-ARQ自动重传请求）" class="headerlink" title="发现错误后如何通知发送方，如何修正错误，恢复正确帧：（PAR肯定确认重传协议/ARQ自动重传请求）"></a>发现错误后如何通知发送方，如何修正错误，恢复正确帧：（PAR肯定确认重传协议/ARQ自动重传请求）</h4><p>在接收方对数据进行检验并且检验正确后，会向发送方返回一个确认帧，发送方在收到确认帧后继续传输数据。<br/><br>发送方在数据发送的同时启动重传定时器（防止锁死），超过定时器规定时间还未收到确认帧（<strong>发送过程失败或者返回确认帧过程失败，或者检验错误</strong>），发送方就会重置计时器，并且重传原数据。<br/><br>在传输过程中，每个帧都具有自己独一无二的编码，防止<strong>数据帧成功到达接收方并且检验合格但返回确认帧失败的问题，同时方便重排</strong></p>
+<p><img src="https://note.youdao.com/yws/res/12570/E5F010DC3F3D4EE09B25093504163544" alt="ARQ"></p>
+<h4 id="代码实现：-2"><a href="#代码实现：-2" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> frame_arrival &#125; event_type;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;protocol.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sender3</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	seq_nr next_frame_to_send; <span class="comment">/*seq number of next outgoing frame 出站序列号-用于区别各个帧 */</span></span><br><span class="line">	frame s; <span class="comment">/*scratch variable */</span></span><br><span class="line">	packet buffer; <span class="comment">/*buffer for an outbound packet*/</span></span><br><span class="line">	event_type event;</span><br><span class="line">	next_frame_to_send = <span class="number">0</span>; <span class="comment">/*initialize outbound sequence numbers 初始化出站序列号 */</span></span><br><span class="line">	from_network_layer(&amp;buffer); <span class="comment">/*fetch first packet 获取第一个数据包*/</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">		s.info = buffer; <span class="comment">/*construct a frame for transmission 将包放入帧的载荷*/</span></span><br><span class="line">		s.seq = next_frame_to_send; <span class="comment">/*insert sequence number in frame */</span></span><br><span class="line">		to_physical_layer(&amp;s); <span class="comment">/*send it on its way 向物理层传输 */</span></span><br><span class="line">		start_timer(s.seq);  <span class="comment">/*if answer takes too long, time out 开启重传计时器*/</span></span><br><span class="line">		wait_for_event(&amp;event); <span class="comment">/*frame arrival, cksum err, timeout 等待确认帧返回*/</span></span><br><span class="line">		<span class="keyword">if</span> (event == frame_arrival) &#123;  <span class="comment">//判断是否返回确认帧</span></span><br><span class="line">			from_physical_layer(&amp;s); <span class="comment">/*get the acknowledgement 获取物理层回传的数据*/</span></span><br><span class="line">			<span class="keyword">if</span> (s.ack == next_frame_to_send) &#123;   <span class="comment">//获得收方确认则执行以下操作</span></span><br><span class="line">				stop_timer(s.ack); <span class="comment">/*turn the timer off 重置重传计时器*/</span></span><br><span class="line">				from_network_layer(&amp;buffer); <span class="comment">/*get the next one to send 从网络层获取下一个传输数据*/</span></span><br><span class="line">				inc(next_frame_to_send); <span class="comment">/*invert next frame to send 转化序列号*/</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果这个过程中没有收到返回的确认帧，或确认帧表明传输错误</span></span><br><span class="line">	<span class="comment">//则通过while循环进行重传</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">receiver3</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	seq_nr frame_expected;</span><br><span class="line">	frame r, s;</span><br><span class="line">	event_type event;</span><br><span class="line">	frame_expected = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">		wait_for_event(&amp;event); <span class="comment">/*possibilities: frame arrival, cksum err*/</span></span><br><span class="line">		<span class="keyword">if</span> (event == frame_arrival) &#123;</span><br><span class="line">			<span class="comment">/*a valid frame has arrived */</span></span><br><span class="line">			from_physical_layer(&amp;r); <span class="comment">/*go get the newly arrived frame */</span></span><br><span class="line">			<span class="keyword">if</span> (r.seq == frame_expected) &#123;  <span class="comment">//获得正确传输的数据</span></span><br><span class="line">				<span class="comment">/*this is what we have been waiting for*/</span></span><br><span class="line">				to_network_layer(&amp;r.info); <span class="comment">/*pass the data to the network layer 将数据向网络层传输*/</span></span><br><span class="line">				inc(frame_expected); <span class="comment">/*next time expect the other sequence nr 下一阶段期待的序列号*/</span></span><br><span class="line">			&#125;</span><br><span class="line">			s.ack = <span class="number">1</span> - frame_expected; <span class="comment">/*tell which frame is being acked 告知发送方需要传输的数据*/</span></span><br><span class="line">			to_physical_layer(&amp;s); <span class="comment">/*send acknowledgement 返回确认帧*/</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="提高传输效率的协议实现方式："><a href="#提高传输效率的协议实现方式：" class="headerlink" title="提高传输效率的协议实现方式："></a>提高传输效率的协议实现方式：</h3><h4 id="全双工："><a href="#全双工：" class="headerlink" title="全双工："></a>全双工：</h4><p>在信道传输的过程中，不再是单向的数据流动，而是除去了常见的收发双方概念，两方同时进行接受与发送数据的工作，提高数据传输的效率</p>
+<h4 id="捎带确认："><a href="#捎带确认：" class="headerlink" title="捎带确认："></a>捎带确认：</h4><p>接收方在发送确认帧时，不再新建一个帧，而实挂靠到一个将要前往发送方的数据帧末尾。提高了信道利用率，但要注意，有时收发双方数量是不对等的，也就是我们不一定能等到可以挂靠的数据帧，所以我们要建立一个稍待确认计时器，超时之后直接发送确认帧</p>
+<h4 id="批发数据（管道化技术）："><a href="#批发数据（管道化技术）：" class="headerlink" title="批发数据（管道化技术）："></a>批发数据（管道化技术）：</h4><p>在等待第一帧的确认帧返回时，不停止数据发送，而是持续发送数据，等第一帧的确认帧返回，再确定是否继续进行发送过程</p>
+<hr>
+<h1 id="滑动窗口协议-协议4"><a href="#滑动窗口协议-协议4" class="headerlink" title="滑动窗口协议-协议4"></a>滑动窗口协议-协议4</h1><p>上文所提到的三种协议都是单工或半双工协议，在等待确认帧返回的空闲时间里不进行任何操作，所以信道的利用率非常低。协议4-6区别于前文三种协议，采用以下几种手段提高信道利用率</p>
+<h3 id="全双工模式"><a href="#全双工模式" class="headerlink" title="全双工模式"></a>全双工模式</h3><p>即在通讯过程中允许双方同时相互传输数据，整个过程模糊了收发双方的概念，因为双方都在同时进行收和发的操作</p>
+<h3 id="管道化技术（批量发送）"><a href="#管道化技术（批量发送）" class="headerlink" title="管道化技术（批量发送）"></a>管道化技术（批量发送）</h3><p>在等待上一帧的确认帧返回时，不是单纯等待，而是继续发送帧。它可以一次性发送多条数据，我们将这些数据的组合称为一个窗口，管道化技术就是在逐个发送窗口。所以我们也称其为滑窗技术</p>
+<h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><h4 id="整个过程中双方都对应拥有两个窗口："><a href="#整个过程中双方都对应拥有两个窗口：" class="headerlink" title="整个过程中双方都对应拥有两个窗口："></a>整个过程中双方都对应拥有两个窗口：</h4><ol>
+<li>发送窗口：对应着已经发送，未被确认的数据帧的序列号</li>
+<li>期望接收的数据帧的序列号</li>
+</ol>
+<p><img src="https://note.youdao.com/yws/res/13055/2BA706830A3B48308DBE26A0789B2817" alt="滑动窗口"></p>
+<p>可以看到整个滑动窗口的流程是<strong>首先从接收一方开始</strong>，接收方首先将<strong>窗口设置在0位置</strong>，表示期望接收到0序列号的帧，接下来<strong>发送方</strong>开始<strong>滑动窗口到0</strong>，并向接收方发送0数据帧，在接收方收到第一帧后，<strong>接收方</strong>返回确认帧并且<strong>滑动窗口到1位置</strong>表示期望收到1数据帧，<strong>发送方</strong>在接到确认帧后<strong>继续滑动窗口</strong>并发送对应帧</p>
+<h3 id="协议代码实现"><a href="#协议代码实现" class="headerlink" title="协议代码实现"></a>协议代码实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_SEQ 1			</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&quot;protocol.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">protocol4</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	seq_nr next_frame_to_send;  <span class="comment">//将要发送的帧的序列号</span></span><br><span class="line">	seq_nr frame_expected;   <span class="comment">//期望收到的帧的序列号</span></span><br><span class="line">	frame r, s;  </span><br><span class="line">	packet buffer;</span><br><span class="line">	event_type event;</span><br><span class="line">	next_frame_to_send = <span class="number">0</span>;  <span class="comment">//初始化将要发送的帧的序列号，从0号帧开始发送</span></span><br><span class="line">	frame_expected = <span class="number">0</span>;   <span class="comment">//表明期望接受到的帧是0号帧</span></span><br><span class="line">	from_network_layer(&amp;buffer);   <span class="comment">//从网络曾获取包</span></span><br><span class="line">	s.info = buffer;  <span class="comment">//放入要发送的帧中</span></span><br><span class="line">	s.seq = next_frame_to_send;</span><br><span class="line">	s.ack = <span class="number">1</span> - frame_expected;</span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 *由于是双工协议，所以采用了稍待确认</span></span><br><span class="line"><span class="comment">	 *也就是将确认帧放到数据帧中，提高了信道利用率</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	to_physical_layer(&amp;s);  <span class="comment">//像物理层开始传输</span></span><br><span class="line">	start_timer(s.seq);  <span class="comment">//启动计时器</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">			wait_for_event(&amp;event);  <span class="comment">//接收对应事件</span></span><br><span class="line">			<span class="keyword">if</span> (event == frame_arrival) &#123;</span><br><span class="line">				from_physical_layer(&amp;r);  <span class="comment">//从物理层获取返回的确认帧+数据帧 </span></span><br><span class="line">				<span class="comment">//通过帧的seq号判断是否是期望接受的帧</span></span><br><span class="line">				<span class="keyword">if</span> (r.seq == frame_expected) &#123;  </span><br><span class="line">					to_network_layer(&amp;r.info); <span class="comment">//如果是就将数据继续向网络层传输</span></span><br><span class="line">					inc(frame_expected);  </span><br><span class="line">					<span class="comment">//这里调用了一个宏用来移动窗口</span></span><br><span class="line">					<span class="comment">//这个宏的作用就是将期望的数据帧序列号+1，将期望窗口调整到下一位置</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="comment">//通过帧的ack号与发送出的帧序列号比较，判断数据是否成功到达接收方</span></span><br><span class="line">				<span class="comment">//以及是否继续发送下一帧或者重传</span></span><br><span class="line">				<span class="keyword">if</span> (r.ack == next_frame_to_send) &#123;</span><br><span class="line">					stop_timer(r.ack);</span><br><span class="line">					from_network_layer(&amp;buffer);</span><br><span class="line">					inc(next_frame_to_send);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			s.info = buffer;</span><br><span class="line">			s.seq = next_frame_to_send;</span><br><span class="line">			s.ack = <span class="number">1</span> - frame_expected;</span><br><span class="line">			to_physical_layer(&amp;s);</span><br><span class="line">			start_timer(s.seq);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="窗口滑动条件"><a href="#窗口滑动条件" class="headerlink" title="窗口滑动条件"></a>窗口滑动条件</h2><h4 id="接收方收到帧后，首先核对帧是否与期望相同，如果相同，则返回确认帧并且滑动接收窗口（frame-expected-1）然后将数据像网络层传输"><a href="#接收方收到帧后，首先核对帧是否与期望相同，如果相同，则返回确认帧并且滑动接收窗口（frame-expected-1）然后将数据像网络层传输" class="headerlink" title="接收方收到帧后，首先核对帧是否与期望相同，如果相同，则返回确认帧并且滑动接收窗口（frame_expected+1）然后将数据像网络层传输"></a>接收方收到帧后，首先核对帧是否与期望相同，如果相同，则返回确认帧并且滑动接收窗口（frame_expected+1）然后将数据像网络层传输</h4><h4 id="发送方在收到确认帧后，核对响应帧号next-frame-to-send，全部完成后，从网络层获取新的数据，并将响应帧号next-frame-to-send-1即移动发送窗口，然后像物理层传输信息，否则，不移动窗口"><a href="#发送方在收到确认帧后，核对响应帧号next-frame-to-send，全部完成后，从网络层获取新的数据，并将响应帧号next-frame-to-send-1即移动发送窗口，然后像物理层传输信息，否则，不移动窗口" class="headerlink" title="发送方在收到确认帧后，核对响应帧号next_frame_to_send，全部完成后，从网络层获取新的数据，并将响应帧号next_frame_to_send+1即移动发送窗口，然后像物理层传输信息，否则，不移动窗口"></a>发送方在收到确认帧后，核对响应帧号next_frame_to_send，全部完成后，从网络层获取新的数据，并将响应帧号next_frame_to_send+1即移动发送窗口，然后像物理层传输信息，否则，不移动窗口</h4><h2 id="滑动窗口基本概念"><a href="#滑动窗口基本概念" class="headerlink" title="滑动窗口基本概念"></a>滑动窗口基本概念</h2><p>每个待发送帧被赋予一个<strong>序列号seq</strong>,seq的取值范围是 0 ~ 2^n-1（n位字段）<br/></p>
+<h4 id="发送窗口"><a href="#发送窗口" class="headerlink" title="发送窗口"></a>发送窗口</h4><ul>
+<li>顺序接收来自网络层的分组-&gt;成帧-&gt;赋予序列号</li>
+<li>最多保存W个已经发送、等待确认的帧</li>
+<li>窗口达到最大值W时强制关闭网络层</li>
+</ul>
+<h4 id="接收窗口"><a href="#接收窗口" class="headerlink" title="接收窗口"></a>接收窗口</h4><ul>
+<li>对进入窗口的帧顺序提交网络层，产生确认</li>
+<li>落在窗口外的帧被丢弃</li>
+</ul>
+<h4 id="SEQ码和ACK码"><a href="#SEQ码和ACK码" class="headerlink" title="SEQ码和ACK码"></a>SEQ码和ACK码</h4><p>因为滑动窗口协议只涉及1个窗口，所以在传输过程中，SEQ码和ACK码的取值只有0和1两种，当SEQ码=1时，表示当前发送的数据为1序列号的帧，<strong>当ACK码为1时，表示已经成功接收序列号为1的帧，期望接收序列号为0的帧</strong>（这里与直观感受并不一致）<br/><br>通信双方<strong>初始值</strong>：seq =0, ack=1（期待接收seq=0）</p>
+<h4 id="窗口滑动机制"><a href="#窗口滑动机制" class="headerlink" title="窗口滑动机制"></a>窗口滑动机制</h4><ul>
+<li>A首先发送数据帧（seq=0, ack=1, A0）–发送0帧，期望收到0帧</li>
+<li>B收到A0，发送捎带确认帧（seq=0, ack=0, B0）–发送0帧，成功收到0帧，期望收到1帧</li>
+<li>A收到对A0的确认，滑动窗口，发送帧（seq=1, ack=0, A1）–发送1帧，收到0帧，期望收到1帧</li>
+</ul>
+<h2 id="协议帧的差错控制"><a href="#协议帧的差错控制" class="headerlink" title="协议帧的差错控制"></a>协议帧的差错控制</h2><p><img src="https://note.youdao.com/yws/res/13132/A016A5C99B284C538F4C49285D7C9B6B" alt="传输过程"></p>
+<p>可以看到在发生错误后，由于计时器时间设置不合理，接收方收到<strong>重复帧</strong>，这种情况下接收方会<strong>发送同样的确认帧</strong>返回发送方，但不会接收当前传过来的重复帧，这就使得整个流程<strong>可以正常运行</strong>，不会因为错误帧而中断。但整个流程<strong>效率极低</strong></p>
+<hr>
+<h2 id="效率问题"><a href="#效率问题" class="headerlink" title="效率问题"></a>效率问题</h2><h4 id="假设窗口每次只发送一帧，那么可以通过运算获得整个过程的信道利用率："><a href="#假设窗口每次只发送一帧，那么可以通过运算获得整个过程的信道利用率：" class="headerlink" title="假设窗口每次只发送一帧，那么可以通过运算获得整个过程的信道利用率："></a>假设窗口每次只发送一帧，那么可以通过运算获得整个过程的信道利用率：</h4><p>$$<br>信道传输速率是： b (bps)<br>$$</p>
+<p>$$<br>每帧的大小是： k (bits)<br>$$</p>
+<p>$$<br>来回时间是： R (sec)<br>$$</p>
+<p>$$<br>信道利用率=\frac{k}{k+bR}<br>$$</p>
+<p>带入数据：信道容量 b = 50 kbps，传输延迟 R = 500 ms（双程），数据帧的长度 k = 1000 bit。（设接收方收到数据帧后马上回送确认短帧，没有延时）</p>
+<p>可以算的信道利用率为3.85%，不足4%，利用率极低。这是因为我们一个窗口只发送了一帧，这一帧到达之前，窗口始终处于空闲状态，所以需要设定窗口合理的帧数，使利用率提高（增加滑动窗口长度）</p>
+<h4 id="设窗口长度为W-一个窗口发送字节的数量"><a href="#设窗口长度为W-一个窗口发送字节的数量" class="headerlink" title="设窗口长度为W(一个窗口发送字节的数量)"></a>设窗口长度为W(一个窗口发送字节的数量)</h4><p>$$<br>在源端发送数据帧过程需要的时间=T_f =\frac{k}{b}<br>$$</p>
+<p>$$<br>从发送完毕到确认帧返回需要的时间（双程延迟）R<br>$$</p>
+<p>$$<br>从开始发送到确认返回总共需要的时间(T_f +R)<br>$$</p>
+<p>$$<br>线路的利用率=\frac{W*T_f}{T_f +R}<br>$$</p>
+<p>上文实例中若假设信道利用率为100%，可以解得W=26，也就是一个窗口发送26帧时，信道利用率最高。当然，这只是理想状态下的假设，正常情况下一般无法达到信道100%的利用</p>
+<h4 id="如何确定合适的W值"><a href="#如何确定合适的W值" class="headerlink" title="如何确定合适的W值"></a>如何确定合适的W值</h4><p>信道上的容量：一帧从发送方传输到接收期间可容纳的帧数量</p>
+<p>带宽-延迟积：BD（B表示带宽，D表示时间）</p>
+<p>窗口值：w=2*BD+1</p>
+<p>实际上:w≤2*BD+1</p>
+<hr>
+<h3 id="例题："><a href="#例题：" class="headerlink" title="例题："></a>例题：</h3><p><strong>主机甲和主机乙之间使用后退N帧协议（GBN）传输数据，甲的发送窗口尺寸为1000，数据帧长为1000字节，信道为100Mbps，乙每收到一个数据帧立即利用一个短帧（忽略其传输延迟）进行确认。若甲乙之间的单向传播延迟是50ms，则甲可以达到的最大平均传输速率约为？</strong></p>
+<p>解题：</p>
+<p>假设平均传输效率为x(Mbps)<br/><br>根据w=2<em>BD+1<br/><br>易知：$1000=2</em>x(Mbps)*50(ms)*10^{-3}+1$<br/><br>解得：x=80Mbps</p>
+<hr>
+<h2 id="管道化技术面临的出错情况"><a href="#管道化技术面临的出错情况" class="headerlink" title="管道化技术面临的出错情况"></a>管道化技术面临的出错情况</h2><ul>
+<li>连续发送W个数据帧，其中有一帧出错，但其后续帧被成功<br>发送<h4 id="接收方的接收策略选择"><a href="#接收方的接收策略选择" class="headerlink" title="接收方的接收策略选择"></a>接收方的接收策略选择</h4></li>
+<li>丢弃错帧及后续帧，其后续帧因不是期望接收帧也被丢弃，对应协议5</li>
+<li>丢弃错帧，缓存后续正确接收帧，对应协议6</li>
+</ul>
+<hr>
+<h1 id="回退n帧-协议5"><a href="#回退n帧-协议5" class="headerlink" title="回退n帧-协议5"></a>回退n帧-协议5</h1><h4 id="上文提到了使用管道化技术带来的新问题与两种解决方式"><a href="#上文提到了使用管道化技术带来的新问题与两种解决方式" class="headerlink" title="上文提到了使用管道化技术带来的新问题与两种解决方式"></a>上文提到了使用管道化技术带来的新问题与两种解决方式</h4><ol>
+<li>回退n帧</li>
+<li>选择性重传</li>
+</ol>
+<p>这两种协议对应着不同的接收发送策略</p>
+<h3 id="回退n帧"><a href="#回退n帧" class="headerlink" title="回退n帧"></a>回退n帧</h3><h4 id="接收方的接收策略与选择："><a href="#接收方的接收策略与选择：" class="headerlink" title="接收方的接收策略与选择："></a>接收方的接收策略与选择：</h4><p>直接将错误帧与后续帧丢弃，后续的正确帧到来后因不是期望帧也被舍弃</p>
+<h4 id="发送方的发送策略："><a href="#发送方的发送策略：" class="headerlink" title="发送方的发送策略："></a>发送方的发送策略：</h4><p>发送前将所有帧缓存，在收到确认帧后，未为成功发送的帧以及后续所有帧进行重传</p>
+<h3 id="选择性重传"><a href="#选择性重传" class="headerlink" title="选择性重传"></a>选择性重传</h3><h4 id="接收方的接收策略与选择：-1"><a href="#接收方的接收策略与选择：-1" class="headerlink" title="接收方的接收策略与选择："></a>接收方的接收策略与选择：</h4><p>丢弃错误帧，将剩余正确帧保留并缓存</p>
+<h4 id="发送方的发送策略：-1"><a href="#发送方的发送策略：-1" class="headerlink" title="发送方的发送策略："></a>发送方的发送策略：</h4><p>在收到确认帧后只重传错误帧</p>
+<hr>
+<h2 id="回退n帧-1"><a href="#回退n帧-1" class="headerlink" title="回退n帧"></a>回退n帧</h2><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><ul>
+<li>定义了序列号seq，以及滑动窗口长度W</li>
+<li>发送方持续发送数据，直到达到最大窗口长度</li>
+<li>接收窗口为1，在接到错误帧后不确认(引发超时，进而重传)</li>
+<li>发送方超时后进行重传，从未收到的确认帧处开始</li>
+</ul>
+<p><img src="https://note.youdao.com/yws/res/13276/FD5356893B554D9A8EE3D12C91412210" alt="回退n帧"></p>
+<p>可以看到在发送过程中，从2号帧开始出错，则后续帧都被丢弃。之后接收方会返回1号帧的确认帧（注意！不是返回2号帧，而是返回错误帧的上一位帧的确认帧，因为1号帧成功被接收，发送方借此可以判断是从2号帧开始需要重传的）</p>
+<p><img src="https://note.youdao.com/yws/res/13289/C43B4D62AEDD424BB206FFC06E9FE556" alt="发送方与接收方"></p>
+<h2 id="累计确认"><a href="#累计确认" class="headerlink" title="累计确认"></a>累计确认</h2><h4 id="在滑动窗口中采用了累计确认的方式来对帧进行确认"><a href="#在滑动窗口中采用了累计确认的方式来对帧进行确认" class="headerlink" title="在滑动窗口中采用了累计确认的方式来对帧进行确认"></a>在滑动窗口中采用了累计确认的方式来对帧进行确认</h4><p>也就是说在收到对于5号帧确认时，暗含的意思就是已经完成了对0，1，2，3，4，5这几个帧的确认，而不必要每一个都发送确认帧</p>
+<p>对于发送方，这样在接收到第n帧确认后，就可以删除n帧及以前所有的缓存</p>
+<h4 id="但这同样也引发了新的问题-规定-："><a href="#但这同样也引发了新的问题-规定-：" class="headerlink" title="但这同样也引发了新的问题(规定)："></a>但这同样也引发了新的问题(规定)：</h4><p><strong>滑动窗口最大长度W不能超过最大序列号</strong><br>比如：序列号用三位表示，则<strong>最大序列号=111</strong>。表示7，所以<strong>窗口长度不能等于8或超过8</strong>，超过8很好理解，因为如果窗口长度大于8，则，没有足够的序列号为每一个帧标记。<br/><br>当序列号等于8时，有足够标记(0，1，2，3，4，5，6，7)但这也是不允许的，因为这会引发新的问题。<br/><br>我们在返回确认帧时采取了<strong>累计确认</strong>，当第一个窗口的8个帧全部被顺利接收后，接收方会返回一个确认帧ACK=7,表示已经正常收到7号帧及之前元素，可以继续发送下一窗口了。<br/><br>这时如果发送方在发送第二个窗口时发生错误，接收方根本没收到期望帧，就会重新发送确认帧ACK=7表示自己期望接受第二个窗口，可这时就会发生混淆，<strong>发送方不能分别这个确认帧，是希望对窗口二进行重传还是表示已经正常接收到窗口二。</strong> 无法正确执行程序<br/><br>如果滑动窗口不超过8就不会有这种问题，比如滑动窗口为7，这样第一窗口的确认帧是ACK=6，第二窗口的确认帧是ACK=5（因为第二窗口帧的序列号是从7开始的：7，0，1，2，3，4，5）<br/><br>这样就避免了过程中可能产生的歧义，很好的解决了问题</p>
+<h3 id="回退n帧需要发送方付出更大的缓存代价，缓存整个窗口的数据帧"><a href="#回退n帧需要发送方付出更大的缓存代价，缓存整个窗口的数据帧" class="headerlink" title="回退n帧需要发送方付出更大的缓存代价，缓存整个窗口的数据帧"></a>回退n帧需要发送方付出更大的缓存代价，缓存整个窗口的数据帧</h3><h4 id="适合出错较少的高速信道"><a href="#适合出错较少的高速信道" class="headerlink" title="适合出错较少的高速信道"></a>适合出错较少的高速信道</h4><hr>
+<h1 id="选择性重传-协议6"><a href="#选择性重传-协议6" class="headerlink" title="选择性重传-协议6"></a>选择性重传-协议6</h1><h2 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>接收窗口接收错误帧后的所有正确帧，并将它们缓存起来</li>
+<li>发送方只重传错误帧</li>
+<li>接收方在接收到重传帧后，将其与其他帧按正确顺序排序，再提交至网络层</li>
+</ul>
+<h2 id="选择重传协议的工作原理分析"><a href="#选择重传协议的工作原理分析" class="headerlink" title="选择重传协议的工作原理分析"></a>选择重传协议的工作原理分析</h2><p><img src="https://note.youdao.com/yws/res/13360/E8B6AA74F2A24619A9AC0D85019A9745" alt="接收方发送方2"></p>
+<h3 id="否定确认NAK"><a href="#否定确认NAK" class="headerlink" title="否定确认NAK"></a>否定确认NAK</h3><ul>
+<li>在接收方收到错误帧时会发送否定确认NAK到发送方</li>
+<li>这样可以加快出错帧的重传</li>
+<li>对出错帧回送否定确认，使发方不再等到超时再重传</li>
+</ul>
+<h2 id="滑动窗口长度选择"><a href="#滑动窗口长度选择" class="headerlink" title="滑动窗口长度选择"></a>滑动窗口长度选择</h2><h4 id="接收窗口：W-MAX-SEQ-1-2"><a href="#接收窗口：W-MAX-SEQ-1-2" class="headerlink" title="接收窗口：W= (MAX_SEQ + 1) / 2"></a>接收窗口：W= (MAX_SEQ + 1) / 2</h4><h4 id="发送窗口一般小于接收窗口"><a href="#发送窗口一般小于接收窗口" class="headerlink" title="发送窗口一般小于接收窗口"></a>发送窗口一般小于接收窗口</h4><h3 id="原因："><a href="#原因：" class="headerlink" title="原因："></a>原因：</h3><p>当发送窗口和接收窗口都比较大时，就会导致新老窗口序列号重叠，比如说序列号为3位（XXX），收发窗口大小都是7，则接收窗口第一次为（0，1，2，3，4，5，6），第二次为（7，0，1，2，3，4，5）。这其中（0，1，2，3，4，5）都为重叠部分。<br/><br>当接收方正确接收第一窗口并滑动窗口后，确认帧被发送出去，但在确认帧发送过程中，全部丢失。所以发送方超时进行重发（0，1，2，3，4，5，6）这个窗口，当0号帧到达时<br/><br>接收方不能判定他是重传帧，反而在第二个窗口发现了对应帧的序列号，这个重传帧就被错误的放在了第二个窗口，而实际上，它只是第一个窗口的重传帧而已</p>
+<hr>
+<p>当W遵守W= (MAX_SEQ + 1) / 2 的规定时，就可以保证新老窗口之间没有重叠部分。，可以正常通过帧的序列号判定帧的类型</p>
+<table>
+<thead>
+<tr>
+<th align="center">—</th>
+<th align="center">协议4：滑动窗口</th>
+<th align="center">协议5：回退n帧</th>
+<th align="center">协议6：选择性重传</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">发送窗口(SWnd)</td>
+<td align="center">0&lt;SWnd&lt;=1</td>
+<td align="center">0 &lt;=SWnd&lt;=MAX_SEQ</td>
+<td align="center">0 &lt;= SWnd&lt;= RWnd</td>
+</tr>
+<tr>
+<td align="center">接收窗口(RWnd)</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">(MAX_SEQ+1)/2</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="两种策略比较"><a href="#两种策略比较" class="headerlink" title="两种策略比较"></a>两种策略比较</h3><h4 id="回退n帧-2"><a href="#回退n帧-2" class="headerlink" title="回退n帧"></a>回退n帧</h4><ul>
+<li>发送方需要较大的缓冲区，以便重传</li>
+<li>重传帧数多，适于信道出错率较少的情况<h4 id="选择重传"><a href="#选择重传" class="headerlink" title="选择重传"></a>选择重传</h4></li>
+<li>接收方需要较大的缓冲区，以便按正确顺序将分组提交网络层</li>
+<li>重传帧数少，适于信道质量不好的情况</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Ywrby</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://ywrby.cn/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/">http://ywrby.cn/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></div><div class="post_share"><div class="social-share" data-image="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/07/11/1-Vue%E5%9F%BA%E7%A1%80/"><img class="prev-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">1-Vue基础</div></div></a></div><div class="next-post pull-right"><a href="/2021/06/29/6-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/"><img class="next-cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/81691339_p0.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">6-数据链路层-介质访问控制子层</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/07/1-计算机网络和因特网/" title="1-计算机网络和因特网"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/80857290_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-07</div><div class="title">1-计算机网络和因特网</div></div></a></div><div><a href="/2021/06/20/5-网络层（下）/" title="5-网络层（下）"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-20</div><div class="title">5-网络层（下）</div></div></a></div><div><a href="/2021/06/29/6-数据链路层-介质访问控制子层/" title="6-数据链路层-介质访问控制子层"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/81691339_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-29</div><div class="title">6-数据链路层-介质访问控制子层</div></div></a></div><div><a href="/2021/03/12/2-应用层/" title="2-应用层"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-12</div><div class="title">2-应用层</div></div></a></div><div><a href="/2021/03/25/3-传输层/" title="3-传输层"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-25</div><div class="title">3-传输层</div></div></a></div><div><a href="/2021/04/16/4-网络层（上）/" title="4-网络层（上）"><img class="cover" src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-16</div><div class="title">4-网络层（上）</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/ywrby.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Ywrby</div><div class="author-info__description">Students majoring in CS at SWU</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">98</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">17</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/ywrby"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ywrby0214@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://space.bilibili.com/353923033" target="_blank" title="Bilibili"><i class="fas fa-file-video"></i></a><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2491757717&amp;site=qq&amp;menu=yes" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="https://twitter.com/ywrby1" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a><a class="social-icon" href="https://www.facebook.com/profile.php?id=100033741068822" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">Less is more</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">数据链路层概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E7%9A%84%E6%9C%89%E6%95%88%EF%BC%8C%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">1.0.1.</span> <span class="toc-text">保证数据传输的有效，可靠性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%A7"><span class="toc-number">1.1.</span> <span class="toc-text">帧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%A4%84%E7%90%86%E7%9A%84%E5%8D%8F%E8%AE%AE%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83PDU%EF%BC%89"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">（数据链路层处理的协议数据单元PDU）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%A7%E7%9A%84%E7%BB%84%E6%88%90%EF%BC%9A%E5%B8%A7%E5%A4%B4-%E8%BD%BD%E8%8D%B7-%E5%B8%A7%E5%B0%BE"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">帧的组成：帧头+载荷+帧尾</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E4%BD%BF%E7%94%A8%E7%89%A9%E7%90%86%E5%B1%82%E6%8F%90%E4%BE%9B%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%8C%E6%89%80%E4%BB%A5%E8%A6%81%E5%B0%86%E7%89%A9%E7%90%86%E5%B1%82%E5%A4%84%E7%90%86%E7%9A%84%E4%BD%8D%E6%B5%81%EF%BC%88bits%EF%BC%89%E8%BD%AC%E6%8D%A2%E6%88%90%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E8%83%BD%E5%A4%9F%E5%A4%84%E7%90%86%E7%9A%84%E5%B8%A7%EF%BC%8C%E8%BF%99%E4%B8%AA%E8%BF%87%E7%A8%8B%E5%B0%B1%E5%8F%AB%E5%81%9A%E2%80%9C%E6%88%90%E5%B8%A7%E2%80%9D%E3%80%82"><span class="toc-number">1.1.0.3.</span> <span class="toc-text">数据链路层使用物理层提供的服务，所以要将物理层处理的位流（bits）转换成数据链路层能够处理的帧，这个过程就叫做“成帧”。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%B8%A7"><span class="toc-number">1.2.</span> <span class="toc-text">成帧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%88%90%E5%B8%A7%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">常见的四种成帧方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E8%AE%A1%E6%95%B0%E6%B3%95"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">字符计数法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E5%A1%AB%E5%85%85%E7%9A%84%E6%A0%87%E5%BF%97%E5%AD%97%E8%8A%82%E6%B3%95"><span class="toc-number">1.2.0.3.</span> <span class="toc-text">字节填充的标志字节法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98%EF%BC%9A%E5%BD%93%E4%BC%A0%E8%BE%93%E6%95%B0%E6%8D%AE%E4%B8%AD%E4%B9%9F%E5%AD%98%E5%9C%A8%E6%A0%87%E5%BF%97%E5%AD%97%E8%8A%82%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%92%8C%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%B8%A7%E7%95%8C%E6%B7%B7%E6%B7%86"><span class="toc-number">1.2.0.3.1.</span> <span class="toc-text">存在问题：当传输数据中也存在标志字节时，会和真正的帧界混淆</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%94%E7%89%B9%E5%A1%AB%E5%85%85%E7%9A%84%E6%AF%94%E7%89%B9%E6%A0%87%E8%AE%B0%E6%B3%95"><span class="toc-number">1.2.0.4.</span> <span class="toc-text">比特填充的比特标记法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E7%BC%96%E7%A0%81%E8%BF%9D%E4%BE%8B%E6%B3%95"><span class="toc-number">1.2.0.5.</span> <span class="toc-text">物理层编码违例法</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%AE%E9%94%99%E5%A4%84%E7%90%86%E7%9A%84%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">差错处理的概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E9%94%99%E8%AF%AF%E7%9A%84%E5%B8%B8%E8%A7%81%E6%89%8B%E6%AE%B5"><span class="toc-number">2.0.0.1.</span> <span class="toc-text">处理错误的常见手段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.0.0.2.</span> <span class="toc-text">常见错误类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%A0%E9%94%99%E7%A0%81%EF%BC%88%E5%89%8D%E5%90%91%E7%BA%A0%E9%94%99%E6%8A%80%E6%9C%AF%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">纠错码（前向纠错技术）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E9%94%99%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">检错码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A0%81%E5%AD%97%EF%BC%9A%E5%8C%85%E5%90%AB%E6%95%B0%E6%8D%AE%E4%BD%8D%E5%92%8C%E6%A0%A1%E9%AA%8C%E4%BD%8D%E7%9A%84n%E4%BD%8D%E5%8D%95%E5%85%83%EF%BC%88%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">码字：包含数据位和校验位的n位单元（模式）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%EF%BC%9A%E4%B8%A4%E4%B8%AA%E7%A0%81%E5%AD%97%E7%9A%84%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E6%8C%87%EF%BC%8C%E4%B8%A4%E4%B8%AA%E7%A0%81%E5%AD%97%E9%97%B4%E4%B8%8D%E5%90%8C%E4%BD%8D%E7%9A%84%E6%95%B0%E7%9B%AE"><span class="toc-number">2.2.0.2.</span> <span class="toc-text">海明距离：两个码字的海明距离指，两个码字间不同位的数目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%83%A8%E7%A0%81%E5%AD%97%E7%9A%84%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%EF%BC%9A"><span class="toc-number">2.2.0.3.</span> <span class="toc-text">全部码字的海明距离：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%9A"><span class="toc-number">2.2.0.4.</span> <span class="toc-text">海明距离的意义：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E4%B8%8E%E2%80%9C%E6%A3%80%E9%94%99%E2%80%9D%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9A"><span class="toc-number">2.2.0.5.</span> <span class="toc-text">海明距离与“检错”的关系：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%EF%BC%9A"><span class="toc-number">2.2.0.6.</span> <span class="toc-text">奇偶校验码：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E5%B0%B1%E6%98%AF%E5%B0%86%E4%B8%80%E4%B8%AA%E6%A0%A1%E9%AA%8C%E4%BD%8D%E8%BF%BD%E5%8A%A0%E5%88%B0%E4%BC%A0%E8%BE%93%E6%95%B0%E6%8D%AE%E4%B8%AD%EF%BC%8C%E5%88%86%E4%B8%BA%E5%A5%87%E6%A0%A1%E9%AA%8C%E5%92%8C%E5%81%B6%E6%A0%A1%E9%AA%8C%EF%BC%8C%E6%A0%A1%E9%AA%8C%E4%BD%8D%E7%9A%84%E5%80%BC%E6%98%AF%E2%80%9C0%E2%80%9D%E8%BF%98%E6%98%AF%E2%80%9C1%E2%80%9D%E5%8F%96%E5%86%B3%E4%BA%8E%E6%95%B0%E6%8D%AE%E4%B8%AD%E2%80%9C1%E2%80%9D%E7%9A%84%E4%B8%AA%E6%95%B0%E3%80%82"><span class="toc-number">2.2.0.7.</span> <span class="toc-text">奇偶校验码就是将一个校验位追加到传输数据中，分为奇校验和偶校验，校验位的值是“0”还是“1”取决于数据中“1”的个数。</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E6%A3%80%E9%94%99%E4%B8%BE%E4%BE%8B%EF%BC%9A"><span class="toc-number">2.2.0.7.1.</span> <span class="toc-text">奇偶校验检错举例：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E4%B8%8E%E2%80%9C%E7%BA%A0%E9%94%99%E2%80%9D%E5%85%B3%E7%B3%BB"><span class="toc-number">2.2.0.8.</span> <span class="toc-text">海明距离与“纠错”关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%BE%E8%80%8C%E6%98%93%E8%A7%81%EF%BC%8C%E9%9A%8F%E7%9D%80%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E5%A2%9E%E5%A4%A7%EF%BC%8C%E7%BA%A0%E9%94%99%E8%83%BD%E5%8A%9B%E5%B0%B1%E4%B8%8D%E6%96%AD%E5%A2%9E%E5%BC%BA"><span class="toc-number">2.2.0.9.</span> <span class="toc-text">显而易见，随着海明距离增大，纠错能力就不断增强</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%86%E6%98%AF%EF%BC%8C%E6%B5%B7%E6%98%8E%E8%B7%9D%E7%A6%BB%E8%B6%8A%E5%A4%A7%E6%84%8F%E5%91%B3%E7%9D%80%E5%90%88%E6%B3%95%E7%A0%81%E5%AD%97%E8%B6%8A%E5%B0%91%EF%BC%8C%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87%E4%B9%9F%E5%B0%B1%E8%B6%8A%E4%BD%8E"><span class="toc-number">2.2.0.10.</span> <span class="toc-text">但是，海明距离越大意味着合法码字越少，传输效率也就越低</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%80%85%E5%8F%AA%E8%83%BD%E6%89%BE%E5%88%B0%E4%B8%80%E7%A7%8D%E5%B9%B3%E8%A1%A1%EF%BC%8C%E8%80%8C%E4%B8%8D%E8%83%BD%E5%90%8C%E6%97%B6%E4%BF%9D%E6%8C%81%E9%AB%98%E7%BA%A0%E5%AF%9F%E7%8E%87%E4%BB%A5%E5%8F%8A%E9%AB%98%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87%E5%90%A7"><span class="toc-number">2.2.0.11.</span> <span class="toc-text">二者只能找到一种平衡，而不能同时保持高纠察率以及高传输效率吧</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%A01%E4%BD%8D%E9%94%99%E7%9A%84%E6%B5%B7%E6%98%8E%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">纠1位错的海明码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%B5%B7%E6%98%8E%E7%A0%81%E4%B8%AD%EF%BC%8C%E5%B0%86%E8%BF%99%E4%BA%9B%E5%86%97%E4%BD%99%E4%BD%8D%E7%94%A8%E4%BD%9C%E7%BA%A0%E9%94%99%E4%BD%8D"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">在海明码中，将这些冗余位用作纠错位</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%86%97%E4%BD%99%E4%BD%8D%E4%B8%AA%E6%95%B0r%EF%BC%9A"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">如何确定冗余位个数r：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E7%BA%A0%E9%94%99%E7%A0%81"><span class="toc-number">3.0.1.</span> <span class="toc-text">海明纠错码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%86%B3%E5%AE%9A%E6%AF%8F%E4%B8%AA%E6%95%B0%E6%8D%AE%E4%BD%8D%E7%9A%84%E6%A0%A1%E9%AA%8C%E4%BD%8D%EF%BC%9A"><span class="toc-number">3.0.1.1.</span> <span class="toc-text">如何决定每个数据位的校验位：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E7%A0%81%E7%BA%A0%E9%94%99%E8%BF%87%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">海明码纠错过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%94%E5%A6%82%EF%BC%9A"><span class="toc-number">3.1.0.1.</span> <span class="toc-text">比如：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%B5%B7%E6%98%8E%E7%A0%81%E7%BA%A0%E6%AD%A3%E7%AA%81%E5%8F%91%E9%94%99%E8%AF%AF"><span class="toc-number">3.2.</span> <span class="toc-text">利用海明码纠正突发错误</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A3%80%E9%94%99%E7%A0%81-1"><span class="toc-number">4.</span> <span class="toc-text">检错码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%87%E7%94%A8%E6%A3%80%E9%94%99%E7%A0%81%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">采用检错码的原因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%B1%80%E5%9F%9F%E7%BD%91%E4%B8%AD%EF%BC%8C%E4%B8%BB%E8%A6%81%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF%E6%A3%80%E9%94%99%E7%A0%81"><span class="toc-number">4.0.0.2.</span> <span class="toc-text">在局域网中，主要使用的是检错码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%A3%80%E9%94%99%E7%A0%81%EF%BC%9A"><span class="toc-number">4.0.0.3.</span> <span class="toc-text">常见的检错码：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%EF%BC%9A-1"><span class="toc-number">4.1.</span> <span class="toc-text">奇偶校验码：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E5%92%8C"><span class="toc-number">4.2.</span> <span class="toc-text">校验和</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="toc-number">4.2.0.1.</span> <span class="toc-text">特点：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A3%80%E9%94%99%E7%A0%81CRC"><span class="toc-number">4.3.</span> <span class="toc-text">循环冗余检错码CRC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CRC%E7%B3%BB%E7%BB%9F%E9%87%8C%E4%B8%80%E5%AE%9A%E5%85%B7%E6%9C%89%E7%94%9F%E6%88%90%E5%A4%9A%E9%A1%B9%E5%BC%8F%EF%BC%9AG-x-%EF%BC%8CG-x-%E4%B8%BAr-%E5%86%97%E4%BD%99%E7%A0%81%E4%B8%AA%E6%95%B0-%E9%98%B6"><span class="toc-number">4.3.0.1.</span> <span class="toc-text">CRC系统里一定具有生成多项式：G(x)，G(x)为r(冗余码个数)阶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%98%E5%85%B7%E6%9C%89m%E4%BD%8D%E5%B8%A7%E7%9A%84%E5%A4%9A%E9%A1%B9%E5%BC%8F%EF%BC%9AM-x-%E4%B8%94%E4%B8%80%E8%88%AC-m-gt-r-M-x-gt-G-x"><span class="toc-number">4.3.0.2.</span> <span class="toc-text">还具有m位帧的多项式：M(x),且一般 m&gt;r , M(x)&gt;G(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BF%90%E7%AE%97%E4%B8%AD%EF%BC%8C%E5%87%8F%E6%B3%95%E5%92%8C%E5%8A%A0%E6%B3%95%E9%83%BD%E5%81%9A%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%EF%BC%8C%E5%8D%B3%E7%9B%B8%E5%90%8C%E5%BE%970%EF%BC%8C%E7%9B%B8%E5%BC%82%E5%BE%971"><span class="toc-number">4.3.0.3.</span> <span class="toc-text">在二进制运算中，减法和加法都做异或运算，即相同得0，相异得1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A12%E8%BF%90%E7%AE%97%EF%BC%9A%E6%A8%A12%E5%8A%A0%E4%BB%A5%E5%8F%8A%E6%A8%A12%E5%87%8F%E7%AD%89%E5%90%8C%E4%BA%8E%E5%BC%82%E6%88%96%E8%BF%90%E7%AE%97%EF%BC%8C%E5%8D%B3%E7%9B%B8%E5%90%8C%E5%BE%970%EF%BC%8C%E7%9B%B8%E5%BC%82%E5%BE%971"><span class="toc-number">4.3.0.4.</span> <span class="toc-text">模2运算：模2加以及模2减等同于异或运算，即相同得0，相异得1</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CRC%E7%A0%81%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="toc-number">4.3.1.</span> <span class="toc-text">CRC码计算：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%96%B9"><span class="toc-number">4.3.1.1.</span> <span class="toc-text">发送方</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%96%B9"><span class="toc-number">4.3.1.2.</span> <span class="toc-text">接收方</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%BD%E9%99%85%E6%A0%87%E5%87%86"><span class="toc-number">4.3.2.</span> <span class="toc-text">生成多项式国际标准</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CRC32%E5%B9%BF%E6%B3%9B%E5%BA%94%E7%94%A8%E4%BA%8E%E4%BB%A5%E5%A4%AA%E7%BD%91%E8%AE%A1%E7%AE%97%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A0%A1%E9%AA%8C%E6%97%B6%E7%94%A8"><span class="toc-number">4.3.2.1.</span> <span class="toc-text">CRC32广泛应用于以太网计算循环冗余校验时用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A%E5%A6%82%E6%9E%9C%E7%94%9F%E6%88%90%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%98%AF-G-x-x-3-x-2-1%EF%BC%8C%E5%BE%85%E4%BC%A0%E9%80%81%E7%9A%84%E5%8E%9F%E5%A7%8B%E7%A0%81%E5%AD%97%E5%88%86%E5%88%AB%E6%98%AF1111-%E5%92%8C-1100%EF%BC%8C%E8%AF%B7%E8%AE%A1%E7%AE%97%E9%87%87%E7%94%A8CRC%E7%BC%96%E7%A0%81%E5%90%8E%E7%9A%84%E7%A0%81%E5%AD%97%E5%88%86%E5%88%AB%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-number">4.3.2.2.</span> <span class="toc-text">例题：如果生成多项式是 G(x)&#x3D; x^3 + x^2 + 1，待传送的原始码字分别是1111 和 1100，请计算采用CRC编码后的码字分别是多少？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%8D%95%E5%B7%A5%E5%8D%8F%E8%AE%AE-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="toc-number">5.</span> <span class="toc-text">三个单工协议-基本数据链路层协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%B7%A5%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%9A%84%E4%BC%A0%E8%BE%93%E5%9C%A8%E6%9F%90%E6%97%B6%E6%98%AF%E5%8D%95%E5%90%91%E7%9A%84"><span class="toc-number">5.0.1.</span> <span class="toc-text">单工：数据的传输在某时是单向的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%90%86%E6%83%B3%E6%9D%A1%E4%BB%B6%E4%B8%8B%E5%81%87%E8%AE%BE%EF%BC%9A"><span class="toc-number">5.0.2.</span> <span class="toc-text">理想条件下假设：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E5%8D%8F%E8%AE%AE%E5%85%B1%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%8C%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">5.0.3.</span> <span class="toc-text">几个协议共用的数据类型，调用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#protocol-h%E6%96%87%E4%BB%B6"><span class="toc-number">5.0.3.1.</span> <span class="toc-text">protocol.h文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%B8%AD%E5%AE%9A%E4%B9%89%E4%BA%86%E5%BE%88%E9%87%8D%E8%A6%81%E7%9A%84%E5%B8%A7%E7%BB%93%E6%9E%84%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%EF%BC%8C%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E7%AD%89%E7%AD%89%E2%80%A6"><span class="toc-number">5.0.3.2.</span> <span class="toc-text">其中定义了很重要的帧结构，以及事件类型，基本操作等等…</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E9%99%90%E5%88%B6%E7%9A%84%E5%8D%95%E5%B7%A5%E5%8D%8F%E8%AE%AE-%E5%8D%8F%E8%AE%AE1"><span class="toc-number">5.1.</span> <span class="toc-text">无限制的单工协议-协议1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%90%86%E6%83%B3%E6%9D%A1%E4%BB%B6%EF%BC%9A"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">理想条件：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-number">5.1.0.2.</span> <span class="toc-text">代码实现：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%B7%A5%E5%81%9C-%E7%AD%89%E5%8D%8F%E8%AE%AE-%E5%8D%8F%E8%AE%AE2"><span class="toc-number">5.2.</span> <span class="toc-text">单工停-等协议 协议2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">5.2.1.</span> <span class="toc-text">解决方法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%EF%BC%9A-1"><span class="toc-number">5.2.1.1.</span> <span class="toc-text">代码实现：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%99%AA%E5%A3%B0%E4%BF%A1%E9%81%93%E7%9A%84%E5%8D%95%E5%B7%A5%E5%8D%8F%E8%AE%AE-%E5%8D%8F%E8%AE%AE3"><span class="toc-number">5.3.</span> <span class="toc-text">有噪声信道的单工协议-协议3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E7%8E%B0%E9%94%99%E8%AF%AF%E5%90%8E%E5%A6%82%E4%BD%95%E9%80%9A%E7%9F%A5%E5%8F%91%E9%80%81%E6%96%B9%EF%BC%8C%E5%A6%82%E4%BD%95%E4%BF%AE%E6%AD%A3%E9%94%99%E8%AF%AF%EF%BC%8C%E6%81%A2%E5%A4%8D%E6%AD%A3%E7%A1%AE%E5%B8%A7%EF%BC%9A%EF%BC%88PAR%E8%82%AF%E5%AE%9A%E7%A1%AE%E8%AE%A4%E9%87%8D%E4%BC%A0%E5%8D%8F%E8%AE%AE-ARQ%E8%87%AA%E5%8A%A8%E9%87%8D%E4%BC%A0%E8%AF%B7%E6%B1%82%EF%BC%89"><span class="toc-number">5.3.0.1.</span> <span class="toc-text">发现错误后如何通知发送方，如何修正错误，恢复正确帧：（PAR肯定确认重传协议&#x2F;ARQ自动重传请求）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%EF%BC%9A-2"><span class="toc-number">5.3.0.2.</span> <span class="toc-text">代码实现：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E4%BC%A0%E8%BE%93%E6%95%88%E7%8E%87%E7%9A%84%E5%8D%8F%E8%AE%AE%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="toc-number">5.3.1.</span> <span class="toc-text">提高传输效率的协议实现方式：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%8F%8C%E5%B7%A5%EF%BC%9A"><span class="toc-number">5.3.1.1.</span> <span class="toc-text">全双工：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8D%8E%E5%B8%A6%E7%A1%AE%E8%AE%A4%EF%BC%9A"><span class="toc-number">5.3.1.2.</span> <span class="toc-text">捎带确认：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%B9%E5%8F%91%E6%95%B0%E6%8D%AE%EF%BC%88%E7%AE%A1%E9%81%93%E5%8C%96%E6%8A%80%E6%9C%AF%EF%BC%89%EF%BC%9A"><span class="toc-number">5.3.1.3.</span> <span class="toc-text">批发数据（管道化技术）：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE-%E5%8D%8F%E8%AE%AE4"><span class="toc-number">6.</span> <span class="toc-text">滑动窗口协议-协议4</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%8F%8C%E5%B7%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.0.1.</span> <span class="toc-text">全双工模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E5%8C%96%E6%8A%80%E6%9C%AF%EF%BC%88%E6%89%B9%E9%87%8F%E5%8F%91%E9%80%81%EF%BC%89"><span class="toc-number">6.0.2.</span> <span class="toc-text">管道化技术（批量发送）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-number">6.1.</span> <span class="toc-text">滑动窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%8F%8C%E6%96%B9%E9%83%BD%E5%AF%B9%E5%BA%94%E6%8B%A5%E6%9C%89%E4%B8%A4%E4%B8%AA%E7%AA%97%E5%8F%A3%EF%BC%9A"><span class="toc-number">6.1.0.1.</span> <span class="toc-text">整个过程中双方都对应拥有两个窗口：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">6.1.1.</span> <span class="toc-text">协议代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E6%BB%91%E5%8A%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">6.2.</span> <span class="toc-text">窗口滑动条件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%96%B9%E6%94%B6%E5%88%B0%E5%B8%A7%E5%90%8E%EF%BC%8C%E9%A6%96%E5%85%88%E6%A0%B8%E5%AF%B9%E5%B8%A7%E6%98%AF%E5%90%A6%E4%B8%8E%E6%9C%9F%E6%9C%9B%E7%9B%B8%E5%90%8C%EF%BC%8C%E5%A6%82%E6%9E%9C%E7%9B%B8%E5%90%8C%EF%BC%8C%E5%88%99%E8%BF%94%E5%9B%9E%E7%A1%AE%E8%AE%A4%E5%B8%A7%E5%B9%B6%E4%B8%94%E6%BB%91%E5%8A%A8%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3%EF%BC%88frame-expected-1%EF%BC%89%E7%84%B6%E5%90%8E%E5%B0%86%E6%95%B0%E6%8D%AE%E5%83%8F%E7%BD%91%E7%BB%9C%E5%B1%82%E4%BC%A0%E8%BE%93"><span class="toc-number">6.2.0.1.</span> <span class="toc-text">接收方收到帧后，首先核对帧是否与期望相同，如果相同，则返回确认帧并且滑动接收窗口（frame_expected+1）然后将数据像网络层传输</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%96%B9%E5%9C%A8%E6%94%B6%E5%88%B0%E7%A1%AE%E8%AE%A4%E5%B8%A7%E5%90%8E%EF%BC%8C%E6%A0%B8%E5%AF%B9%E5%93%8D%E5%BA%94%E5%B8%A7%E5%8F%B7next-frame-to-send%EF%BC%8C%E5%85%A8%E9%83%A8%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E4%BB%8E%E7%BD%91%E7%BB%9C%E5%B1%82%E8%8E%B7%E5%8F%96%E6%96%B0%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%B9%B6%E5%B0%86%E5%93%8D%E5%BA%94%E5%B8%A7%E5%8F%B7next-frame-to-send-1%E5%8D%B3%E7%A7%BB%E5%8A%A8%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%EF%BC%8C%E7%84%B6%E5%90%8E%E5%83%8F%E7%89%A9%E7%90%86%E5%B1%82%E4%BC%A0%E8%BE%93%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%90%A6%E5%88%99%EF%BC%8C%E4%B8%8D%E7%A7%BB%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-number">6.2.0.2.</span> <span class="toc-text">发送方在收到确认帧后，核对响应帧号next_frame_to_send，全部完成后，从网络层获取新的数据，并将响应帧号next_frame_to_send+1即移动发送窗口，然后像物理层传输信息，否则，不移动窗口</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">6.3.</span> <span class="toc-text">滑动窗口基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3"><span class="toc-number">6.3.0.1.</span> <span class="toc-text">发送窗口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-number">6.3.0.2.</span> <span class="toc-text">接收窗口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SEQ%E7%A0%81%E5%92%8CACK%E7%A0%81"><span class="toc-number">6.3.0.3.</span> <span class="toc-text">SEQ码和ACK码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E6%BB%91%E5%8A%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">6.3.0.4.</span> <span class="toc-text">窗口滑动机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E5%B8%A7%E7%9A%84%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6"><span class="toc-number">6.4.</span> <span class="toc-text">协议帧的差错控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="toc-number">6.5.</span> <span class="toc-text">效率问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%87%E8%AE%BE%E7%AA%97%E5%8F%A3%E6%AF%8F%E6%AC%A1%E5%8F%AA%E5%8F%91%E9%80%81%E4%B8%80%E5%B8%A7%EF%BC%8C%E9%82%A3%E4%B9%88%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E8%BF%90%E7%AE%97%E8%8E%B7%E5%BE%97%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BF%A1%E9%81%93%E5%88%A9%E7%94%A8%E7%8E%87%EF%BC%9A"><span class="toc-number">6.5.0.1.</span> <span class="toc-text">假设窗口每次只发送一帧，那么可以通过运算获得整个过程的信道利用率：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%AA%97%E5%8F%A3%E9%95%BF%E5%BA%A6%E4%B8%BAW-%E4%B8%80%E4%B8%AA%E7%AA%97%E5%8F%A3%E5%8F%91%E9%80%81%E5%AD%97%E8%8A%82%E7%9A%84%E6%95%B0%E9%87%8F"><span class="toc-number">6.5.0.2.</span> <span class="toc-text">设窗口长度为W(一个窗口发送字节的数量)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%90%88%E9%80%82%E7%9A%84W%E5%80%BC"><span class="toc-number">6.5.0.3.</span> <span class="toc-text">如何确定合适的W值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A"><span class="toc-number">6.5.1.</span> <span class="toc-text">例题：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E5%8C%96%E6%8A%80%E6%9C%AF%E9%9D%A2%E4%B8%B4%E7%9A%84%E5%87%BA%E9%94%99%E6%83%85%E5%86%B5"><span class="toc-number">6.6.</span> <span class="toc-text">管道化技术面临的出错情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%96%B9%E7%9A%84%E6%8E%A5%E6%94%B6%E7%AD%96%E7%95%A5%E9%80%89%E6%8B%A9"><span class="toc-number">6.6.0.1.</span> <span class="toc-text">接收方的接收策略选择</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E9%80%80n%E5%B8%A7-%E5%8D%8F%E8%AE%AE5"><span class="toc-number">7.</span> <span class="toc-text">回退n帧-协议5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E6%96%87%E6%8F%90%E5%88%B0%E4%BA%86%E4%BD%BF%E7%94%A8%E7%AE%A1%E9%81%93%E5%8C%96%E6%8A%80%E6%9C%AF%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%96%B0%E9%97%AE%E9%A2%98%E4%B8%8E%E4%B8%A4%E7%A7%8D%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F"><span class="toc-number">7.0.0.1.</span> <span class="toc-text">上文提到了使用管道化技术带来的新问题与两种解决方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%80%80n%E5%B8%A7"><span class="toc-number">7.0.1.</span> <span class="toc-text">回退n帧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%96%B9%E7%9A%84%E6%8E%A5%E6%94%B6%E7%AD%96%E7%95%A5%E4%B8%8E%E9%80%89%E6%8B%A9%EF%BC%9A"><span class="toc-number">7.0.1.1.</span> <span class="toc-text">接收方的接收策略与选择：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%96%B9%E7%9A%84%E5%8F%91%E9%80%81%E7%AD%96%E7%95%A5%EF%BC%9A"><span class="toc-number">7.0.1.2.</span> <span class="toc-text">发送方的发送策略：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%80%A7%E9%87%8D%E4%BC%A0"><span class="toc-number">7.0.2.</span> <span class="toc-text">选择性重传</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E6%96%B9%E7%9A%84%E6%8E%A5%E6%94%B6%E7%AD%96%E7%95%A5%E4%B8%8E%E9%80%89%E6%8B%A9%EF%BC%9A-1"><span class="toc-number">7.0.2.1.</span> <span class="toc-text">接收方的接收策略与选择：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E6%96%B9%E7%9A%84%E5%8F%91%E9%80%81%E7%AD%96%E7%95%A5%EF%BC%9A-1"><span class="toc-number">7.0.2.2.</span> <span class="toc-text">发送方的发送策略：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E9%80%80n%E5%B8%A7-1"><span class="toc-number">7.1.</span> <span class="toc-text">回退n帧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">7.1.0.1.</span> <span class="toc-text">基本概念</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%AF%E8%AE%A1%E7%A1%AE%E8%AE%A4"><span class="toc-number">7.2.</span> <span class="toc-text">累计确认</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E9%87%87%E7%94%A8%E4%BA%86%E7%B4%AF%E8%AE%A1%E7%A1%AE%E8%AE%A4%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9D%A5%E5%AF%B9%E5%B8%A7%E8%BF%9B%E8%A1%8C%E7%A1%AE%E8%AE%A4"><span class="toc-number">7.2.0.1.</span> <span class="toc-text">在滑动窗口中采用了累计确认的方式来对帧进行确认</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%86%E8%BF%99%E5%90%8C%E6%A0%B7%E4%B9%9F%E5%BC%95%E5%8F%91%E4%BA%86%E6%96%B0%E7%9A%84%E9%97%AE%E9%A2%98-%E8%A7%84%E5%AE%9A-%EF%BC%9A"><span class="toc-number">7.2.0.2.</span> <span class="toc-text">但这同样也引发了新的问题(规定)：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E9%80%80n%E5%B8%A7%E9%9C%80%E8%A6%81%E5%8F%91%E9%80%81%E6%96%B9%E4%BB%98%E5%87%BA%E6%9B%B4%E5%A4%A7%E7%9A%84%E7%BC%93%E5%AD%98%E4%BB%A3%E4%BB%B7%EF%BC%8C%E7%BC%93%E5%AD%98%E6%95%B4%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%9A%84%E6%95%B0%E6%8D%AE%E5%B8%A7"><span class="toc-number">7.2.1.</span> <span class="toc-text">回退n帧需要发送方付出更大的缓存代价，缓存整个窗口的数据帧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E5%90%88%E5%87%BA%E9%94%99%E8%BE%83%E5%B0%91%E7%9A%84%E9%AB%98%E9%80%9F%E4%BF%A1%E9%81%93"><span class="toc-number">7.2.1.1.</span> <span class="toc-text">适合出错较少的高速信道</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E6%80%A7%E9%87%8D%E4%BC%A0-%E5%8D%8F%E8%AE%AE6"><span class="toc-number">8.</span> <span class="toc-text">选择性重传-协议6</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="toc-number">8.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90"><span class="toc-number">8.2.</span> <span class="toc-text">选择重传协议的工作原理分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%A6%E5%AE%9A%E7%A1%AE%E8%AE%A4NAK"><span class="toc-number">8.2.1.</span> <span class="toc-text">否定确认NAK</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E9%95%BF%E5%BA%A6%E9%80%89%E6%8B%A9"><span class="toc-number">8.3.</span> <span class="toc-text">滑动窗口长度选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3%EF%BC%9AW-MAX-SEQ-1-2"><span class="toc-number">8.3.0.1.</span> <span class="toc-text">接收窗口：W&#x3D; (MAX_SEQ + 1) &#x2F; 2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E7%AA%97%E5%8F%A3%E4%B8%80%E8%88%AC%E5%B0%8F%E4%BA%8E%E6%8E%A5%E6%94%B6%E7%AA%97%E5%8F%A3"><span class="toc-number">8.3.0.2.</span> <span class="toc-text">发送窗口一般小于接收窗口</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-number">8.3.1.</span> <span class="toc-text">原因：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E7%AD%96%E7%95%A5%E6%AF%94%E8%BE%83"><span class="toc-number">8.3.2.</span> <span class="toc-text">两种策略比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E9%80%80n%E5%B8%A7-2"><span class="toc-number">8.3.2.1.</span> <span class="toc-text">回退n帧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E9%87%8D%E4%BC%A0"><span class="toc-number">8.3.2.2.</span> <span class="toc-text">选择重传</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/07/11/1-Vue%E5%9F%BA%E7%A1%80/" title="1-Vue基础"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/66150863_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-Vue基础"/></a><div class="content"><a class="title" href="/2021/07/11/1-Vue%E5%9F%BA%E7%A1%80/" title="1-Vue基础">1-Vue基础</a><time datetime="2021-07-11T06:24:30.000Z" title="Created 2021-07-11 14:24:30">2021-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/" title="7-数据链路层-逻辑链路控制子层"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="7-数据链路层-逻辑链路控制子层"/></a><div class="content"><a class="title" href="/2021/06/29/7-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E9%80%BB%E8%BE%91%E9%93%BE%E8%B7%AF%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/" title="7-数据链路层-逻辑链路控制子层">7-数据链路层-逻辑链路控制子层</a><time datetime="2021-06-29T07:52:37.000Z" title="Created 2021-06-29 15:52:37">2021-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/29/6-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/" title="6-数据链路层-介质访问控制子层"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/81691339_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="6-数据链路层-介质访问控制子层"/></a><div class="content"><a class="title" href="/2021/06/29/6-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82-%E4%BB%8B%E8%B4%A8%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E5%AD%90%E5%B1%82/" title="6-数据链路层-介质访问控制子层">6-数据链路层-介质访问控制子层</a><time datetime="2021-06-29T07:32:18.000Z" title="Created 2021-06-29 15:32:18">2021-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/20/5-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8B%EF%BC%89/" title="5-网络层（下）"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/72175872_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="5-网络层（下）"/></a><div class="content"><a class="title" href="/2021/06/20/5-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88%E4%B8%8B%EF%BC%89/" title="5-网络层（下）">5-网络层（下）</a><time datetime="2021-06-20T06:30:16.000Z" title="Created 2021-06-20 14:30:16">2021-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="1-区块链基础概述"><img src="https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/77593329_p0.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1-区块链基础概述"/></a><div class="content"><a class="title" href="/2021/05/15/1-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%9F%BA%E7%A1%80%E6%A6%82%E8%BF%B0/" title="1-区块链基础概述">1-区块链基础概述</a><time datetime="2021-05-15T12:06:13.000Z" title="Created 2021-05-15 20:06:13">2021-05-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://ywrbyimg.oss-cn-chengdu.aliyuncs.com/img/73143110_p0.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Ywrby</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', '', 'katex-wrap')
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'QkExI1n70lz2qs7pVpmFeKqp-gzGzoHsz',
+      appKey: 'WhG61iDj96bflhu6CIpmE9V8',
+      placeholder: 'Please leave your footprints',
+      avatar: 'mp',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="aplayer no-destroy" data-id="5402995011" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-lrctype=0	data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
